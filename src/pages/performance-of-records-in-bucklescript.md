@@ -59,7 +59,10 @@ We will get a nice compilation error from BuckleScript saying `The record field 
 Now, let’s say we want to have a function that creates a “Tesla” version of every car. Something like this, in `Car.re`:
 
 ```reason
-let pimpMyRide = car => {...car, model: "Tesla"};
+let pimpMyRide = car => {
+  ...car,
+  model: "Tesla"
+};
 ```
 
 Gets compiled into this in `Car.bs.js`:

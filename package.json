@@ -16,6 +16,7 @@
     "@emotion/core": "^10.0.10",
     "gatsby": "^2.3.25",
     "gatsby-plugin-emotion": "^4.0.6",
+    "gatsby-plugin-react-helmet": "^3.0.12",
     "gatsby-plugin-typography": "^2.2.13",
     "gatsby-remark-prismjs": "^3.2.8",
     "gatsby-source-filesystem": "^2.0.29",
@@ -23,6 +24,7 @@
     "prismjs": "^1.16.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-helmet": "^5.2.0",
     "react-typography": "^0.16.19",
     "typography": "^0.16.19",
     "typography-theme-st-annes": "^0.16.19"
