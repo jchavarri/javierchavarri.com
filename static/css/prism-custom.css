@@ -2,7 +2,7 @@ code[class*="language-"],
 pre[class*="language-"] {
 	color: rgba(0,0,0,.84);
 	background: none;
-	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	font-family: Courier, Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 	font-size: 0.9em;
 	text-align: left;
 	white-space: pre;
@@ -36,6 +36,7 @@ pre[class*="language-"] {
 
 /* Inline code */
 :not(pre) > code[class*="language-"] {
+	font-size: 0.8em;
 	padding: .1em;
 	border-radius: .3em;
 	white-space: normal;
@@ -81,7 +82,6 @@ pre[class*="language-"] {
 .language-css .token.string,
 .style .token.string {
 	color: #9a6e3a;
-	background: hsla(0, 0%, 100%, .5);
 }
 
 .token.atrule,

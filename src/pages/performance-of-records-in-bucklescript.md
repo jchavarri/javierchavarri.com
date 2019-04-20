@@ -1,6 +1,10 @@
 ---
 title: "Performance Of Records In BuckleScript"
 date: "2018-04-12"
+tags:
+  - "JavaScript"
+  - "BuckleScript"
+  - "ReasonML"
 ---
 
 [BuckleScript](http://bucklescript.github.io/) is a compiler backend, created by [Hongbo Zhang](https://twitter.com/bobzhang1988/), that allows to build apps using Reason or OCaml code, and produces clean, performant JavaScript code. Performance is one of the core values behind the project, and looking at the implementation one can see many different techniques that are used to pursue that goal.
@@ -13,7 +17,7 @@ We will be using [Reason](https://reasonml.github.io/) for the code examples, wh
 
 ## Using the platform
 
-BuckleScript compiles records as JavaScript arrays, so if we have a file Car.re written in Reason like:
+BuckleScript compiles records as JavaScript arrays, so if we have a file `Car.re` written in Reason like:
 
 ```reason
 type car = {

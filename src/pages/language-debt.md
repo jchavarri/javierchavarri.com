@@ -2,6 +2,11 @@
 title: "Language Debt"
 subtitle: "And The Evolution Of JavaScript"
 date: "2018-11-26"
+tags:
+  - "JavaScript"
+  - "ReasonML"
+  - "TypeScript"
+  - "Elm"
 ---
 
 A few days ago, there was a [great conversation](https://twitter.com/jamiebuilds/status/1064692760324657152) on Twitter between James Kyle and Jordan Walke about Reason and JavaScript, and what approach has lead the industry further ([sic](https://twitter.com/jamiebuilds/status/1064975648907714561)).

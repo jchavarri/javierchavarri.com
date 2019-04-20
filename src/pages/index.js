@@ -15,7 +15,7 @@ export default ({ data }) => {
           </span>{" "}
         </p>
         <p>
-          Welcome to this site, where I write (i.e. rant) about software
+          Welcome to this site, where I write about the challenges of creating software
           products, UI engineering, and programming languages —mainly JavaScript
           and Reason.
         </p>
@@ -60,7 +60,7 @@ export const query = graphql`
           id
           frontmatter {
             title
-            date(formatString: "DD MMMM, YYYY")
+            date(formatString: "MMMM DD, YYYY")
           }
           fields {
             slug
