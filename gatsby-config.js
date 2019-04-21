@@ -10,7 +10,15 @@ module.exports = {
     {
       resolve: `gatsby-transformer-remark`,
       options: {
-        plugins: [`gatsby-remark-prismjs`],
+        plugins: [
+          `gatsby-remark-prismjs`,
+          {
+            resolve: "gatsby-remark-external-links",
+            options: {
+              rel: "noopener noreferrer",
+            },
+          },
+        ],
       },
     },
     `gatsby-plugin-emotion`,

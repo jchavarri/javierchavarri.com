@@ -15,9 +15,9 @@ export default ({ data }) => {
           </span>{" "}
         </p>
         <p>
-          Welcome to this site, where I write about the challenges of creating
-          software products, UI engineering, and programming languages —mainly
-          JavaScript and Reason.
+          Welcome my site, where I write about the challenges of creating
+          software products, UI engineering, type systems and programming
+          languages —mainly JavaScript and Reason.
         </p>
         {data.allMarkdownRemark.edges.map(({ node }) => (
           <div key={node.id}>

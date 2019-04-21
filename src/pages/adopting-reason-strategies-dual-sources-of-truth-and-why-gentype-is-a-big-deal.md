@@ -19,7 +19,7 @@ _"Alice knew which was which in a moment, because one of them had ‘DUM’ embr
 
 You have been looking at Reason and the value behind it:
 
-- Rich type system with a [solid inference engine](https://www.javierchavarri.com/codeburst.io/inference-engines-5-examples-with-typescript-flow-and-reason-edef2f4cf2d3).
+- Rich type system with a [solid inference engine](https://codeburst.io/inference-engines-5-examples-with-typescript-flow-and-reason-edef2f4cf2d3).
 - Very fast build times.
 - Highly [performant](https://www.javierchavarri.com/performance-of-records-in-bucklescript/) and readable output code.
 - Language-level [immutable](https://reasonml.github.io/docs/en/record) [data](https://reasonml.github.io/docs/en/list-and-array#list) [structures](https://reasonml.github.io/docs/en/tuple).
