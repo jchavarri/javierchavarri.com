@@ -25,6 +25,7 @@ export default ({ data }) => {
               to={node.fields.slug}
               css={css`
                 color: inherit;
+                text-decoration: none;
               `}
             >
               <h3
@@ -34,16 +35,16 @@ export default ({ data }) => {
               >
                 {node.frontmatter.title}
               </h3>
-              <p
-                css={css`
-                  color: #bbb;
-                  margin-bottom: ${rhythm(1 / 4)};
-                `}
-              >
-                <em>{node.frontmatter.date}</em>
-              </p>
-              <p>{node.excerpt}</p>
             </Link>
+            <p
+              css={css`
+                color: #bbb;
+                margin-bottom: ${rhythm(1 / 4)};
+              `}
+            >
+              <em>{node.frontmatter.date}</em>
+            </p>
+            <p>{node.excerpt}</p>
           </div>
         ))}
       </div>
