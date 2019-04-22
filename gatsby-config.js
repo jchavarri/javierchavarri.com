@@ -8,6 +8,12 @@ module.exports = {
       options: { name: `src`, path: `${__dirname}/src/` },
     },
     {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: process.env.GA_TRACKING_ID,
+      },
+    },
+    {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
