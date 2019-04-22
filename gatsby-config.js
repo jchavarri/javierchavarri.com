@@ -1,5 +1,9 @@
 module.exports = {
-  siteMetadata: { title: `Javier Chávarri` },
+  siteMetadata: {
+    siteUrl: `https://www.javierchavarri.com`,
+    title: `Javier Chávarri`,
+    twitter: `@javierwchavarri`,
+  },
 
   plugins: [
     `gatsby-plugin-react-helmet`,

@@ -1,20 +1,24 @@
 import React from "react";
+import Helmet from "react-helmet";
 import { graphql } from "gatsby";
 import Layout from "../components/layout";
 
 export default ({ data }) => {
   const post = data.markdownRemark;
   return (
-    <Layout>
-      <div>
-        <h1>{post.frontmatter.title}</h1>
-        {post.frontmatter.subtitle && <h2>{post.frontmatter.subtitle}</h2>}
-        <p>
-          <em>{post.frontmatter.date}</em>
-        </p>
-        <div dangerouslySetInnerHTML={{ __html: post.html }} />
-      </div>
-    </Layout>
+    <>
+      <Helmet title={post.frontmatter.title} />
+      <Layout>
+        <div>
+          <h1>{post.frontmatter.title}</h1>
+          {post.frontmatter.subtitle && <h2>{post.frontmatter.subtitle}</h2>}
+          <p>
+            <em>{post.frontmatter.date}</em>
+          </p>
+          <div dangerouslySetInnerHTML={{ __html: post.html }} />
+        </div>
+      </Layout>
+    </>
   );
 };
 
