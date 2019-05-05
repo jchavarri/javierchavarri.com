@@ -149,14 +149,7 @@ Error: This expression has type string but an expression was expected of type in
 
 We can see how the compiler gets to analyze the integer `2` first, so it takes that as the "truth": `aList` has type `list(int)`.
 
-So when it encounters the second element of the list, the string `"a"`, it checks it against that truth. At that point, the compilation process fails because `string` and `int` are different types:
-
-```
-1. Finds list opening `[`
-2. Finds `2`
-3. Infers `aList` is of type `int`
-4. Finds `"a"` of type `string` and tries to match it with `int`
-5. Error!
+So when it encounters the second element of the list, the string `"a"`, it checks it against that truth. At that point, the compilation process fails because `string` and `int` are different types.
 
 This might sound pretty obvious, probably because some of us might be more used to left-to-right written languages. But one could imagine a compiler that would analyze programs in a different way. Maybe. 😂
 
