@@ -77,4 +77,4 @@ A library written in Reason / OCaml that is exposed to JavaScript consumers as w
 
 ---
 
-I hope you enjoyed the comparison, if you want to share your experiences with BuckleScript or Js\_of\_ocaml or have a suggestion, feel free to leave a comment below, or reach out [on Twitter](https://twitter.com/javierwchavarri/).
+I hope you enjoyed the comparison, if you want to share your experiences with BuckleScript or Js\_of\_ocaml or have a suggestion, reach out [on Twitter](https://twitter.com/javierwchavarri/).
