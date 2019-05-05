@@ -382,13 +382,13 @@ One the other hand, this shows one of the main disadvantages of the data-first a
 
 With data-first this is not possible: the data comes first and then all the optional values, so we are forced to always include a `unit` type as last param to make sure the compiler knows when the function has been fully applied.
 
-### Other languages
+### Usages in OCaml and other languages
 
-As we saw with the pipe operator `|>`, there are many functional languages that have followed this approach. The data-first convention and pipe first operator are not as common as data-last, but some languages have adopted this approach instead. 
+As we saw with the pipe operator `|>`, there are many functional languages that have followed the data-last approach. The data-first convention and pipe first operator are not as common as data-last, but there are some appearances too in functional and object-oriented languages. 
 
-One example is [Elixir](https://hexdocs.pm/elixir/Kernel.html#%7C%3E/2), which includes in the core language a pipe operator that passes the value as the first param called pipe-forward.
-
-In other cases, like C#, there are [proposals](https://github.com/dotnet/csharplang/issues/96) to include such an operator in the future.
+- [Elixir](https://hexdocs.pm/elixir/Kernel.html#%7C%3E/2) includes in the core language a pipe operator that passes the value as the first param called pipe-forward.
+- There are some [commonly used libraries](https://ocaml.janestreet.com/ocaml-core/latest/doc/core_kernel/Core_kernel/Map/) in OCaml that have adopted a data-first approach in their design. Even some OCaml imperative APIs use it, like the ones found in [`Hashtbl`](http://caml.inria.fr/pub/docs/manual-ocaml/libref/Hashtbl.html).
+- In other cases, like C#, there are [proposals](https://github.com/dotnet/csharplang/issues/96) to include pipe-first operator in the future.
 
 ## Conclusion
 
