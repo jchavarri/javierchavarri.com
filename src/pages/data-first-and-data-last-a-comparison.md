@@ -307,6 +307,8 @@ let ages = Belt.List.map(User.admins, u => u.
 
 The editor, as the compiler, can know that `u` is of the record `User.t` and can provide autocompletion for the fields in it. Very helpful!
 
+The advantages of data-first when it comes to editor integration is something that language designers with a vast experience, like Anders Hejlsberg (lead architect of TypeScript), [have explained in the past](https://github.com/Microsoft/TypeScript/issues/15680#issuecomment-307571917).
+
 ### Intuitive design for functions with multiple params
 
 One of the downsides of the data-last approach is that sometimes it makes harder to understand what a function with two operands is doing.
