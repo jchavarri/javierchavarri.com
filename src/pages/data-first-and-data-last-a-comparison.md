@@ -17,7 +17,7 @@ In this post, we will go through the reasons that led to this decision, see exam
 
 ## Data-last: a traditional convention in functional languages
 
-One of the common conventions in functional languages is to always pass the main parameter —the data that will be processed by the function— as the last parameter. This is known as "data-last", or in the OCaml ecosystem, because it's idiomatic to use `t` as the main type of a module, "t-last". In the rest of the post we will refer to this as data-last and data-first, but it is the same thing.
+One of the common conventions in functional languages is to always pass the main parameter —the data that will be processed by the function— as the last parameter. This is known as "data-last", or in the OCaml ecosystem, because it's idiomatic to use `t` as the main type of a module, "t-last". In the rest of the post we will refer to these two approaches as **data-last** and **data-first**.
 
 If we are using the OCaml standard library for example, and we want to map over the values of a list, we will do something like this (in Reason syntax):
 
@@ -184,9 +184,9 @@ Note the difference: in this case, **the compiler assumes the type of `strList`,
 
 This might not seem a big deal in this small example, but for real applications where the functions and data become more complex, the errors can become quite more cryptic with the data-last approach, because the compiler is assuming the source of truth is that of the "lifted" types of the callback: list, maps, options and any other "wrapping" types that are used in those callbacks.
 
-### Annotations needed
+### Confronting directions
 
-In some cases, the compiler might not even be able to infer the types of data-last functions.
+As we are realizing, data-last is in some cases not as ergonomic as data-first, considering that the type checker processes the code from left to right. In a few situations, the compiler might not even be able to infer the types of data-last functions properly.
 
 Let's say we have a module `User` with the following implementation:
 
@@ -218,9 +218,9 @@ If it's defined in another module or file, bring it into scope by:
   - Or specifying its type: let baby: MyModule.person = {age: 3}
 ```
 
-Whoa whoa there compiler... "_annotating it_"? "specifying its type"?! I was promised OCaml had such a powerful inference engine that I would never need to write any more type annotations! 😄
+Whoa whoa there compiler... "_annotating it_"? "_specifying its type_"?! I was promised OCaml had such a powerful inference engine that I would never need to write any more type annotations! 😄
 
-It seems the compiler can't figure out that we want to get the value of the field `age` from the record of type `User.t`, even if it has `users`, of type `list(User.t)` right there, next to it.
+Jokes aside, it seems the compiler can't figure out that we want to get the value of the field `age` from the record of type `User.t`, even if it has `User.admins` right next to the callback, and it knows it has type `list(User.t)`.
 
 We can solve the problem by adding a type annotation, as suggested by the compiler error:
 
@@ -228,9 +228,9 @@ We can solve the problem by adding a type annotation, as suggested by the compil
 let ages = List.map((u: User.t) => u.age, User.admins);
 ```
 
-This is a consequence of the way type inference works: as we saw, type checking is done left to right, so when the compiler evaluates the `map` callback `u => u.age`, in the case without type annotations, it has no information about what `u` is.
+This is a consequence of the way type inference works: as we saw, type checking is done left to right, so when the compiler evaluates the `map` callback `u => u.age`, in the case without type annotations, it has no information about what `u` is. The type checker errors out before being able to reach that part of the line that actually has enough information to infer the type.
 
-Maybe if we used the pipe operator, it would work? `User.admins` would appear first in that case. 🤔
+Maybe if we used the pipe operator, it would work? The order of the parameters would be inverted, and `User.admins` would appear first in that case. 🤔
 
 Let's see:
 
@@ -252,9 +252,9 @@ If we wrote it as a plain function `pipeOp`, the pipe operator is equivalent to 
 let ages = pipeOp(User.admins, List.map(u => u.age));
 ```
 
-`User.admins` appears first, but the type checker still analyzes the callback body _before_ evaluating the `map` function as a whole, so it still doesn't have enough information to know where `age` is coming from.
+`User.admins` appears first, but the type checker still analyzes the callback body _before_ evaluating the `map` function as a whole, so it still doesn't have enough information to know where the field `age` is coming from.
 
-### No annotations needed
+### Going with the flow
 
 With a data-first approach to API design, the need for a required annotation goes away:
 
@@ -262,9 +262,9 @@ With a data-first approach to API design, the need for a required annotation goe
 let ages = Belt.List.map(User.admins, u => u.age);
 ```
 
-This compiles just fine, without annotations needed! ✨
+This compiles just fine, without any annotations needed! ✨
 
-The compiler now can infer that the `u` expression in the callback parameter has type `User.t`, and so when it sees the `u.age` expression on the right side, it can be 100% sure where it comes from and check that it is valid.
+The compiler now can infer that the `u` expression in the callback parameter has type `User.t`, and so when it sees the `u.age` expression on the right side, it can be 100% sure where it comes from, and make sure the body of the callback is valid.
 
 ### The pipe first operator `->`
 
@@ -305,9 +305,9 @@ let ages = Belt.List.map(User.admins, u => u.
                                              ◻️ name
 ```
 
-The editor, as the compiler, can know that `u` is of the record `User.t` and can provide autocompletion for the fields in it. Very helpful!
+The editor extensions, as they rely on the information provided by compiler, can know that `u` is a value of the record type `User.t`, and can provide autocompletion for the fields in it. Very helpful!
 
-The advantages of data-first when it comes to editor integration is something that language designers with a vast experience, like Anders Hejlsberg (lead architect of TypeScript), [have explained in the past](https://github.com/Microsoft/TypeScript/issues/15680#issuecomment-307571917).
+The advantages of the data-first approach when it comes to editor integration is something that language designers with a vast experience like Anders Hejlsberg —creator and lead architect of TypeScript— [have pointed out](https://github.com/Microsoft/TypeScript/issues/15680#issuecomment-307571917).
 
 ### Intuitive design for functions with multiple params
 
@@ -327,9 +327,9 @@ Another example is the `Js.String.split` in BuckleScript:
 let bar = Js.String.split("a|b|c", "|")
 ```
 
-The resulting value is the string `"|"`, because the `Js` module in BuckleScript was originally designed to follow the data-last approach.
+The resulting value is an array with one element, `["|"]` instead of `["a", "b", "c"]`. The [`Js.String` module](https://bucklescript.github.io/bucklescript/api/Js.String.html) in BuckleScript was originally designed to follow the data-last approach as well.
 
-So, if we are not using currying and the pipe operator, we have to think kind of "backwards" when using these functions.
+So, if we are not using currying and the pipe operator, we have to read the parameters "backwards" when dealing with data-last functions, which is not very intuitive.
 
 ### Performance
 
@@ -411,7 +411,7 @@ Data-first provides:
 
 In the end, I would probably say that going one way or another largely depends on what are the values, intention and audience of the specific language or libraries.
 
-In BuckleScript's case, I think it made sense to go with the data-first approach, as it is targeting developers that come from JavaScript —an uncurried, object-oriented language— and are finding the new language for the first time. Because JavaScript is not a curried language, these developers might not find that much value in the advantages of data-last, while the more straight forward inference and better error messages and editor integration can be very helpful.
+In BuckleScript's case, I think it made sense to go with the data-first approach, as it is targeting developers that come from JavaScript —an uncurried, object-oriented language— and are finding the new language for the first time. Because JavaScript is not a curried language, these developers might not find that much value in the advantages of data-last, while the more straight forward inference, simpler error messages and better editor integration of data-first can be really helpful.
 
 ---
 
