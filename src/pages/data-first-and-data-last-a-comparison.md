@@ -7,17 +7,23 @@ tags:
   - "BuckleScript"
 ---
 
-[BuckleScript](https://bucklescript.github.io/) is a very interesting project: it takes the compiler from one language, OCaml, and modifies it in a way  that it becomes more ergonomic for users of another language: JavaScript. Because of this special nature, it has been received with some skepticism [since the very beginning](https://github.com/ocsigen/js_of_ocaml/issues/338).
+[BuckleScript](https://bucklescript.github.io/) is a quite uncommon project: it takes the compiler from one language, OCaml, and modifies it in a way that it becomes more ergonomic for users of another language: JavaScript.
 
-One of the most relevant decisions —and probably one of the most controversial ones as well— was [to choose a "data-first" API for Belt](https://github.com/BuckleScript/bucklescript/issues/2463) (BuckleScript's standard library), as well as introducing a ["pipe first" operator](https://reasonml.github.io/docs/en/pipe-first) (`|.` in OCaml syntax, `->` in Reason syntax) to make it easier to work with Belt functions.
+One of the most relevant decisions —probably one of most controversial ones as well— was [to choose a data-first design for Belt API](https://github.com/BuckleScript/bucklescript/issues/2463) (BuckleScript's standard library), as well as introducing a ["pipe first" operator](https://reasonml.github.io/docs/en/pipe-first) (`|.` in OCaml syntax, `->` in Reason syntax) to make it easier to work with Belt functions.
 
-The context and constraints for this decision are quite nuanced, but most of the information has been spread in short comments in forums, pull requests, StackOverflow answers, etc., but I thought it would help to have a place that goes through the problem in detail, and backing the explanations with as many examples as possible.
+The context and constraints for this decision are quite nuanced and in some cases involve knowledge about concepts that are foreign for most of us, like how compiler inference works, or advanced composition techniques in functional programming. However, despite being a quite technical subject, most of the information has been spread in quite short comments in forum threads, pull requests, Discord conversations, etc.
 
-In this post, we will go through the reasons that led to this decision, see examples that illustrate the problem, and lastly evaluate the trade-offs of it.
+This post is an attempt to gather as much information as possible in one place, help me and hopefully others understand the alternatives in detail, and back the explanations with as many examples as possible.
+
+So, in the post, we will:
+
+1. Present what _data-last_ is, and why functional languages have been using it for many years.
+2. Understand _data-first_, evaluating the advantages and disadvantages against _data-last_.
+3. Evaluate the trade-offs of both alternatives.
 
 ## Data-last: a traditional convention in functional languages
 
-One of the common conventions in functional languages is to always pass the main parameter —the data that will be processed by the function— as the last parameter. This is known as "data-last", or in the OCaml ecosystem, because it's idiomatic to use `t` as the main type of a module, "t-last". In the rest of the post we will refer to these two approaches as **data-last** and **data-first**.
+There is a convention in functional languages that consists on passing the "data" or "object" that will be processed by the function as the last parameter to a function. This is commonly known as "data-last".[^tlast]
 
 If we are using the OCaml standard library for example, and we want to map over the values of a list, we will do something like this (in Reason syntax):
 
@@ -26,13 +32,15 @@ let listOne = [1, 2, 3];
 let listTwo = List.map(a => a + 1, listOne); // [2, 3, 4]
 ```
 
-To understand the reasoning behind this convention it is important to understand currying.
+To understand the rationale behind this convention, it is fundamental to understand currying.
 
 ### Currying and partial application
 
-Currying means that all functions in the language only have one parameter. Functions that take "multiple parameters" are in reality functions that return other functions.
+[Currying](https://en.wikipedia.org/wiki/Currying) means that functions take just one parameter, and if we want to have something like multiple parameters, we can just have functions return other functions.
 
-For example, the functions `f` and `g` below are equivalent:
+In Reason, there is [syntactic sugar](https://en.wikipedia.org/wiki/Syntactic_sugar) to define functions as if they took multiple parameters, but in reality they are one-parameter functions that return other functions.
+
+As an example, the functions `f` and `g` below are equivalent:
 
 ```reason
 let f = (a, b, c) => a + b + c;
@@ -59,7 +67,9 @@ let listA = [1, 2, 3];
 let listB = addOneToList(listA); // [2, 3, 4]
 ```
 
-This is a very powerful (de)composition mechanism. For example, we can abstract `a => a + 1` in a new `plusOne` function for reusability purposes:
+This is a very powerful (de)composition mechanism. Functions are left partially applied so they can be combined together, passed around, or fully applied later on. Currying is also the mechanism used by [point-free programming](https://en.wikipedia.org/wiki/Tacit_programming), where functions are implemented without defining all their parameters.
+
+We can also abstract `a => a + 1` in a new `plusOne` function for reusability purposes:
 
 ```reason
 let plusOne = a => a + 1;
@@ -70,11 +80,11 @@ let listB = addOneToList(listA); // [2, 3, 4]
 
 ### The pipe operator `|>`
 
-The final push for the adoption of "data-last" convention was the pipe operator, which was [originally introduced](https://blogs.msdn.microsoft.com/dsyme/2011/05/17/archeological-semiotics-the-birth-of-the-pipeline-symbol-1994/)  in [Isabelle](https://en.wikipedia.org/wiki/Isabelle_%28proof_assistant%29), a theorem prover written in StandardML.
+Functional languages, which already had currying support by default, naturally gravitated towards data-last. The final push for the adoption of this convention was the pipe operator, which was [originally introduced](https://blogs.msdn.microsoft.com/dsyme/2011/05/17/archeological-semiotics-the-birth-of-the-pipeline-symbol-1994/) in [Isabelle](https://en.wikipedia.org/wiki/Isabelle_%28proof_assistant%29), a theorem prover written in StandardML. It would later be adopted in many other languages like OCaml, Haskell, F#, or Elm.
 
 The main problem the pipe operator was trying to solve is when applying many functions one after each other, chaining the result of one function to the parameters of the next becomes was quite verbose and tedious.
 
-The pipe operator solved this problem, as it passes the value on its left side as the last parameter of the expression that is placed at the right side.
+The pipe operator solves this by passing the value on its left side as the last parameter of the expression that is placed at the right side.
 
 So:
 
@@ -117,13 +127,13 @@ let getFolderSize = folderName =>
   |> bytesToMB;
 ```
 
-A significant simplication!
+A significant simplification!
 
 The pipe operator allows us to pass the result of each expression as an input to the next one, without having to name the result of each step and explicitly pass it to the next function call.
 
 ### A convention in many functional languages
 
-We have seen how currying enables partial application, and how this feature allows to compose functions easily, which was at the origin of the data-last convention. 
+We have seen how currying enables partial application, and how this feature allows to compose functions easily, which was at the origin of the data-last convention.
 
 Also, we saw how the pipe operator contributes to adopt this convention by passing the result of an expression as the last argument of the next.
 
@@ -143,6 +153,7 @@ In OCaml, type inference works from left to right, and from top to bottom. Here 
 let aList = [2, "a"];
                 ^^^
 ```
+
 ```
 Error: This expression has type string but an expression was expected of type int
 ```
@@ -162,31 +173,34 @@ let strList = ["hi"]
 let res = List.map(n => n + 1, strList)
                                ^^^^^^^
 ```
+
 ```
 Error: This expression has type list(string)
 but an expression was expected of type list(int)
-Type string is not compatible with type int 
+Type string is not compatible with type int
 ```
+
 In this example, the compiler assumes the callback `n => n + 1` is the truth, so it infers we are dealing with a `list(int)`. Then it finds a `list(string)`, and fails.
 
-However, if we are working with an API where the data comes first (also known as "t-first"), like Belt does:
+However, if we are working with a data-first API, like [Belt](https://bucklescript.github.io/bucklescript/api/Belt.html):
 
 ```reason
 let strList = ["hi"]
-let b = Belt.List.map(strList, n => n + 1)
-                                    ^
+let res = Belt.List.map(strList, n => n + 1)
+                                      ^
 ```
+
 ```
 Error: This expression has type string but an expression was expected of type int
 ```
 
-Note the difference: in this case, **the compiler assumes the type of `strList`, `list(string)`, is the truth**, and then it fails then when the callback returns an `int` type. Note also how the error message is simpler: the compiler is not matching a `list(int)` against a `list(string)` like in the first case, because it is operating already "inside" the callback, it can match the `string` —the original type of `a`— against an `int`.
+Note the difference: in this case, the compiler assumes the type of `strList`, `list(string)`, is the truth, and then it fails when the callback returns an `int` type. Note also how the error message is simpler: **the compiler is not matching a `list(int)` against a `list(string)`** like in the first case, **but `int` against `string`**, because it is operating already "inside" the callback, it can match the `string` —the original type of `a`— against an `int`.
 
 This might not seem a big deal in this small example, but for real applications where the functions and data become more complex, the errors can become quite more cryptic with the data-last approach, because the compiler is assuming the source of truth is that of the "lifted" types of the callback: list, maps, options and any other "wrapping" types that are used in those callbacks.
 
-### Confronting directions
+### Swimming upstream
 
-As we are realizing, data-last is in some cases not as ergonomic as data-first, considering that the type checker processes the code from left to right. In a few situations, the compiler might not even be able to infer the types of data-last functions properly.
+As we are realizing, data-last is in some cases not as ergonomic as data-first, considering that the type checker processes the code from left to right. In a few situations, the compiler might not be able to infer the types of data-last functions properly.
 
 Let's say we have a module `User` with the following implementation:
 
@@ -211,12 +225,15 @@ module User = { ... }
 let ages = List.map(u => u.age, User.admins);
                            ^^^
 ```
+
 ```
 The record field age can't be found.
 If it's defined in another module or file, bring it into scope by:
   - Annotating it with said module name: let baby = {MyModule.age: 3}
   - Or specifying its type: let baby: MyModule.person = {age: 3}
 ```
+
+> [Try it yourself](https://reasonml.github.io/en/try?rrjsx=true&ocaml=LYewJgrgNgpgBAVQM4wE5wLwCg5yQF1QgGN8dc58BPAB3n0zgG9yK4A7AQ2BgC49CAS3YBzANysKnEXzjD8YgL6TYDTmGDCkmSbgDaTDt3gY4ACjMAiAFKd2MSwEo9AAVQxOSEOwB0qTgDuAPpQgvhonFBwNnYOALqOYnDSJnAAzAAMcIoSbLiGXDyMFpYAsnYQMFBOru6e3n6BIWERUWUVVZYJSSmMAOwATNm5eQXGxVYAMsI1bh5evv7BoeH+bdPsXYnJMowArAAs2XHkMOxgWKo7MNqm0wQ+wJw05gBmEOxwELgAtAB8Xx8KUciBQqCBGi0QA).
 
 Whoa whoa there compiler... "_annotating it_"? "_specifying its type_"?! I was promised OCaml had such a powerful inference engine that I would never need to write any more type annotations! 😄
 
@@ -238,6 +255,7 @@ Let's see:
 let ages = User.admins |> List.map(u => u.age);
                                           ^^^
 ```
+
 ```
 Error: The record field age can't be found.
 ```
@@ -264,11 +282,13 @@ let ages = Belt.List.map(User.admins, u => u.age);
 
 This compiles just fine, without any annotations needed! ✨
 
+> You can [try it here](https://reasonml.github.io/en/try?rrjsx=true&reason=LYewJgrgNgpgBAVQM4wE5wLxwN4Cg5wAuAngA7yGY74FwB2AhsDAFxxKGoCWdA5gDQ0CDXqzg9CgggF8A3DViUGYYDyRUA2kJyNmbAEQApBnRj7+cEWIDMABmlTa2XWP0BZExBhRzl0WwB2ACYHbWcmVwAZHl8rNgBWABZQggBdeTlcRT8YdSwAIW9CADpojmLgBlIACmQ0YuVVOiQLCEwAPjgIBtEASnkgA).
+
 The compiler now can infer that the `u` expression in the callback parameter has type `User.t`, and so when it sees the `u.age` expression on the right side, it can be 100% sure where it comes from, and make sure the body of the callback is valid.
 
 ### The pipe first operator `->`
 
-In the same vein as the pipe operator `|>`, BuckleScript introduced a pipe operator that is similar, but instead passes the resulting value of the expression in the left side as the _first_ parameter of the one on the right. 
+In the same vein as the pipe operator `|>`, BuckleScript introduced a [pipe operator](https://bucklescript.github.io/docs/en/pipe-first) that is similar, but instead passes the resulting value of the expression in the left side as the _first_ parameter of the one on the right.
 
 So, for example:
 
@@ -284,16 +304,16 @@ let filtered = Belt.List.filter(list, a => a > 1);
 
 Another important difference from the `|>` operator is that `->` is not an infix operator, just syntactic sugar, so it is really as if you were writing the second form instead of the first from the compiler perspective. With the traditional pipe `|>` it is interpreted like applying a function.
 
-## Advantages of data-first
+## Advantages and disadvantages of data-first
 
 As we have seen, data-first remains more closely to how type inference works. We also saw how this:
 
 - Helps the compiler infer types in functions that take callbacks as parameters, without having to manually add type annotations.
-- Makes error messages simpler
+- Makes error messages simpler.
 
 This might not seem like a very big deal on its own, but it has a lot of impact down the line that affects the resulting developer experience.
 
-### IDE integration
+### Better IDE integration
 
 A direct consequence of the data-first approach that benefits from the compiler having more information is that we get more help from editor extensions when writing our functions.
 
@@ -307,7 +327,7 @@ let ages = Belt.List.map(User.admins, u => u.
 
 The editor extensions, as they rely on the information provided by compiler, can know that `u` is a value of the record type `User.t`, and can provide autocompletion for the fields in it. Very helpful!
 
-The advantages of the data-first approach when it comes to editor integration is something that language designers with a vast experience like Anders Hejlsberg —creator and lead architect of TypeScript— [have pointed out](https://github.com/Microsoft/TypeScript/issues/15680#issuecomment-307571917).
+The advantages of the data-first approach when it comes to editor integration is something that language designers with a vast experience like Anders Hejlsberg —creator and lead architect of TypeScript— [have pointed out in the past](https://github.com/Microsoft/TypeScript/issues/15680#issuecomment-307571917).
 
 ### Intuitive design for functions with multiple params
 
@@ -319,7 +339,7 @@ For example, the `String.concat` function in OCaml standard library:
 let foo = String.concat("a", ["b", "c"])
 ```
 
-Because we are used to left-to-right reading —like the  inference engine— we could guess the resulting value of `foo` is the string `"abc"`, but it's actually `"bca"` because the API is data-last.
+Because we are used to left-to-right reading —like the inference engine— we could guess the resulting value of `foo` is the string `"abc"`, but it's actually `"bca"` because the API is data-last.
 
 Another example is the `Js.String.split` in BuckleScript:
 
@@ -378,43 +398,77 @@ var jane$1 = jane.update(undefined, 45);
 
 Quite simpler! We went from two function definitions and a curried application in both of them, to a one-liner with just one function call.
 
-One the other hand, this shows one of the main disadvantages of the data-first approach: with data-last and optional arguments, one doesn't need to put an extra `unit` argument at the end of the function: whenever the data is passed (`jane` in the example above) the compiler knows the function can be applied, and thus set all optional values to `None`.
+### Worse integration with optional parameters
 
-With data-first this is not possible: the data comes first and then all the optional values, so we are forced to always include a `unit` type as last param to make sure the compiler knows when the function has been fully applied.
+The example above shows one of the main disadvantages of the data-first approach: with data-last and optional labelled arguments, one doesn't need to add an extra `unit` paramater at the end of the function: whenever the data is passed (`jane` in the example above) the compiler knows the function is being applied, and thus sets all optional values to `None`:
+
+```reason
+let update = (~isAdmin=false, u: user) => { ... };
+```
+
+With data-first this is not possible. Because the data comes first and then all the optional values, we are forced to always include a `unit` type as last param to make sure the compiler knows when the function has been fully applied:
+
+```reason
+let update = (u: user, ~isAdmin=false, unit) => { ... };
+```
+
+### Less straight-forward composition
+
+As mentioned at the beginning, data-last allows to compose functions very ergonomically, as one can partially apply a function by passing some parameters to it, and leave the last one to be filled later on.
+
+With data-first, it is not that straight forward though. Adapting the original example with `plusOne` and `addOneToList`, we can see how partially applying the `map` call is not possible anymore:
+
+```reason
+let plusOne = a => a + 1;
+let addOneToList = list => Belt.List.map(list, plusOne);
+                                           ↑      ↑
+                      Can't pass `plusOne` without passing `list` first
+```
+
+However, one can leverage something called [pipe placeholders](https://reasonml.github.io/docs/en/pipe-first#pipe-placeholders) to indicate a positional argument that will be filled later:
+
+```reason
+let plusOne = a => a + 1;
+let addOneToList = Belt.List.map(_, plusOne);
+let listA = [1, 2, 3];
+let listB = addOneToList(listA); // [2, 3, 4]
+```
 
 ### Usages in OCaml and other languages
 
-As we saw with the pipe operator `|>`, there are many functional languages that have followed the data-last approach. The data-first convention and pipe first operator are not as common as data-last, but there are some appearances too in functional and object-oriented languages. 
+Data-first convention and pipe first operator are not maybe as traditional as data-last, but there are some other usages in functional and object-oriented languages.
 
-- [Elixir](https://hexdocs.pm/elixir/Kernel.html#%7C%3E/2) includes in the core language a pipe operator that passes the value as the first param called pipe-forward.
+- [Elixir](https://hexdocs.pm/elixir/Kernel.html#%7C%3E/2) includes in the core language a pipe operator that passes the value as the first param called pipe-forward, and [its standard library](https://hexdocs.pm/elixir/List.html#summary) has been designed with data-first in mind.
 - There are some [commonly used libraries](https://ocaml.janestreet.com/ocaml-core/latest/doc/core_kernel/Core_kernel/Map/) in OCaml that have adopted a data-first approach in their design. Even some OCaml imperative APIs use it, like the ones found in [`Hashtbl`](http://caml.inria.fr/pub/docs/manual-ocaml/libref/Hashtbl.html).
 - In other cases, like C#, there are [proposals](https://github.com/dotnet/csharplang/issues/96) to include pipe-first operator in the future.
 
 ## Conclusion
 
-So, if you have read until here, first, you're awesome 😄 and second, what are the conclusions?
+So, if you have read until here, first, you're awesome 😄 and second, what could we conclude?
 
 From all the data seen above, there is no clear "better way", both data-first and data-last have their own set of trade-offs.
 
 Data-last has:
+
 - A long tradition in functional languages
 - Great integration with partially applied functions
 - More straight-forward composition
 - A simpler solution for application of functions with optional labelled arguments
 
 Data-first provides:
+
 - Simpler compiler errors
 - More accurate type inference
-- Smaller compiled output
+- Smaller compiled output (better performance)
 - Better IDE integration
-- More intuitive for left-to-right readers
+- More intuitive APIs for left-to-right readers
 
 In the end, I would probably say that going one way or another largely depends on what are the values, intention and audience of the specific language or libraries.
 
 In BuckleScript's case, I think it made sense to go with the data-first approach, as it is targeting developers that come from JavaScript —an uncurried, object-oriented language— and are finding the new language for the first time. Because JavaScript is not a curried language, these developers might not find that much value in the advantages of data-last, while the more straight forward inference, simpler error messages and better editor integration of data-first can be really helpful.
 
----
-
-Thanks for reading! I hope the goal of the post was accomplished and it helped make clearer what the rationale was behind this decision. If you want to share any feedback, leave a comment on the orange site or reach out [on Twitter](https://twitter.com/javierwchavarri/). 
+Thanks for reading! I hope the goal of the post was accomplished and it helped make clearer what the rationale was behind this decision. If you want to share any feedback, leave a comment on the orange site or reach out [on Twitter](https://twitter.com/javierwchavarri/).
 
 Keep shipping! 🚀
+
+[^tlast]: In OCaml, it's idiomatic to use `t` as the main type of a module, so data-first and data-last are commonly referred to as _t-first_ and _t-last_. The former, more generic naming is used in this article.
