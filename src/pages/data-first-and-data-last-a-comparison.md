@@ -67,9 +67,7 @@ let listA = [1, 2, 3];
 let listB = addOneToList(listA); // [2, 3, 4]
 ```
 
-This is a very powerful (de)composition mechanism. Functions are left partially applied so they can be combined together, passed around, or fully applied later on. Currying is also the mechanism used by [point-free programming](https://en.wikipedia.org/wiki/Tacit_programming), where functions are implemented without defining all their parameters.
-
-We can also abstract `a => a + 1` in a new `plusOne` function for reusability purposes:
+We can also abstract `a => a + 1` in a new `plusOne` function, if we need to reuse it:
 
 ```reason
 let plusOne = a => a + 1;
@@ -77,6 +75,8 @@ let addOneToList = List.map(plusOne);
 let listA = [1, 2, 3];
 let listB = addOneToList(listA); // [2, 3, 4]
 ```
+
+This is a very powerful (de)composition mechanism. Functions are left partially applied so they can be combined together, passed around, or fully applied later on. This style of programming, where functions like `addOneToList` are implemented without enumerating their parameters explicitly, is known as [point-free programming](https://en.wikipedia.org/wiki/Tacit_programming). And point-free programming is only possible because of currying and partial application.
 
 ### The pipe operator `|>`
 
@@ -169,9 +169,9 @@ What does this have to do with "data-first" or "data-last"? A lot, as it turns o
 Let's see a small example:
 
 ```reason
-let strList = ["hi"]
-let res = List.map(n => n + 1, strList)
-                               ^^^^^^^
+let words = ["hi"]
+let res = List.map(n => n + 1, words)
+                               ^^^^^
 ```
 
 ```
@@ -180,27 +180,27 @@ but an expression was expected of type list(int)
 Type string is not compatible with type int
 ```
 
-In this example, the compiler assumes the callback `n => n + 1` is the truth, so it infers we are dealing with a `list(int)`. Then it finds a `list(string)`, and fails.
+In this example, the compiler assumes the callback `n => n + 1` is the truth, so it infers we are dealing with a value of type `list(int)`. Then it finds `words`, of type `list(string)`, and fails.
 
 However, if we are working with a data-first API, like [Belt](https://bucklescript.github.io/bucklescript/api/Belt.html):
 
 ```reason
-let strList = ["hi"]
-let res = Belt.List.map(strList, n => n + 1)
-                                      ^
+let words = ["hi"]
+let res = Belt.List.map(words, n => n + 1)
+                                    ^
 ```
 
 ```
 Error: This expression has type string but an expression was expected of type int
 ```
 
-Note the difference: in this case, the compiler assumes the type of `strList`, `list(string)`, is the truth, and then it fails when the callback returns an `int` type. Note also how the error message is simpler: **the compiler is not matching a `list(int)` against a `list(string)`** like in the first case, **but `int` against `string`**, because it is operating already "inside" the callback, it can match the `string` —the original type of `a`— against an `int`.
+Note the difference: in this case, the compiler assumes the type of `words`, `list(string)`, is the truth, and then it fails when the callback returns an `int` type. Note also how the error message is simpler: **the compiler is not matching `list(int)` against `list(string)`** like in the first case, **but `int` against `string`**. Because it is operating already "inside" the callback, it can match the type of `n` (`string`) against the type of `1` (`int`).
 
 This might not seem a big deal in this small example, but for real applications where the functions and data become more complex, the errors can become quite more cryptic with the data-last approach, because the compiler is assuming the source of truth is that of the "lifted" types of the callback: list, maps, options and any other "wrapping" types that are used in those callbacks.
 
 ### Swimming upstream
 
-As we are realizing, data-last is in some cases not as ergonomic as data-first, considering that the type checker processes the code from left to right. In a few situations, the compiler might not be able to infer the types of data-last functions properly.
+As we are seeing, data-first can be more ergonomic towards inference, considering the type checker processes code from left to right. In a few situations, the compiler might not be able to infer the types of data-last functions properly.
 
 Let's say we have a module `User` with the following implementation:
 
@@ -416,16 +416,16 @@ let update = (u: user, ~isAdmin=false, unit) => { ... };
 
 As mentioned at the beginning, data-last allows to compose functions very ergonomically, as one can partially apply a function by passing some parameters to it, and leave the last one to be filled later on.
 
-With data-first, it is not that straight forward though. Adapting the original example with `plusOne` and `addOneToList`, we can see how partially applying the `map` call is not possible anymore:
+With data-first, it is not that straight forward though. Adapting the original example with `plusOne` and `addOneToList`, we can see how partially applying the `map` call is not possible anymore, unless we use another function that flips the two parameters:
 
 ```reason
 let plusOne = a => a + 1;
 let addOneToList = list => Belt.List.map(list, plusOne);
                                            ↑      ↑
-                      Can't pass `plusOne` without passing `list` first
+                   // Can't pass `plusOne` without passing `list` first
 ```
 
-However, one can leverage something called [pipe placeholders](https://reasonml.github.io/docs/en/pipe-first#pipe-placeholders) to indicate a positional argument that will be filled later:
+To get around this problem, Reason introduced something called [pipe placeholders](https://reasonml.github.io/docs/en/pipe-first#pipe-placeholders) to indicate a positional argument that will be filled later:
 
 ```reason
 let plusOne = a => a + 1;
