@@ -422,7 +422,7 @@ With data-first, it is not that straight forward though. Adapting the original e
 let plusOne = a => a + 1;
 let addOneToList = list => Belt.List.map(list, plusOne);
                                            ↑      ↑
-                   // Can't pass `plusOne` without passing `list` first
+                   /* Can't pass `plusOne` without passing `list` first */
 ```
 
 To get around this problem, Reason introduced something called [pipe placeholders](https://reasonml.github.io/docs/en/pipe-first#pipe-placeholders) to indicate a positional argument that will be filled later:
