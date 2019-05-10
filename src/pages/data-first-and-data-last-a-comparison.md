@@ -1,6 +1,6 @@
 ---
 title: "Data-first and data-last: a comparison"
-date: "2019-05-05"
+date: "2019-05-10"
 tags:
   - "OCaml"
   - "ReasonML"
@@ -458,7 +458,9 @@ Data-last has:
 - Great integration with partially applied functions
 - More straight-forward composition
 - A simpler solution for application of functions with optional labelled arguments
-- Works specifically with `|>`, which is supported by default on every OCaml backend. If you'd like to keep more portability (say you want to keep open the possibility of doing fullstack ReasonML), there is a stronger case for data-last and `|>`.
+- Works with `|>`, which is supported by default on every OCaml backend.
+
+If you'd like to keep more portability (say you want to keep open the possibility of doing fullstack ReasonML), there is a stronger case for data-last and `|>`.
 
 Data-first provides:
 
@@ -476,6 +478,6 @@ Thanks for reading! I hope the goal of the article was accomplished and it helpe
 
 Keep shipping! 🚀
 
-_Thanks a lot to [Yawar Amin](https://twitter.com/yawaramin/) for reviewing an early version of this article, and to [Cheng Lou](https://twitter.com/_chenglou) for taking the time to answer every question I had about this topic._
+_Thanks a lot to [Yawar Amin](https://twitter.com/yawaramin/) for reviewing an early version of this article, and to [Cheng Lou](https://bit.ly/2JvYCU8) for taking the time to answer every question I had about this topic._
 
 [^tlast]: In OCaml, it's idiomatic to use `t` as the main type of a module, so data-first and data-last are commonly referred to as _t-first_ and _t-last_. The former, more generic naming is used in this article.
