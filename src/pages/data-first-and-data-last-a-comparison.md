@@ -13,9 +13,9 @@ One of the most relevant decisions —probably one of most controversial ones as
 
 The context and constraints for this decision are quite nuanced and in some cases involve knowledge about concepts that are foreign for most of us, like how compiler inference works, or advanced composition techniques in functional programming. However, despite being a quite technical subject, most of the information has been spread in quite short comments in forum threads, pull requests, Discord conversations, etc.
 
-This post is an attempt to gather as much information as possible in one place, help me and hopefully others understand the alternatives in detail, and back the explanations with as many examples as possible.
+This article is an attempt to gather as much information as possible in one place, help me and hopefully others understand the alternatives in detail, and back the explanations with as many examples as possible.
 
-So, in the post, we will:
+So, in this article, we will:
 
 1. Present what _data-last_ is, and why functional languages have been using it for many years.
 2. Understand _data-first_, evaluating the advantages and disadvantages against _data-last_.
@@ -198,9 +198,9 @@ Note the difference: in this case, the compiler assumes the type of `words`, `li
 
 This might not seem a big deal in this small example, but for real applications where the functions and data become more complex, the errors can become quite more cryptic with the data-last approach, because the compiler is assuming the source of truth is that of the "lifted" types of the callback: list, maps, options and any other "wrapping" types that are used in those callbacks.
 
-### Swimming upstream
+### Contextually typed arguments
 
-As we are seeing, data-first can be more ergonomic towards inference, considering the type checker processes code from left to right. In a few situations, the compiler might not be able to infer the types of data-last functions properly.
+As we are seeing, data-first can be more ergonomic towards inference, considering the type checker processes code from left to right. In a few situations, the compiler might not have enough contextual information to infer the types of data-last functions properly.
 
 Let's say we have a module `User` with the following implementation:
 
@@ -218,7 +218,7 @@ module User = {
 }
 ```
 
-Now, outside this module, we want to get a list with the ages of the `admins` users. We use OCaml standard library `List` function `List.map`:
+Now, outside this module, we want to get a list with the ages of the `admins` users. We use OCaml standard library function `List.map`:
 
 ```reason
 module User = { ... }
@@ -237,15 +237,15 @@ If it's defined in another module or file, bring it into scope by:
 
 Whoa whoa there compiler... "_annotating it_"? "_specifying its type_"?! I was promised OCaml had such a powerful inference engine that I would never need to write any more type annotations! 😄
 
-Jokes aside, it seems the compiler can't figure out that we want to get the value of the field `age` from the record of type `User.t`, even if it has `User.admins` right next to the callback, and it knows it has type `list(User.t)`.
+Jokes aside, it seems the compiler can't figure out that we want to get the value from the field `age` of a record of type `User.t`, even if it has `User.admins` right next to the callback, and it knows it has type `list(User.t)`.
 
-We can solve the problem by adding a type annotation, as suggested by the compiler error:
+We can solve the problem by annotating it with the module name, as suggested by the compiler error message:
 
 ```reason
-let ages = List.map((u: User.t) => u.age, User.admins);
+let ages = List.map(u => u.User.age, User.admins); 
 ```
 
-This is a consequence of the way type inference works: as we saw, type checking is done left to right, so when the compiler evaluates the `map` callback `u => u.age`, in the case without type annotations, it has no information about what `u` is. The type checker errors out before being able to reach that part of the line that actually has enough information to infer the type.
+This is a consequence of the way type inference works: as we saw, type checking is done left to right, so when the compiler evaluates the `map` callback `u => u.age`, in the case without type annotations, it has no information about what `u` is. The type checker errors out before being able to reach the expression that actually has enough information to infer the type.
 
 Maybe if we used the pipe operator, it would work? The order of the parameters would be inverted, and `User.admins` would appear first in that case. 🤔
 
@@ -329,19 +329,19 @@ The editor extensions, as they rely on the information provided by compiler, can
 
 The advantages of the data-first approach when it comes to editor integration is something that language designers with a vast experience like Anders Hejlsberg —creator and lead architect of TypeScript— [have pointed out in the past](https://github.com/Microsoft/TypeScript/issues/15680#issuecomment-307571917).
 
-### Intuitive design for functions with multiple params
+### Intuitive order for functions with more than one parameter of the same type
 
-One of the downsides of the data-last approach is that sometimes it makes harder to understand what a function with two operands is doing.
+One of the downsides of the data-last approach is that sometimes it makes harder to understand what a function with two parameters of the same type is doing.
 
-For example, the `String.concat` function in OCaml standard library:
+For example, the `Js.Array.concat` function exposed by BuckleScript:
 
 ```reason
-let foo = String.concat("a", ["b", "c"])
+let foo = Js.Array.concat([|1|], [|2, 3|])
 ```
 
-Because we are used to left-to-right reading —like the inference engine— we could guess the resulting value of `foo` is the string `"abc"`, but it's actually `"bca"` because the API is data-last.
+Because we are used to left-to-right reading —like the inference engine— we could guess the resulting value of `foo` is the array `[|1, 2, 3|]`, but it's actually `[|2, 3, 1|]` because the API is data-last.
 
-Another example is the `Js.String.split` in BuckleScript:
+Another example is the `Js.String.split`:
 
 ```reason
 let bar = Js.String.split("a|b|c", "|")
@@ -353,9 +353,9 @@ So, if we are not using currying and the pipe operator, we have to read the para
 
 ### Performance
 
-Pipe first operator `->` is implemented as purely syntactic sugar, as mentioned above. This means that, from the compiler perspective, the usage of `->` means that no extra functions calls are involved.
+Pipe first operator `->` is implemented as purely syntactic sugar, as mentioned above. This means that, from BuckleScript compiler perspective, the usage of `->` means that no extra functions calls are involved.
 
-This is not what happens with the pipe last operator `|>`, that gets compiled into a function call. While the compiler does a lot of optimizations to inline values whenever possible, this difference makes it hard to optimize in some specific cases.
+This is not what happens with the pipe last operator `|>`, that gets compiled into a function call. While the OCaml compiler does a lot of optimizations to inline values whenever possible, this difference makes it hard to optimize in some specific cases.
 
 Here is an example of a binding to a JavaScript function using BuckleScript interop capabilities that shows how this can impact the resulting code.
 
@@ -396,11 +396,15 @@ Results in this JavaScript code:
 var jane$1 = jane.update(undefined, 45);
 ```
 
-Quite simpler! We went from two function definitions and a curried application in both of them, to a one-liner with just one function call.
+Quite simpler! The resulting code went from two function definitions and a curried application in both of them, to a one-liner with just one function call.
+
+The complexity of the data-last version's output is coming from the optional parameter. In the first case, BuckleScript is not able to uncurry the function call, as it needs to check for the presence of `isAdmin`. If this optional param was not there, the outputs would be identically simple.
+
+This is one of the reasons why `[@bs.send]` is recommended over `[@bs.send.pipe]` as the default way to model BuckleScript bindings to JavaScript object methods.
 
 ### Worse integration with optional parameters
 
-The example above shows one of the main disadvantages of the data-first approach: with data-last and optional labelled arguments, one doesn't need to add an extra `unit` paramater at the end of the function: whenever the data is passed (`jane` in the example above) the compiler knows the function is being applied, and thus sets all optional values to `None`:
+The example above shows one of the main disadvantages of the data-first approach: with data-last and optional labelled arguments, one doesn't need to add an extra `unit` parameter at the end of the function: whenever the data is passed (`jane` in the example above) the compiler knows the function is being applied, and thus sets all optional values to `None`:
 
 ```reason
 let update = (~isAdmin=false, u: user) => { ... };
@@ -454,6 +458,7 @@ Data-last has:
 - Great integration with partially applied functions
 - More straight-forward composition
 - A simpler solution for application of functions with optional labelled arguments
+- Works specifically with `|>`, which is supported by default on every OCaml backend. If you'd like to keep more portability (say you want to keep open the possibility of doing fullstack ReasonML), there is a stronger case for data-last and `|>`.
 
 Data-first provides:
 
@@ -463,12 +468,14 @@ Data-first provides:
 - Better IDE integration
 - More intuitive APIs for left-to-right readers
 
-In the end, I would probably say that going one way or another largely depends on what are the values, intention and audience of the specific language or libraries.
+As you can see, both approaches have multiple upsides, and that is probably why this is a controversial topic: there is no apparent "right" choice. In the end, I would say that going one way or another largely depends on what are the values, intention and audience of the specific language or libraries.
 
-In BuckleScript's case, I think it made sense to go with the data-first approach, as it is targeting developers that come from JavaScript —an uncurried, object-oriented language— and are finding the new language for the first time. Because JavaScript is not a curried language, these developers might not find that much value in the advantages of data-last, while the more straight forward inference, simpler error messages and better editor integration of data-first can be really helpful.
+In BuckleScript's case, I think it made sense to go with the data-first approach, as it is targeting developers that come from JavaScript and are exploring a new language. Because JavaScript is not a curried language, the value these developers might get back from straight forward inference, simpler error messages and better editor integration of data-first might be more helpful than the advantages of data-last.
 
-Thanks for reading! I hope the goal of the post was accomplished and it helped make clearer what the rationale was behind this decision. If you want to share any feedback, leave a comment on the orange site or reach out [on Twitter](https://twitter.com/javierwchavarri/).
+Thanks for reading! I hope the goal of the article was accomplished and it helped make clearer what the rationale was behind this decision. If you want to share any feedback, please reach out [on Twitter](https://twitter.com/javierwchavarri/).
 
 Keep shipping! 🚀
+
+_Thanks a lot to [Yawar Amin](https://twitter.com/yawaramin/) for reviewing an early version of this article, and to [Cheng Lou](https://twitter.com/_chenglou) for taking the time to answer every question I had about this topic._
 
 [^tlast]: In OCaml, it's idiomatic to use `t` as the main type of a module, so data-first and data-last are commonly referred to as _t-first_ and _t-last_. The former, more generic naming is used in this article.
