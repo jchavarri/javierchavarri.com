@@ -35,6 +35,7 @@ export const query = graphql`
         title
         subtitle
         date(formatString: "MMMM DD, YYYY")
+        imghero
       }
     }
   }
