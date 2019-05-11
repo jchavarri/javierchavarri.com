@@ -3,6 +3,10 @@ module.exports = {
     siteUrl: `https://www.javierchavarri.com`,
     title: `Javier Chávarri`,
     twitter: `@javierwchavarri`,
+    description:
+      "Welcome to my site, where I write about the challenges of creating " +
+      "software products, UI engineering, type systems and programming " +
+      "languages, especially JavaScript and Reason.",
   },
 
   plugins: [

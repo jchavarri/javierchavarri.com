@@ -8,12 +8,14 @@ import Layout from "../components/layout";
 export default ({ data }) => {
   const {
     site: {
-      siteMetadata: { siteUrl, title },
-    }
+      siteMetadata: { siteUrl, description, title },
+    },
   } = data;
   return (
     <>
       <Helmet defaultTitle={title} titleTemplate={`%s | ${title}`}>
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
         <meta property="og:url" content={siteUrl} />
         <meta property="og:type" content="website" />
       </Helmet>
@@ -26,11 +28,7 @@ export default ({ data }) => {
               👋
             </span>{" "}
           </p>
-          <p>
-            Welcome my site, where I write about the challenges of creating
-            software products, UI engineering, type systems and programming
-            languages, especially JavaScript and Reason.
-          </p>
+          <p>{description}</p>
           {data.allMarkdownRemark.edges.map(({ node }) => (
             <div key={node.id}>
               <Link
@@ -71,6 +69,7 @@ export const query = graphql`
       siteMetadata {
         siteUrl
         title
+        description
       }
     }
     allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
