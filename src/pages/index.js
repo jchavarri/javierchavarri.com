@@ -4,6 +4,7 @@ import { css } from "@emotion/core";
 import { Link, graphql } from "gatsby";
 import { rhythm } from "../utils/typography";
 import Layout from "../components/layout";
+import { formatReadingTime } from "../utils/helpers";
 
 export default ({ data }) => {
   const {
@@ -52,7 +53,9 @@ export default ({ data }) => {
                   margin-bottom: ${rhythm(1 / 4)};
                 `}
               >
-                <em>{node.frontmatter.date}</em>
+                <em>{`${node.frontmatter.date} • ${formatReadingTime(
+                  node.timeToRead
+                )}`}</em>
               </p>
               <p>{node.excerpt}</p>
             </div>
@@ -77,6 +80,7 @@ export const query = graphql`
       edges {
         node {
           id
+          timeToRead
           frontmatter {
             title
             date(formatString: "MMMM DD, YYYY")
