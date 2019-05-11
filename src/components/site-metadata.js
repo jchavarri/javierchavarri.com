@@ -45,6 +45,7 @@ const SiteMetadata = ({ pathname }) => {
       <link rel="manifest" href="/site.webmanifest" />
       {/*<link rel="canonical" href={`${siteUrl}${pathname}`} />*/}
 
+      {/* OpenGraph tags */}
       <meta property="og:url" content={siteUrl} />
       <meta property="og:type" content="website" />
       <meta property="og:locale" content="en" />
@@ -53,8 +54,10 @@ const SiteMetadata = ({ pathname }) => {
       <meta property="og:image:width" content="512" />
       <meta property="og:image:height" content="512" />
 
+      {/* Twitter Card tags */}
+      <meta name="twitter:site" content={title} />
+      <meta name="twitter:creator" content={twitter} />
       <meta name="twitter:card" content="summary" />
-      <meta name="twitter:site" content={twitter} />
     </Helmet>
   );
 };

@@ -7,7 +7,12 @@ export default ({ data }) => {
   const post = data.markdownRemark;
   return (
     <>
-      <Helmet title={post.frontmatter.title} />
+      <Helmet title={post.frontmatter.title}>
+        {/* Twitter Card tags */}
+        <meta name="twitter:title" content={post.frontmatter.title} />
+        <meta name="twitter:description" content={post.frontmatter.subtitle} />
+        {/* <meta name="twitter:image" content={image} /> */}
+      </Helmet>
       <Layout>
         <div>
           <h1>{post.frontmatter.title}</h1>
