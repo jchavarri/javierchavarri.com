@@ -60,7 +60,7 @@ export default ({ data }) => (
       I am very interested on programming languages and language design from the
       purely technical perspective, but also and especially from the human point
       of view: how they affect and relate with remote work, team cooperation,
-      products maintenance and evolution, software quality, and most importantly
+      products maintenance and evolution, software quality, and 
       personal happiness.
     </p>
     <p>

@@ -5,9 +5,19 @@ import Layout from "../components/layout";
 
 export default ({ data }) => {
   const post = data.markdownRemark;
+  const url = post.fields.slug
+    ? `${data.site.siteMetadata.siteUrl}${post.fields.slug}`
+    : data.site.siteMetadata.siteUrl;
+  console.log(url);
   return (
     <>
       <Helmet title={post.frontmatter.title}>
+        {/* OpenGraph tags */}
+        <meta property="og:url" content={url} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={post.frontmatter.title} />
+        <meta property="og:description" content={post.frontmatter.subtitle} />
+        <meta property="og:image" content={post.frontmatter.imghero} />
         {/* Twitter Card tags */}
         <meta name="twitter:title" content={post.frontmatter.title} />
         <meta name="twitter:description" content={post.frontmatter.subtitle} />
@@ -29,8 +39,16 @@ export default ({ data }) => {
 
 export const query = graphql`
   query($slug: String!) {
+    site {
+      siteMetadata {
+        siteUrl
+      }
+    }
     markdownRemark(fields: { slug: { eq: $slug } }) {
       html
+      fields {
+        slug
+      }
       frontmatter {
         title
         subtitle

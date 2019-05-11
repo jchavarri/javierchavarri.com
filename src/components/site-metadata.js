@@ -43,14 +43,11 @@ const SiteMetadata = ({ pathname }) => {
         href="/favicon-16x16.png"
       />
       <link rel="manifest" href="/site.webmanifest" />
-      {/*<link rel="canonical" href={`${siteUrl}${pathname}`} />*/}
 
       {/* OpenGraph tags */}
-      <meta property="og:url" content={siteUrl} />
-      <meta property="og:type" content="website" />
       <meta property="og:locale" content="en" />
       <meta property="og:site_name" content={title} />
-      {/*<meta property="og:image" content={`${siteUrl}${gatsbyIcon}`} />*/}
+      <meta property="og:image" content={`${siteUrl}/android-chrome-512x512.png`} />
       <meta property="og:image:width" content="512" />
       <meta property="og:image:height" content="512" />
 
