@@ -2,6 +2,7 @@
 title: "Language Debt"
 subtitle: "And The Evolution Of JavaScript"
 date: "2018-11-26"
+imghero: "https://www.javierchavarri.com/media/language-debt-01.jpeg"
 tags:
   - "JavaScript"
   - "ReasonML"

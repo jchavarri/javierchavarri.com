@@ -2,6 +2,7 @@
 title: "Js_of_ocaml and BuckleScript"
 subtitle: "A Comparison"
 date: "2019-03-17"
+imghero: "https://www.javierchavarri.com/media/js_of_ocaml-and-bucklescript-01.png"
 tags:
   - "JavaScript"
   - "ReasonML"

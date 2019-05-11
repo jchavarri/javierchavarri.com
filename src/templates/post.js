@@ -11,7 +11,7 @@ export default ({ data }) => {
         {/* Twitter Card tags */}
         <meta name="twitter:title" content={post.frontmatter.title} />
         <meta name="twitter:description" content={post.frontmatter.subtitle} />
-        {/* <meta name="twitter:image" content={image} /> */}
+        <meta name="twitter:image" content={post.frontmatter.imghero} />
       </Helmet>
       <Layout>
         <div>

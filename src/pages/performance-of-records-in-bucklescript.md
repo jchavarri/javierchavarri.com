@@ -1,6 +1,7 @@
 ---
 title: "Performance Of Records In BuckleScript"
 date: "2018-04-12"
+imghero: "https://www.javierchavarri.com/media/performance-of-records-in-bucklescript-01.jpeg"
 tags:
   - "JavaScript"
   - "BuckleScript"

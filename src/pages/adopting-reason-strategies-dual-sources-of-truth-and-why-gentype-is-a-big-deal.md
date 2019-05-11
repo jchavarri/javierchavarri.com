@@ -1,6 +1,7 @@
 ---
 title: "Adopting Reason: strategies, dual sources of truth, and why genType is a big deal"
 date: "2018-10-03"
+imghero: "https://www.javierchavarri.com/media/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-01.jpeg"
 tags:
   - "JavaScript"
   - "ReasonML"
