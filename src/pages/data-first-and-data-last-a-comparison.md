@@ -1,6 +1,7 @@
 ---
 title: "Data-first and data-last: a comparison"
 date: "2019-05-10"
+imghero: "https://www.javierchavarri.com/media/data-first-and-data-last-a-comparison-01.jpg"
 tags:
   - "OCaml"
   - "ReasonML"
@@ -20,6 +21,11 @@ So, in this article, we will:
 1. Present what _data-last_ is, and why functional languages have been using it for many years.
 2. Understand _data-first_, evaluating the advantages and disadvantages against _data-last_.
 3. Evaluate the trade-offs of both alternatives.
+
+![data-first-and-data-last-a-comparison-01.jpg](/media/data-first-and-data-last-a-comparison-01.jpg)
+
+*Photo by [JJ Ying](https://unsplash.com/photos/4XvAZN8_WHo?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/search/photos/pipeline?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)*
+
 
 ## Data-last: a traditional convention in functional languages
 
@@ -478,6 +484,6 @@ Thanks for reading! I hope the goal of the article was accomplished and it helpe
 
 Keep shipping! 🚀
 
-_Thanks a lot to [Yawar Amin](https://twitter.com/yawaramin/) for reviewing an early version of this article, and to [Cheng Lou](https://bit.ly/2JvYCU8) for taking the time to answer every question I had about this topic._
+*Thanks a lot to [Yawar Amin](https://twitter.com/yawaramin/) for reviewing an early version of this article, and to [Cheng Lou](https://twitter.com/_chenglou) for taking the time to answer every question I had about this topic.*
 
 [^tlast]: In OCaml, it's idiomatic to use `t` as the main type of a module, so data-first and data-last are commonly referred to as _t-first_ and _t-last_. The former, more generic naming is used in this article.
