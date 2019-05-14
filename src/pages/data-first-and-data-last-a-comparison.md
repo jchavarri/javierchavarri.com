@@ -534,6 +534,6 @@ Thanks for reading! I hope the goal of the article was accomplished and it helpe
 
 Keep shipping! 🚀
 
-*Many thanks to [Yawar Amin](https://twitter.com/yawaramin/) for reviewing an early version of this article, and to [Cheng Lou](https://twitter.com/_chenglou) for taking the time to answer every question I had about this topic.*
+*Many thanks to [Yawar Amin](https://twitter.com/yawaramin/) and to [Cheng Lou](https://twitter.com/_chenglou) for reviewing an early version of this article.*
 
 [^tlast]: In OCaml, it's idiomatic to use `t` as the main type of a module, so data-first and data-last are commonly referred to as _t-first_ and _t-last_. The former, more generic naming is used in this article.
