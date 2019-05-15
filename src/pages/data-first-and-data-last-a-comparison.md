@@ -22,7 +22,7 @@ So, in this article, we will:
 2. Understand _data-first_, evaluating the advantages and disadvantages against _data-last_.
 3. Evaluate the trade-offs of both alternatives.
 
-All this with plenty of examples, references, and links to online editors to play with actual code. Let's go!
+All this with plenty of examples, references, and links to interactive editors, to play with actual code. Let's go!
 
 ![data-first-and-data-last-a-comparison-01.jpg](/media/data-first-and-data-last-a-comparison-01.jpg)
 
@@ -36,7 +36,7 @@ If we are using the OCaml standard library for example, and we want to map over 
 
 ```reason
 let numbers = [1, 2, 3];
-let listTwo = List.map(a => a + 1, numbers); // [2, 3, 4]
+let listTwo = List.map(a => a + 1, numbers); /* [2, 3, 4] */
 ```
 
 In this case, the "data" —`numbers`— is passed as the last argument to the function `List.map`.
@@ -53,10 +53,10 @@ As an example, the functions `f` and `g` below are equivalent:
 
 ```reason
 let f = (a, b, c) => a + b + c;
-let h = f(1, 2, 3); // 6
+let h = f(1, 2, 3); /* 6 */
 
 let g = a => b => c => a + b + c;
-let i = g(1, 2, 3); // 6
+let i = g(1, 2, 3); /* 6 */
 ```
 
 Currying enables to partially apply functions, so one can write:
@@ -64,8 +64,8 @@ Currying enables to partially apply functions, so one can write:
 ```reason
 let add = (a, b) => a + b;
 let addTwo = add(2);
-let t = addTwo(2); // 4
-let s = addTwo(5); // 7
+let t = addTwo(2); /* 4 */
+let s = addTwo(5); /* 7 */
 ```
 
 Continuing the list mapping example above, we could abstract the function that adds 1 to all elements by taking advantage of currying:
@@ -73,7 +73,7 @@ Continuing the list mapping example above, we could abstract the function that a
 ```reason
 let addOneToList = List.map(a => a + 1);
 let listA = [1, 2, 3];
-let listB = addOneToList(listA); // [2, 3, 4]
+let listB = addOneToList(listA); /* [2, 3, 4] */
 ```
 
 We can also abstract `a => a + 1` in a new `plusOne` function, if we need to reuse it:
@@ -82,7 +82,7 @@ We can also abstract `a => a + 1` in a new `plusOne` function, if we need to reu
 let plusOne = a => a + 1;
 let addOneToList = List.map(plusOne);
 let listA = [1, 2, 3];
-let listB = addOneToList(listA); // [2, 3, 4]
+let listB = addOneToList(listA); /* [2, 3, 4] */
 ```
 
 This is a very powerful (de)composition mechanism. Functions can be left partially applied so they can be combined together, passed around, or fully applied later on. This style of programming, where functions like `addOneToList` are implemented without enumerating their parameters explicitly, is known as [point-free programming](https://en.wikipedia.org/wiki/Tacit_programming). And point-free programming is only possible because of currying and partial application.
@@ -298,11 +298,11 @@ This compiles just fine, without any annotations needed! ✨
 
 The compiler now can infer that the `u` expression in the callback parameter has type `User.t`, and so when it sees the `u.age` expression on the right side, it can be 100% sure where it comes from, and make sure the body of the callback is valid.
 
-You might notice that the problem has two sides: with data-first, the values inside the callback are being infered because `admins` is namespaced with the module `User`. If that wasn't the case, we would run into the same issue if we wanted to, for example, pick an element from `admins` list and read its `age`. Jordan Walke, who was originally behind the idea of Reason, pointed out this duality in the past in [one of the related discussions](https://github.com/facebook/reason/issues/1452#issuecomment-350424873).
+The problem has two sides though: with data-first, the values inside the callback are being inferred because `admins` is namespaced with the module `User`. If that wasn't the case, we would run into the same issue if we wanted to, for example, pick an element from `admins` list and read its `age`. [Jordan Walke](https://twitter.com/jordwalke) gave an example on how this limitation goes both ways in [one of the first discussions](https://github.com/facebook/reason/issues/1452#issuecomment-350424873) about introducing the pipe-first operator to Reason.
 
-However, the real-world scenarios have more constraints:
-- The type of the data that is fed into a sequence of functions is generally known upfront
-- The need for "reaching inside the data" —like, accessing the field of a record— happens generally inside the callback functions
+However, real-world scenarios tend to follow these patterns:
+- The type of the data that is fed into a sequence of functions is generally known upfront.
+- The need for "reaching inside the data" —like, accessing the field of a record— happens generally inside the callback functions.
 
 Due to those two situations, there is an advantage on having the types being propagated by the compiler through the callbacks, which is what a data-first API offers.
 
@@ -322,7 +322,7 @@ is equivalent to:
 let filtered = Belt.List.filter(list, a => a > 1);
 ```
 
-Another important difference from the `|>` operator is that `->` is not an infix operator, just syntactic sugar, so it is really as if you were writing the second form instead of the first from the compiler perspective. With the traditional pipe `|>` it is interpreted like applying a function.
+Another important difference from the `|>` operator is that `->` is not an infix operator, just [syntactic sugar](https://en.wikipedia.org/wiki/Syntactic_sugar), so it is really as if you were writing the second form instead of the first from the compiler perspective. With the traditional pipe `|>` it is interpreted like applying a function.
 
 ## Advantages and disadvantages of data-first
 
@@ -450,7 +450,7 @@ var result2 = fetchFirst(
 
 Quite simpler! The resulting code went from two unnecessary function definitions and a curried application for both of them, to code with no uneeded function calls.
 
-You might notice that if we take the callback passed as the `fetch` param and move it to its own function, the optimizations from the compiler will kick in and the output code will be mostly the same ([try it!](https://reasonml.github.io/en/try?rrjsx=true&ocaml=KYDwLsBOB2CGA2ACA5sMBVAzlRAuRA5LIgLQB8hxAvIgES0DaAAkwEaYB0AbgogLoAoUBBi8e8AJYATWBDyVSFIohr1mbTuP4D4aRADM0AYwAWAGViYwiAPwAKAA6Rg+iSFW0AlIkQA-Q2CmPgCukEg0AUGOzq4giAB6iKHwnjp6kSYAYhKQVklhttEubh7efhk+dt4RxiaIRbEJ+Slp1tbJKoji0rLAzQDcKGhYOMmtiM6YwfBgAIwqApV2tAD0wdi5XszOlgD20ByQsADuAPqSIryr61CYtHzeAD4UdhkWef61uGCputaT0zAACYFktlmsNndPNtgHsDkczhcoFcIbd7k8OAZatlcj9yl9rFUgA)).
+You might notice that if we take the callback passed as the `fetch` param and move it to its own function, the optimizations from the compiler will kick in and the output code will be mostly the same ([try it here](https://reasonml.github.io/en/try?rrjsx=true&ocaml=KYDwLsBOB2CGA2ACA5sMBVAzlRAuRA5LIgLQB8hxAvIgES0DaAAkwEaYB0AbgogLoAoUBBi8e8AJYATWBDyVSFIohr1mbTuP4D4aRADM0AYwAWAGViYwiAPwAKAA6Rg+iSFW0AlIkQA-Q2CmPgCukEg0AUGOzq4giAB6iKHwnjp6kSYAYhKQVklhttEubh7efhk+dt4RxiaIRbEJ+Slp1tbJKoji0rLAzQDcKGhYOMmtiM6YwfBgAIwqApV2tAD0wdi5XszOlgD20ByQsADuAPqSIryr61CYtHzeAD4UdhkWef61uGCputaT0zAACYFktlmsNndPNtgHsDkczhcoFcIbd7k8OAZatlcj9yl9rFUgA)).
 
 That is true, but in many cases, and especially coming from a JavaScript background, callbacks are left inline. And that trend won't cease to grow: now [React hooks](https://reactjs.org/blog/2019/02/06/react-v16.8.0.html) are here, and together with hooks will come a _lot_ of inlined functions [for effects](https://overreacted.io/a-complete-guide-to-useeffect) and other callbacks, that can benefit from the optimizations that the compiler can do with a data-first approach and the pipe-first operator.
 
@@ -487,7 +487,7 @@ To get around this problem, Reason introduced something called [pipe placeholder
 let plusOne = a => a + 1;
 let addOneToList = Belt.List.map(_, plusOne);
 let listA = [1, 2, 3];
-let listB = addOneToList(listA); // [2, 3, 4]
+let listB = addOneToList(listA); /* [2, 3, 4] */
 ```
 
 ### Usages in OCaml and other languages
@@ -534,6 +534,6 @@ Thanks for reading! I hope the goal of the article was accomplished and it helpe
 
 Keep shipping! 🚀
 
-*Many thanks to [Yawar Amin](https://twitter.com/yawaramin/) and to [Cheng Lou](https://twitter.com/_chenglou) for reviewing an early version of this article.*
+*Many thanks to [Yawar Amin](https://twitter.com/yawaramin/) and [Cheng Lou](https://twitter.com/_chenglou) for reviewing an early version of this article.*
 
 [^tlast]: In OCaml, it's idiomatic to use `t` as the main type of a module, so data-first and data-last are commonly referred to as _t-first_ and _t-last_. The former, more generic naming is used in this article.
