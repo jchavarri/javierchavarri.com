@@ -118,7 +118,7 @@ let getFolderSize = folderName => {
   let filesInFolder = filesUnderFolder(folderName);
   let fileInfos = List.map(fileInfo, filesInFolder);
   let fileSizes = List.map(fileSize, fileInfos);
-  let totalSize = List.fold((+), 0L, fileSizes);
+  let totalSize = List.fold((+), 0, fileSizes);
   let fileSizeInMB = bytesToMB(totalSize);
   fileSizeInMB;
 };
