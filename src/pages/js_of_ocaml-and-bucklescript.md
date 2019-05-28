@@ -30,7 +30,7 @@ Back in 2013, Jérôme Vouillon and Vincent Balat published the paper [“From B
 
 A couple of years later, Hongbo Zhang proposed [in the Js\_of\_ocaml repository](https://github.com/ocsigen/js_of_ocaml/issues/338) the idea of taking OCaml _rawlambda_ output to produce JavaScript code. This was a very different approach from the one taken by Js\_of\_ocaml, as _rawlambda_ is a data structure much more central in the compilation process. The motivation behind this approach was that JavaScript and OCaml share a lot of the language semantics, so by reaching into _rawlambda_, the compiler backend that would become BuckleScript could make the JavaScript output smaller, and keep it closer to the original OCaml code. This was impossible by design for Js\_of\_ocaml, which starts the conversion to JavaScript at the very end of the compilation process, because at that time a lot of information that would be valuable semantically has been erased already –like function names *(Edit: as noticed by [Louis Roché](https://medium.com/@TestCross), Js\_of\_ocaml maintains functions names just fine, as can be seen by the source maps feature)*.
 
-![js_of_ocaml-and-bucklescript-02.png](/media/js_of_ocaml-and-bucklescript-02.png)
+![js_of_ocaml-and-bucklescript-03.png](/media/js_of_ocaml-and-bucklescript-03.png)
 
 *High-level view of the OCaml compilation process, highlighting the part that is handled by BuckleScript, in comparison to Js\_of\_ocaml*
 
@@ -59,6 +59,7 @@ The following is a non-exhaustive list of the benefits of each of them.
 - Integration with JavaScript bundlers (Webpack, Rollup, Parcel or any other JavaScript bundler).
 - Can produce ES5 or ES6 output.
 - Readable output: while BuckleScript [does not offer support for source maps yet](https://github.com/BuckleScript/bucklescript/issues/1699) (as of March 2019), the produced JavaScript output is really similar to the original OCaml code (same functions and variable names, etc).
+- Very fast feedback loop while developing: BuckleScript compiler is heavily optimized to make incremental compilation really fast, for a better developer experience.
 
 ## Use cases
 
