@@ -19,6 +19,7 @@ export default ({ data }) => {
         <meta property="og:description" content={description} />
         <meta property="og:url" content={siteUrl} />
         <meta property="og:type" content="website" />
+        <meta name="ahrefs-site-verification" content="fd47ac3c0fef2cbfd9191d333045a83103f8ea3e8af67bce23fa7852bdb9b020" />
       </Helmet>
 
       <Layout>
