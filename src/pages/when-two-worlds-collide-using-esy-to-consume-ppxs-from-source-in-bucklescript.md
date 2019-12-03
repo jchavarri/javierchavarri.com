@@ -119,7 +119,7 @@ After this, we can just build and run our BuckleScript app normally using `bsb -
 
 Having a streamlined way to consume ppxs from source would also allow a few other things:
 
-- It would allow to start exploring ways to explore and support better composition for ppxs, like the OCaml community did in the past with ppxlib. This kind of optimizations allow to link all ppxs together so all ppxs run as part of the same step avoiding most of the serialization and deserialization of the AST.
+- It would allow to start exploring ways to explore and support better composition for ppxs, like the OCaml community did in the past with [ppxlib](https://ppxlib.readthedocs.io/en/latest/). This kind of optimizations allow to link all ppxs together so all ppxs run as part of the same step avoiding most of the serialization and deserialization of the AST.
 - It would empower more BuckleScript users to create and maintain their own ppxs and using native tooling, by building on top of a JavaScript-friendly workflow like esy.
 
 ## The dark side
@@ -132,11 +132,13 @@ Another side of it are the authors: the "binary file" agreement of current ppxs 
 
 ## Resources
 
-The demo repo [`hello-ppx-esy`](https://github.com/jchavarri/hello-ppx-esy) has been updated with the ideas from this post. The repo contains a very small ppx to transform the `[%gimme]` extension into the number 42 (I promise: ppxs can do much more than that! 😆 ). You can find a sample BuckleScript project [here](https://github.com/jchavarri/hello-ppx-esy/tree/e53f8e8b5046bfb661e215c8c10f4c159a4df538/test_bs).
+- The demo repo [`hello-ppx-esy`](https://github.com/jchavarri/hello-ppx-esy) has been updated with the ideas from this post. The repo contains a very small ppx to transform the `[%gimme]` extension into the number 42 (I promise: ppxs can do much more than that! 😆 ). You can find a sample BuckleScript project [here](https://github.com/jchavarri/hello-ppx-esy/tree/e53f8e8b5046bfb661e215c8c10f4c159a4df538/test_bs).
 
-If you are interested on learning more about ppxs in OCaml, I recommend reading the blog post: ["An introduction to OCaml PPX ecosystem"](https://tarides.com/blog/2019-05-09-an-introduction-to-ocaml-ppx-ecosystem). 
+- If you are interested on learning more about ppxs in OCaml, I recommend reading the blog post: ["An introduction to OCaml PPX ecosystem"](https://tarides.com/blog/2019-05-09-an-introduction-to-ocaml-ppx-ecosystem). 
 
-If you want to learn more about how to publish cross-platform binaries from native libraries or apps, make sure to check the [`hello-reason`](https://github.com/esy-ocaml/hello-reason) which contains a very polished pipeline setup to build binaries for the three main OS platforms.
+- If you want to learn more about how to publish cross-platform binaries from native libraries or apps, make sure to check the [`hello-reason`](https://github.com/esy-ocaml/hello-reason) which contains a very polished pipeline setup to build binaries for the three main OS platforms.
+
+- For those wanting to learn about the past, present and future of ppxs in the OCaml ecosystem, [Jeremy Dimino](https://twitter.com/dimenix) posted a [fascinating thread](https://discuss.ocaml.org/t/the-future-of-ppx/3766) in OCaml Discourse.
 
 ---
 
