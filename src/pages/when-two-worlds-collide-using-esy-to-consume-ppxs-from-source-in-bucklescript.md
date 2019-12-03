@@ -11,13 +11,13 @@ tags:
 
 In this article, we will take a look at the existing landscape of ppx rewriters for BuckleScript. We will also see the work involved in preparing and publishing a ppx rewriter for their authors. Finally, we will present a different approach to publish and consume ppx rewriters in [BuckleScript](https://bucklescript.github.io/) that relies on the cross-platform package manager [esy](https://esy.sh/).
 
-![performance-of-records-in-bucklescript-01.jpeg](/media/when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-01.jpg"
+![when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-01.jpg](/media/when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-01.jpg)
 
 ## What is a ppx
 
 In Reason and OCaml there is a system called "pre-processor extensions", which are also known as ppx rewriters, or just "ppxs". As their name states, these programs pre-process the code: they run just after the compilation parsing stage has successfully ended, which results in the compiler has an abstract syntax tree (or AST) available. And they run before the type checking and the more thorough parts of the compilation process start.
 
-![performance-of-records-in-bucklescript-02.png](/media/when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-02.png")
+![performance-of-records-in-bucklescript-02.png](/media/when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-02.png)
 
 Ppxs were originally introduced when a command line option `-ppx` was added to the OCaml compiler. This option allows to pass multiple paths to native applications binaries. These programs are then executed during the compilation of each file. Once the compilation starts, each ppx binary file defined in the list is given a serialized representation of the AST by the compiler, and produces another serialized AST. This process continues for all the ppxs, and all the modules built by the compiler.
 
@@ -111,13 +111,15 @@ After this, we can just build and run our BuckleScript app normally using `bsb -
 Having a streamlined way to consume ppxs from source would also allow a few other things:
 
 - It would allow to start exploring ways to explore and support better composition for ppxs, like the OCaml community did in the past with ppxlib. This kind of optimizations allow to link all ppxs together so all ppxs run as part of the same step avoiding most of the serialization and deserialization of the AST.
-- It would empower more BuckleScript users to create and author their own ppxs and using native tooling, by building on top of a JavaScript friendly workflow like esy.
+- It would empower more BuckleScript users to create and maintain their own ppxs and using native tooling, by building on top of a JavaScript-friendly workflow like esy.
 
 ## The downsides
 
-Of course, this approach has downsides as well, mostly for ppx consumers. It introduces another tool to manage the build process (esy) with everything that that entails.
+This approach has downsides as well, mostly for ppx consumers. It introduces another tool to manage the build process (esy) with everything that that entails.
 
 One mitigation for this is to include `esy && bsb` in the build commands defined in `package.json`. `esy` has a very aggresive way to cache artifacts, taking roughly 100ms or less to run when all dependencies have been built already.
+
+Another side of it are the authors: the "binary file" agreement of current ppxs is hard to fulfilled as we saw, but it's also one of the most common interfaces. Removing that and move up the abstraction ladder means there is room for discussion about ppx "runners" libraries, other shared interfaces etc. Luckily there is a lot of work that has been done already in the OCaml community in that sense that the BuckleScript community could research and learn from.
 
 ## Resources
 
@@ -126,3 +128,11 @@ The demo repo [`hello-ppx-esy`](https://github.com/jchavarri/hello-ppx-esy) has 
 If you are interested on learning more about ppxs in OCaml, I recommend reading the blog post: ["An introduction to OCaml PPX ecosystem"](https://tarides.com/blog/2019-05-09-an-introduction-to-ocaml-ppx-ecosystem). 
 
 If you want to learn more about how to publish cross-platform binaries from native libraries or apps, make sure to check the [`hello-reason`](https://github.com/esy-ocaml/hello-reason) which contains a very polished pipeline setup to build binaries for the three main OS platforms.
+
+---
+
+Thanks for reading 🙌 If you have any comments or suggestions, please let me know on [Twitter](https://twitter.com/javierwchavarri).
+
+Keep shipping! 🚀
+
+---
