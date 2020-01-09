@@ -1,6 +1,6 @@
 ---
 title: "When two worlds collide: using esy to consume BuckleScript ppxs from source"
-date: "2019-12-06"
+date: "2020-01-09"
 imghero: "https://www.javierchavarri.com/media/when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-01.jpg"
 tags:
   - "esy"
