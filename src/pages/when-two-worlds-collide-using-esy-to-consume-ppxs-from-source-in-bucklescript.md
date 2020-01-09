@@ -129,7 +129,7 @@ One mitigation for this is could be to include `esy && bsb` in the build command
 
 Another downside is build time: because ppxs are consumed from source, that means one has to build them before using them. esy heavily caches previous builds so the 2nd time and after they get instant, but nothing beats the ppx author pre-building the ppx in advance of course.
 
-Lastly, even if this "build from source" approach is a small step towards a more seamless integration between OCaml and BuckleScript ecosystems, there are still many ppxs that, due to their usage of tooling, libraries or C code, which are not available in BuckleScript, are not directly usable. The recommendation for those wanting to try OCaml ppxs is to test each case individually, we have been successful when using this approach for simpler ppxs like [ppx_blob](https://github.com/johnwhitington/ppx_blob) but other more complex like [`ppx_deriving`](https://github.com/ocaml-ppx/ppx_deriving) definitely require more effort.
+Lastly, even if this "build from source" approach is a small step towards a more seamless integration between OCaml and BuckleScript ecosystems, there are still many ppxs that, due to their usage of tooling, libraries or C code, which are not available in BuckleScript, are not directly usable. The recommendation for those wanting to try OCaml ppxs is to test each case individually, we have been successful when using this approach for simpler ppxs like [`ppx_blob`](https://github.com/johnwhitington/ppx_blob) but other ppxs that are more complex —like [`ppx_deriving`](https://github.com/ocaml-ppx/ppx_deriving)— definitely require more effort.
 
 ## 📚 Resources
 
