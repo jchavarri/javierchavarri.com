@@ -9,11 +9,13 @@ tags:
   - "OCaml"
 ---
 
-A few years ago, [Dan Abramov mentioned](https://twitter.com/dan_abramov/status/942859338472882176) —to my surprise— that it would be relatively easy to have React server side renderer implemented in a different language:
+A while back, [Dan Abramov mentioned](https://twitter.com/dan_abramov/status/942859338472882176) —to my surprise— that it would be relatively easy to have React server side renderer implemented in a different language:
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">RDS doesn&#39;t need the reconciler so it&#39;s easy to rewrite by hand. It&#39;s about 1kloc: <a href="https://t.co/ymAiLBl2Il">https://t.co/ymAiLBl2Il</a></p>&mdash; Dan Abramov (@dan_abramov) <a href="https://twitter.com/dan_abramov/status/942859338472882176?ref_src=twsrc%5Etfw">December 18, 2017</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
 
-I have been wanting to explore using OCaml to implement that server renderer. But due to laziness, instead of rewriting it from scratch, I took an existing library that allows to build statically correct HTML ([TyXML](https://github.com/ocsigen/tyxml)), and used it to render HTML server side, that can later on be picked up and hydrated by [ReasonReact](https://reasonml.github.io/reason-react/).
+I kept thinking about this regularly, and at some point started wondering how cool it would be to explore using OCaml to implement that server renderer.
+
+But due to ~~laziness~~ lack of time, instead of rewriting it from scratch, I took an existing library that allows to build statically correct HTML ([TyXML](https://github.com/ocsigen/tyxml)), and used it to render HTML server side, that can later on be picked up and hydrated by [ReasonReact](https://reasonml.github.io/reason-react/).
 
 The results from the experiment seem promising. The [Reason](reasonml.github.io/) syntax and the JSX extension for TyXML allow the code of the components to be shared between both native and browser environments.
 
@@ -47,7 +49,7 @@ Now that we got these performance concerns out of the way, let's go back to the 
 
 ## Goal
 
-The original goal was to create a web application that used native OCaml on the backend and BuckleScript (now [ReScript](https://reasonml.org/blog/bucklescript-is-rebranding)) to showcase the benefits of shared code and types across different environments.
+The original goal was to create a web application that used native OCaml on the backend and BuckleScript[^1] to showcase the benefits of shared code and types across different environments.
 
 After working on it for a few days, I started thinking:
 
@@ -89,9 +91,14 @@ Type 'a = [> `Div ] is not compatible with type
 The second variant type does not allow tag(s) `Div
 ```
 
-One can quickly realize that the only tag allowed inside `ul` is `li`. I have to say, I _learn_ about HTML rules from TyXML, which is really amazing.
+One can quickly realize that the only tag allowed inside `ul` is `li`. I have to say, I _learn_ about HTML rules from TyXML while I'm coding, which is really amazing.
 
-Note that React has similar invalid HTML detection mechanisms through [some internal function](https://github.com/facebook/react/blob/0b5a26a4895261894f04e50d5a700e83b9c0dcf6/packages/react-dom/src/__tests__/validateDOMNesting-test.js#L36), but the big difference is that they are done at runtime. As far as I know, neither TypeScript or Flow, or even ReasonReact, do this kind of static checks to make sure the resulting HTML is valid, although it seems that support for a similar mechanism [could be part of ReasonReact](https://github.com/reasonml/reason-react/pull/567) at some point.
+Note that React has similar invalid HTML detection mechanisms through [an internal function `validateDOMNesting`](https://github.com/facebook/react/blob/0b5a26a4895261894f04e50d5a700e83b9c0dcf6/packages/react-dom/src/__tests__/validateDOMNesting-test.js#L36), but there are two big differences:
+
+- they only apply to nesting, while TyXML will also check attributes are valid
+- more importantly, React checks are only done at runtime
+
+As far as I know, neither TypeScript or Flow, or even ReasonReact, do this kind of static checks to make sure the resulting HTML is valid, although it seems that support for a similar mechanism [could be part of ReasonReact](https://github.com/reasonml/reason-react/pull/567) at some point.
 
 ## So how does a component look like?
 
@@ -124,7 +131,7 @@ We will now go through the code of this sample component and see the challenges 
 
 #### `createElement` vs `make`
 
-This is the first and probably more obvious. TyXML offers a JSX PPX[^1]. In this PPX, the elements created from "uppercase" components convert to a call to `createElement`. For example:
+This is the first and probably more obvious. TyXML offers a JSX PPX[^2]. In this PPX, the elements created from "uppercase" components convert to a call to `createElement`. For example:
 
 ```reason
 let t = <Foo bar=2 />
@@ -148,7 +155,7 @@ Sometimes the components will need to call functions that are only available in 
 
 There are functions that are required to work around ReasonReact and TyXML handling things differently. For example, TyXML allows component children to be a list, but ReasonReact expects them to be a value of type `React.element`. So can have a function `React.list` that does nothing in TyXML, but calls the appropriate converters in ReasonReact (note there will be a performance cost for this conversion).
 
-So, [in TyXML](https://github.com/jchavarri/ocaml_webapp/blob/7e03cc30374e08788cccf0dd9f16eac65c48cca3/server/tyxml-reasonreact-bridge/bridge.ml#L4) it would be something like[^2]:
+So, [in TyXML](https://github.com/jchavarri/ocaml_webapp/blob/7e03cc30374e08788cccf0dd9f16eac65c48cca3/server/tyxml-reasonreact-bridge/bridge.ml#L4) it would be something like[^3]:
 
 ```reason
 module React = {
@@ -229,5 +236,6 @@ Some future work could involve:
 
 I hope you enjoyed the post, check the demo app in https://github.com/jchavarri/ocaml_webapp, and if you want to share any feedback or have a suggestion, reach out [on Twitter](https://twitter.com/javierwchavarri/).
 
-[^1]: Pre-processor extension, see more about them [here](https://www.javierchavarri.com/when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript/#-what-is-a-ppx). 
-[^2]: Note the server code in the demo app is written in OCaml syntax, translated below to Reason syntax.
+[^1]: Now [ReScript](https://reasonml.org/blog/bucklescript-is-rebranding).
+[^2]: Pre-processor extension, see more about them [here](https://www.javierchavarri.com/when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript/#-what-is-a-ppx). 
+[^3]: Note the server code in the demo app is written in OCaml syntax, translated below to Reason syntax.
