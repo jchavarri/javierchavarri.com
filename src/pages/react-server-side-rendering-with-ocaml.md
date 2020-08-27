@@ -1,8 +1,8 @@
 ---
-title: "React server-side rendering and hydration with native OCaml"
+title: "React server-side rendering with OCaml"
 subtitle: "An experiment with TyXML and ReasonReact"
 date: "2020-08-25"
-imghero: "https://www.javierchavarri.com/media/react-server-side-rendering-and-hydration-with-native-ocaml-01.jpg"
+imghero: "https://www.javierchavarri.com/media/react-server-side-rendering-with-ocaml-01.jpg"
 tags:
   - "React"
   - "ReasonML"
@@ -17,13 +17,13 @@ I kept thinking about this regularly, and at some point started wondering how co
 
 But due to ~~laziness~~ lack of time, instead of rewriting it from scratch, I took an existing library that allows to build statically correct HTML ([TyXML](https://github.com/ocsigen/tyxml)), and used it to render HTML server side, that can later on be picked up and hydrated by [ReasonReact](https://reasonml.github.io/reason-react/).
 
-The results from the experiment seem promising. The [Reason](reasonml.github.io/) syntax and the JSX extension for TyXML allow the code of the components to be shared between both native and browser environments.
+The results from the experiment seem promising. The [Reason](reasonml.github.io/) syntax and the JSX extension for TyXML allow the same components to be shared across both server and client environments.
 
-The experiment code is open source and available in https://github.com/jchavarri/ocaml_webapp. The demo app can be accessed in https://ocaml-webapp.herokuapp.com/. All the pages in this app can either be rendered by the server or by the client.
+The experiment code is open source, and available in https://github.com/jchavarri/ocaml_webapp. The demo app can be accessed in https://ocaml-webapp.herokuapp.com/. All the pages in this demo app can be rendered by either the server or the client.
 
 This blog post will go through the details on how the experiment went, what troubles were found along the way, and some of the solutions around them.
 
-![data-first-and-data-last-a-comparison-01.jpg](/media/react-server-side-rendering-and-hydration-with-native-ocaml-01.jpg)
+![data-first-and-data-last-a-comparison-01.jpg](/media/react-server-side-rendering-with-ocaml-01.jpg)
 
 *Photo by [Linus Nylund](https://unsplash.com/@doto?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText) on [Unsplash](https://unsplash.com/wallpapers/nature/water?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText)*
 
@@ -37,7 +37,7 @@ By not having to touch the DOM, the process of starting up a React application a
 
 #### A warning about hydration and performance
 
-Hydration is a very nuanced topic and has several performance implications. For most scenarios and applications, hydration will not be the optimal solution. There are other approaches that lead to better results in terms of performance:
+Hydration is a very nuanced topic and has several performance implications. For most real-world scenarios and applications, hydration will not be the optimal solution. There are other approaches that lead to better results in terms of performance:
 - either do less work server side by rendering just enough HTML, and then have React components client-side do more rendering work
 - or the other way around, do most of the work server side and spread small scripts in the client to add dynamic behavior.
 
@@ -47,33 +47,25 @@ If you're curious to know more, I recommend [the official documentation](https:/
 
 Now that we got these performance concerns out of the way, let's go back to the experiment.
 
-## Goal
-
-The original goal was to create a web application that used native OCaml on the backend and BuckleScript[^1] to showcase the benefits of shared code and types across different environments.
-
-After working on it for a few days, I started thinking:
-
-> Is it possible to define a component once, and have it render with both native OCaml on the server and BuckleScript on the client?
-
 ## Why OCaml native and TyXML?
 
 React server side rendering (SSR) and hydration is typically implemented using Node, and for good reasons.
 
-There are limitations inherent to the "platform gap" between Node and the browser: components rendered in Node can't call methods or APIs available only on the browser (note the same happens in this experiment, between the OCaml native APIs and BuckleScript ones).
+There are limitations that are inherent to the "platform gap" between Node and the browser: components rendered in Node can't call methods or APIs available only on the browser (note the same happens in this experiment, between the OCaml native APIs and BuckleScript ones). This gap is not really obvious, and sometimes users of SSR frameworks like Gatsby [get confused by errors like `window is undefined`](https://www.gatsbyjs.com/docs/debugging-html-builds/#how-to-check-if-window-is-defined). The solution involves doing runtime checks to see [if a given global is defined](https://www.gatsbyjs.com/docs/debugging-html-builds/#how-to-check-if-window-is-defined), and from there one can infer that is in one or another environment.
 
-However, React is written in JavaScript, so Node applications that render React components can leverage a lot of previously existing libraries and tools from the extensive React and JavaScript ecosystems.
+However! React is written in JavaScript, so Node applications that render React components can leverage a lot of previously existing libraries and tools from the extensive React and JavaScript ecosystems.
 
-So, why this attempt to use a completely different language when all this exist already and works? Besides just for the sake of experimenting 👨‍🔬 there are some other good reasons.
+So, why this attempt to use a completely different language when all this exist already and works in JavaScript? Besides just for pure sake of experimenting 👨‍🔬 there are some other good reasons.
 
 #### Speed 
 
-One reason that makes worth explore rendering components with OCaml native is speed. OCaml binaries can start in an incredibly short time ([even less than 2ms!](https://twitter.com/_anmonteiro/status/1069738117647777792)), which makes them very appealing for serverless environments like lambda, which companies like Vercel [are migrating to due](https://vercel.com/blog/zeit-is-now-vercel) to their appeal for developers.
+One reason that makes worth explore rendering components with OCaml native is speed. OCaml binaries can start render some content and return it in an incredibly short time ([even less than 2ms!](https://twitter.com/_anmonteiro/status/1069738117647777792)), which makes them very appealing for serverless environments like lambda, which companies like Vercel [are migrating to due](https://vercel.com/blog/zeit-is-now-vercel) to their appeal for developers.
 
 OCaml binaries also run pretty fast, and they do well in scenarios where a lot of short-lived small allocations are made (like with parsers or web servers). In general, one can trust that OCaml-generated binaries will run [fast](https://blog.chewxy.com/2019/02/20/go-is-average/).
 
 #### Type system and safety
 
-Another reason to experiment with OCaml to render components is the type system. TyXML is a library that allows to generate valid HTML. The way TyXML guarantees the validity is because it has encoded in its implementation the W3C rules for document validity.
+Another reason to experiment with OCaml to render components is the type system. TyXML is a library that allows to generate valid HTML. The way TyXML guarantees the validity is because it encodes in its implementation [the W3C rules](https://html.spec.whatwg.org/) for document validity.
 
 For example, if you try to do this:
 
@@ -81,7 +73,7 @@ For example, if you try to do this:
 let t = <ul> <div /> </ul>;
 ```
 
-The compiler will yell:
+The compiler will complain:
 
 ```
 let t = <ul> <div /> </ul>;
@@ -91,7 +83,7 @@ Type 'a = [> `Div ] is not compatible with type
 The second variant type does not allow tag(s) `Div
 ```
 
-One can quickly realize that the only tag allowed inside `ul` is `li`. I have to say, I _learn_ about HTML rules from TyXML while I'm coding, which is really amazing.
+One can quickly realize that the only tag allowed inside `ul` is `li`. I _learn_ about HTML rules from TyXML while I'm coding, which is really amazing.
 
 Note that React has similar invalid HTML detection mechanisms through [an internal function `validateDOMNesting`](https://github.com/facebook/react/blob/0b5a26a4895261894f04e50d5a700e83b9c0dcf6/packages/react-dom/src/__tests__/validateDOMNesting-test.js#L36), but there are two big differences:
 
