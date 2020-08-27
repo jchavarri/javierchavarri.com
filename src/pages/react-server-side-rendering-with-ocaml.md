@@ -23,7 +23,7 @@ The experiment code is open source, and available in https://github.com/jchavarr
 
 This blog post will go through the details on how the experiment went, what troubles were found along the way, and some of the solutions around them.
 
-![data-first-and-data-last-a-comparison-01.jpg](/media/react-server-side-rendering-with-ocaml-01.jpg)
+![/media/react-server-side-rendering-with-ocaml-01.jpg](/media/react-server-side-rendering-with-ocaml-01.jpg)
 
 *Photo by [Linus Nylund](https://unsplash.com/@doto?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText) on [Unsplash](https://unsplash.com/wallpapers/nature/water?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText)*
 
