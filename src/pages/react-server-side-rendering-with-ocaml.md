@@ -51,7 +51,7 @@ Now that we got these performance concerns out of the way, let's go back to the 
 
 React server side rendering (SSR) and hydration is typically implemented using Node, and for good reasons.
 
-There are limitations that are inherent to the "platform gap" between Node and the browser: components rendered in Node can't call methods or APIs available only on the browser (note the same happens in this experiment, between the OCaml native APIs and BuckleScript ones). This gap is not really obvious, and sometimes users of SSR frameworks like Gatsby [get confused by errors like `window is undefined`](https://www.gatsbyjs.com/docs/debugging-html-builds/#how-to-check-if-window-is-defined). The solution involves doing runtime checks to see [if a given global is defined](https://www.gatsbyjs.com/docs/debugging-html-builds/#how-to-check-if-window-is-defined), and from there one can infer that is in one or another environment.
+There are limitations that are inherent to the "platform gap" between Node and the browser: components rendered in Node can't call methods or APIs available only on the browser (note the same happens in this experiment, between the OCaml native APIs and BuckleScript ones). This gap is not really obvious, and sometimes users of SSR frameworks like Gatsby [get confused by errors like `window is undefined`](https://github.com/gatsbyjs/gatsby/issues/12849). The solution involves doing runtime checks to see [if a given global is defined](https://www.gatsbyjs.com/docs/debugging-html-builds/#how-to-check-if-window-is-defined), and from there one can infer that is in one or another environment.
 
 However! React is written in JavaScript, so Node applications that render React components can leverage a lot of previously existing libraries and tools from the extensive React and JavaScript ecosystems.
 
@@ -123,7 +123,7 @@ We will now go through the code of this sample component and see the challenges 
 
 #### `createElement` vs `make`
 
-This is the first and probably more obvious. TyXML offers a JSX PPX[^2]. In this PPX, the elements created from "uppercase" components convert to a call to `createElement`. For example:
+This is the first and probably more obvious. TyXML offers a JSX ppx[^2]. In this ppx, the elements created from "uppercase" components convert to a call to `createElement`. For example:
 
 ```reason
 let t = <Foo bar=2 />
@@ -131,7 +131,7 @@ let t = <Foo bar=2 />
 let t = Foo.createElement(~bar=2,());
 ```
 
-While in ReasonReact, the JSX PPX makes a slighly different transformation, calling the `make` function inside the component module:
+While in ReasonReact, the JSX ppx makes a slighly different transformation, calling the `make` function inside the component module:
 
 ```reason
 let t = <Foo bar=2 />
@@ -139,7 +139,7 @@ let t = <Foo bar=2 />
 let t = let t = React.createElement(Foo.make, Foo.makeProps(~bar=2, ()));
 ```
 
-So how was this problem fixed? For now, each component exposes both `createElement` and `make`. Not the most elegant solution I know 😅, but probably this can be simplified in the future by bringing TyXML PPX behavior closer to what ReasonReact is expecting, in terms of naming.
+So how was this problem fixed? For now, each component exposes both `createElement` and `make`. Not the most elegant solution I know 😅, but probably this can be simplified in the future by bringing TyXML ppx behavior closer to what ReasonReact is expecting, in terms of naming.
 
 #### Platform-dependent shims
 
@@ -182,7 +182,7 @@ There are more examples in [the demo app](https://github.com/jchavarri/ocaml_web
 
 Another interesting challenge involves React event handlers. By default, TyXML does not allow props like `onClick` to be passed to elements, as it has been designed originally with HTML attributes in mind. So any components using them will fail to compile.
 
-The solution I found to this was to add [a small update](https://github.com/ocsigen/tyxml/commit/f3376134fbd51d50ca0720a8cddfb3919f570ea7) to TyXML PPX, so that it can handle props with React event handlers names. When the PPX finds one of these props, it will make the prop and the value passed in it disappear from the resulting code.
+The solution to this was to add [a small update](https://github.com/ocsigen/tyxml/commit/f3376134fbd51d50ca0720a8cddfb3919f570ea7) to TyXML ppx, so that it can handle props with React event handlers names. When the ppx finds one of these props, it will make the prop and the value passed with it disappear from the resulting code.
 
 For example, the implementation of the `createElement` function in the `Link` component above was:
 
@@ -220,9 +220,9 @@ This is also cool with regards to shims and platform-specific code. Because this
 So, while this prototype proves that it is possible to share some components code between environments and libraries as different as TyXML and ReasonReact, many challenges remain as seen above.
 
 Some future work could involve:
-- continue updating TyXML to improve the integration with ReasonReact. For example, to process children in a similar way.
-- replicate in TyXML everything that React server side does to guarantee hydration. For example, print HTML comments between string childrens so the client knows how to hydrate them, add support for Suspense, etc.
-- on the other direction, maybe extract the nice parts of TyXML HTML validation and make them available as a shared library that both TyXML and ReasonReact can consume.
+- Continue updating TyXML to improve the integration with ReasonReact. For example, to process children in a similar way.
+- Replicate in TyXML everything that React server side does to guarantee hydration. For example, print HTML comments between string childrens so the client knows how to hydrate them, add support for Suspense, etc.
+- On the other direction, maybe extract the nice parts of TyXML HTML validation and make them available as a shared library that both TyXML and ReasonReact can consume.
 
 ---
 
