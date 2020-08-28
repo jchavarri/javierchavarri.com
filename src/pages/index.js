@@ -15,11 +15,16 @@ export default ({ data }) => {
   return (
     <>
       <Helmet defaultTitle={title} titleTemplate={`%s | ${title}`}>
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={siteUrl} />
         <meta property="og:type" content="website" />
-        <meta name="ahrefs-site-verification" content="fd47ac3c0fef2cbfd9191d333045a83103f8ea3e8af67bce23fa7852bdb9b020" />
+        <meta
+          name="ahrefs-site-verification"
+          content="fd47ac3c0fef2cbfd9191d333045a83103f8ea3e8af67bce23fa7852bdb9b020"
+        />
       </Helmet>
 
       <Layout>
