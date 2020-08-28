@@ -14,8 +14,7 @@ A few days ago, there was a [great conversation](https://twitter.com/jamiebuilds
 
 At some point, the conversation evolved to discuss whether it would be better to keep improving JavaScript, instead of switching to a totally different language, to which Jordan answered:
 
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Evolve JS! But don’t expect to get out of local maximums. And we really need a language to have a standard static type system that is fully integrated with the compiler and that features are designed around.</p>&mdash; Jordan ⚛️ (@jordwalke) <a href="https://twitter.com/jordwalke/status/1064977614475907072?ref_src=twsrc%5Etfw">November 20, 2018</a></blockquote>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Evolve JS! But don’t expect to get out of local maximums. And we really need a language to have a standard static type system that is fully integrated with the compiler and that features are designed around.</p>&mdash; Jordan ⚛️ (@jordwalke) <a href="https://twitter.com/jordwalke/status/1064977614475907072">November 20, 2018</a></blockquote>
 
 This conversation, and in particular the mention to local maxima, led me to think about how JavaScript has evolved over time, where we currently stand today in the progress line of that evolution, and how programming languages –and their limitations– can affect product teams in profound ways.
 
@@ -127,7 +126,7 @@ Examples of activities connected with language debt might be:
 
 ![language-debt-03.png](/media/language-debt-03.png)
 
-*Evolution of product and language debt over time*
+_Evolution of product and language debt over time_
 
 ## ❓ “Do We Own Language Debt?”
 

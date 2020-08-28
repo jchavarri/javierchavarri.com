@@ -11,7 +11,7 @@ tags:
 
 A while back, [Dan Abramov mentioned](https://twitter.com/dan_abramov/status/942859338472882176) —to my surprise— that it would be relatively easy to have React server side renderer implemented in a different language:
 
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">RDS doesn&#39;t need the reconciler so it&#39;s easy to rewrite by hand. It&#39;s about 1kloc: <a href="https://t.co/ymAiLBl2Il">https://t.co/ymAiLBl2Il</a></p>&mdash; Dan Abramov (@dan_abramov) <a href="https://twitter.com/dan_abramov/status/942859338472882176?ref_src=twsrc%5Etfw">December 18, 2017</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">RDS doesn&#39;t need the reconciler so it&#39;s easy to rewrite by hand. It&#39;s about 1kloc: <a href="https://t.co/ymAiLBl2Il">https://t.co/ymAiLBl2Il</a></p>&mdash; Dan Abramov (@dan_abramov) <a href="https://twitter.com/dan_abramov/status/942859338472882176">December 18, 2017</a></blockquote>
 
 I kept thinking about this regularly, and at some point started wondering how cool it would be to explore using OCaml to implement that server renderer.
 

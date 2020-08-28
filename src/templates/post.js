@@ -12,6 +12,8 @@ export default ({ data }) => {
   return (
     <>
       <Helmet title={post.frontmatter.title}>
+        <meta name="title" content={post.frontmatter.title} />
+        <meta name="description" content={post.frontmatter.description} />
         {/* OpenGraph tags */}
         <meta property="og:url" content={url} />
         <meta property="og:type" content="article" />
