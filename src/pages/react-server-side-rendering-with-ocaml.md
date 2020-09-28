@@ -27,7 +27,7 @@ This blog post will go through the details on how the experiment went, what trou
 
 *Photo by [Linus Nylund](https://unsplash.com/@doto?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText) on [Unsplash](https://unsplash.com/wallpapers/nature/water?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText)*
 
-## React hidration in a hurry
+## React hydration in a hurry
 
 To summarize, "hydration" is a technique that allows React client-side applications to start faster, by assuming the HTML that React application code would produce was previously rendered by the server and returned as part of the page response.
 
