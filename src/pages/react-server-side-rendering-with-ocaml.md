@@ -221,7 +221,7 @@ So, while this prototype proves that it is possible to share some components cod
 
 Some future work could involve:
 - Continue updating TyXML to improve the integration with ReasonReact. For example, to process children in a similar way.
-- Replicate in TyXML everything that React server side does to guarantee hydration. For example, print HTML comments between string childrens so the client knows how to hydrate them, add support for Suspense, etc.
+- Replicate in TyXML everything that React server side does to guarantee hydration. For example, print HTML comments between string children so the client knows how to hydrate them, add support for Suspense, etc.
 - On the other direction, maybe extract the nice parts of TyXML HTML validation and make them available as a shared library that both TyXML and ReasonReact can consume.
 
 ---
