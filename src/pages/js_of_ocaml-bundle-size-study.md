@@ -12,7 +12,7 @@ tags:
 
 Historically, I have noticed a recurring theme in OCaml forums and Discord, where from time to time someone mentions that [Js\_of\_ocaml](http://ocsigen.org/js_of_ocaml/) —a compiler that converts from OCaml bytecode to JavaScript— generates large output files.
 
-However, my experience was generally the opposite. When using Js\_of\_ocaml  [production builds](https://dune.readthedocs.io/en/stable/jsoo.html?highlight=mode%20release#separate-compilation) (using `--profile=prod` flag), the resulting JavaScript artifacts were quite small, as the compiler applies very aggressive dead code optimizations.
+However, my experience was generally the opposite. When using Js\_of\_ocaml  [production builds](https://dune.readthedocs.io/en/stable/jsoo.html?highlight=mode%20release#separate-compilation) (using `--profile=prod` flag), the resulting JavaScript artifacts were quite small, as the compiler applies very aggressive [dead code elimination](https://en.wikipedia.org/wiki/Dead_code_elimination).
 
 It is true though that Js\_of\_ocaml allows to use many OCaml libraries that were written with native use cases in mind, where binary size is not generally an issue. Js\_of\_ocaml also requires some conversions between OCaml native types and JavaScript types, and the fact that it generates JavaScript from bytecode makes the whole process more opaque.
 
@@ -27,15 +27,15 @@ So, are Js\_of\_ocaml generated files really that large, as the rumors suggest? 
 
 The main theory that I wanted to prove is that Js\_of\_ocaml produces reasonably sized JavaScript files. I also was interested about tracking the evolution in size of these output files over time, as the application keeps being developed and grows. If the output file is small for small apps, but grows too quickly over time, it would mean Js\_of\_ocaml would not be suitable for web applications that have limited bundle size budgets, or products that should grow sustainably in the long term.
 
-In order to answer the above question, I thought it would be nice to use one of the most efficient compilers to JavaScript that exist out there: [ReScript](https://rescript-lang.org/). Which happens to be very close to OCaml as well. In a [previous article](https://www.javierchavarri.com/js_of_ocaml-and-bucklescript/) I compared both solutions and the trade-offs between them.
+In order to answer the above question, I thought it would be nice to use one of the most efficient compilers to JavaScript that exist out there: [ReScript](https://rescript-lang.org/). Which happens to be very close to OCaml as well. In a [previous article](https://www.javierchavarri.com/js_of_ocaml-and-bucklescript/) I compared both compilers and the trade-offs between them.
 
 ## The experiment
 
 To run the experiment, I looked for an existing ReScript application that had some functionality that is common to most web applications:
 - data fetching and pushing from/to servers
-- routing
-- parsing
-- some work with collections and data processing
+- client-side routing
+- parsing of JSON
+- collections and other data processing
 
 I found a good candidate in [jihchi/rescript-react-realworld-example-app](https://github.com/jihchi/rescript-react-realworld-example-app). This application uses ReScript and [rescript-react](https://rescript-lang.org/docs/react/latest/introduction) —the ReScript bindings to [React.js](https://reactjs.org/)— to build another example of the ["mother of all demo apps"](https://github.com/gothinkster/realworld). This demo app is a social blogging site (i.e. a Medium.com clone) that uses a custom API for all requests, including authentication.
 
@@ -56,14 +56,16 @@ The results shared below were created from these commits:
 For each case, all components in [the main `App` component](https://github.com/jchavarri/jsoo-react-realworld-example-app/blob/0138bfedddc1e57237ffe9a9a53a07aea9f73bf6/src/app.ml#L20-L28) were commented, and then uncommented progressively, while running these commands on each step of the way:
 
 - Js\_of\_ocaml: `make build-prod && yarn webpack:analyze`
-- ReScript: `yarn build  && yarn webpack:analyze`
+- ReScript: `yarn build && yarn webpack:analyze`
 
 ## Results
 
 The results are published together with the Webpack bundle analyzer reports in
 https://jchavarri.github.io/jsoo-react-realworld-example-app/bundle-study/.
 
-Note the `Stat` column does not provide very valuable information. The reason why it is so large in ReScript case is that Js\_of\_ocaml generated JavaScript has already been minified by the Js\_of\_ocaml compiler (because of the `profile=prod` flag) while ReScript produces human readable JavaScript and has no minified. In any case, in the end Webpack minifier runs in both cases, so the `Parsed` and `Gzipped` columns are more useful.
+Note the `Stat` column does not provide very valuable information. The reason why it is so large in ReScript case is that Js\_of\_ocaml generated JavaScript has already been minified by the Js\_of\_ocaml compiler (because of the `profile=prod` flag), while ReScript produces human readable JavaScript and offers no way to minify the output code.
+
+In any case, in the end Webpack minifier runs in both cases, so the `Parsed` and `Gzipped` columns are the meaningful ones.
 
 #### Js\_of\_ocaml
 
