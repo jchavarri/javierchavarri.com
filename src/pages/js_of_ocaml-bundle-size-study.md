@@ -39,9 +39,9 @@ To run the experiment, I looked for an existing ReScript application that had so
 
 I found a good candidate in [jihchi/rescript-react-realworld-example-app](https://github.com/jihchi/rescript-react-realworld-example-app). This application uses ReScript and [rescript-react](https://rescript-lang.org/docs/react/latest/introduction) —the ReScript bindings to [React.js](https://reactjs.org/)— to build another example of the ["mother of all demo apps"](https://github.com/gothinkster/realworld). This demo app is a social blogging site (i.e. a Medium.com clone) that uses a custom API for all requests, including authentication.
 
-To compare apples to apples, the plan was to migrate this application fully to Js\_of\_ocaml. Then, as the application consists on a dozen of screens or so, there would be an easy way produce JavaScript files and take measurements of the output files progressively, as new screen components get added to the application.
+To compare apples to apples, the plan became to migrate this application fully to Js\_of\_ocaml. Then, as the application consists on a dozen of screens or so, there was an easy way to produce JavaScript output files and take measurements of these files progressively, as new screen components were added to the application.
 
-To do the experiment we would leverage [jsoo-react](https://github.com/ml-in-barcelona/jsoo-react) to replicate the behavior found in the original ReScript app. `jsoo-react` are the bindings to React.js for Js\_of\_ocaml. They were originally based on `rescript-react`, but over time grew apart, with `jsoo-react` having more emphasis on supporting OCaml syntax.
+To do the experiment I leveraged [jsoo-react](https://github.com/ml-in-barcelona/jsoo-react) to replicate the behavior found in the original ReScript app. `jsoo-react` are the bindings to React.js for Js\_of\_ocaml. This bindings library was originally based on `rescript-react`, but over time grew apart, with `jsoo-react` having more emphasis on supporting OCaml syntax.
 
 ## Methodology
 
@@ -159,7 +159,7 @@ But otherwise, for most of the incremental steps, Js\_of\_ocaml shows mostly the
 
 This study also shows that regardless which compiler is used to generate JavaScript, some tooling and potentially integrations with continuous integration pipelines are desired, as it is easy to suddenly get bundle size increases in unexpected ways.
 
-We might revisit this study in the future to incorporate improvements, in which case we will add notes to this post.
+We might revisit this study in the future to incorporate improvements, in which case I will add notes to this post.
 
 ---
 
