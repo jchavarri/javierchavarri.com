@@ -157,7 +157,7 @@ It also shows some larger increases due to functors, that could be fixed using a
 
 But otherwise, for most of the incremental steps, Js\_of\_ocaml shows mostly the same bundle size increases than ReScript. The bundle size of both apps remain in the same order of magnitude, and it would be expected that as more components are added to the application, the difference become smaller.
 
-This study also shows that regardless which compiler is used to generate JavaScript, some tooling and potentially integrations with continuous integration pipelines are desired, as it is easy to suddenly get bundle size increases in unexpected ways.
+This study also shows that regardless which compiler is used to generate JavaScript, some tooling and integrations with continuous integration pipelines will always be valuable, as it is quite easy to run into bundle size increases in unexpected ways.
 
 We might revisit this study in the future to incorporate improvements, in which case I will add notes to this post.
 
