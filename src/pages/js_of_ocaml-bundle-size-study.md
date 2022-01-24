@@ -119,9 +119,11 @@ Unlike the original ReScript application, where JSON encoders were written manua
 
 After some research I decided to use [ppx\_jsobject\_conv](https://github.com/little-arhat/ppx_jsobject_conv). This tool turned out to be a great choice as it leverages all the infrastructure from ppxlib, so it is robust and very easy to use.
 
-However, one small thing was that it made some usage of the `Printf` functions. `Printf` has a complex implementation, and it increases the bundle quite significantly. Fortunately, the usages in `ppx\_jsobject\_conv` were quite limited and [could be removed](https://github.com/little-arhat/ppx_jsobject_conv/pull/8) without much hassle.
+However, one small thing was that it made some usage of the `Printf` functions. `Printf` has a complex implementation, and it increases the bundle quite significantly. Fortunately, the usages in `ppx_jsobject_conv` were quite limited and [could be removed](https://github.com/little-arhat/ppx_jsobject_conv/pull/8) without much hassle.
 
-In general, it is better avoid using `Printf` functions if the bundle size budget or a Js\_of\_ocaml is limited.
+In general, it is recommended to avoid using `Printf` functions if the bundle size budget for a Js\_of\_ocaml application is very limited.
+
+This same problem is found in ReScript, which recently [removed support](https://forum.rescript-lang.org/t/rescript-m1-native-binares-call-for-testing/1797) for `Printf` module altogether.
 
 #### Functors
 
