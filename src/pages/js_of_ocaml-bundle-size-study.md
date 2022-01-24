@@ -27,7 +27,7 @@ So, are Js\_of\_ocaml generated files really that large, as the rumors suggest? 
 
 The main theory that I wanted to prove is that Js\_of\_ocaml produces reasonably sized JavaScript files. I also was interested about tracking the evolution in size of these output files over time, as the application keeps being developed and grows. If the output file is small for small apps, but grows too quickly over time, it would mean Js\_of\_ocaml would not be suitable for web applications that have limited bundle size budgets, or products that should grow sustainably in the long term.
 
-In order to answer the above question, I thought it would be nice to use one of the most efficients compilers to JavaScript that exist out there: [ReScript](https://rescript-lang.org/). Which happens to be very close to OCaml as well. In a [previous article](https://www.javierchavarri.com/js_of_ocaml-and-bucklescript/) I compared both solutions and the trade-offs between them.
+In order to answer the above question, I thought it would be nice to use one of the most efficient compilers to JavaScript that exist out there: [ReScript](https://rescript-lang.org/). Which happens to be very close to OCaml as well. In a [previous article](https://www.javierchavarri.com/js_of_ocaml-and-bucklescript/) I compared both solutions and the trade-offs between them.
 
 ## The experiment
 
@@ -153,7 +153,7 @@ It also shows some larger increases due to functors, that could be fixed using a
 
 But otherwise, for most of the incremental steps, Js\_of\_ocaml shows mostly the same bundle size increases than ReScript. The bundle size of both apps remain in the same order of magnitude, and it would be expected that as more components are added to the application, the difference become smaller.
 
-This study also shows that regardless which compiler is used to generate JavaScript, some tooling and potentially integrations with continous integration pipelines are desired, as it is easy to suddenly get bundle size increases in unexpected ways.
+This study also shows that regardless which compiler is used to generate JavaScript, some tooling and potentially integrations with continuous integration pipelines are desired, as it is easy to suddenly get bundle size increases in unexpected ways.
 
 We might revisit this study in the future to incorporate improvements, in which case we will add notes to this post.
 
