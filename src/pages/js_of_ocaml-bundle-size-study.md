@@ -27,8 +27,7 @@ So, are Js\_of\_ocaml generated files really that large, as the rumors suggest? 
 
 The main theory that I wanted to prove is that Js\_of\_ocaml produces reasonably sized JavaScript files. I also was interested about tracking the evolution in size of these output files over time, as the application keeps being developed and grows. If the output file is small for small apps, but grows too quickly over time, it would mean Js\_of\_ocaml would not be suitable for web applications that have limited bundle size budgets, or products that should grow sustainably in the long term.
 
-In order to answer the above question, I thought it would be nice to use one of the most efficients compilers to JavaScript that exist out there: [ReScript](https://rescript-lang.org/). Which happens to be very close to OCaml as well :)
-
+In order to answer the above question, I thought it would be nice to use one of the most efficients compilers to JavaScript that exist out there: [ReScript](https://rescript-lang.org/). Which happens to be very close to OCaml as well. In a [previous article](https://www.javierchavarri.com/js_of_ocaml-and-bucklescript/) I compared both solutions and the trade-offs between them.
 
 ## The experiment
 
@@ -40,9 +39,9 @@ To run the experiment, I looked for an existing ReScript application that had so
 
 I found a good candidate in [jihchi/rescript-react-realworld-example-app](https://github.com/jihchi/rescript-react-realworld-example-app). This application uses ReScript and [rescript-react](https://rescript-lang.org/docs/react/latest/introduction) —the ReScript bindings to [React.js](https://reactjs.org/)— to build another example of the ["mother of all demo apps"](https://github.com/gothinkster/realworld). This demo app is a social blogging site (i.e. a Medium.com clone) that uses a custom API for all requests, including authentication.
 
-To compare apples to apples, the plan would be to migrate this application fully to Js\_of\_ocaml, and use [jsoo-react](https://github.com/reason-in-barcelona/jsoo-react) to replicate the behavior found in the original ReScript app.
+To compare apples to apples, the plan would be to migrate this application fully to Js\_of\_ocaml. Then, as the application consists on a dozen of screens or so, there would be an easy way produce JavaScript files and take measurements of the output files progressively, as new screen components get added to the application.
 
-Then, as the application consists on a dozen of screens or so, there would be an easy way produce JavaScript files and take measurements of the output files progressively, as new screen components get added to the application.
+To do the experiment we would leverage [jsoo-react](https://github.com/reason-in-barcelona/jsoo-react) to replicate the behavior found in the original ReScript app. `jsoo-react` are the bindings to React.js for Js\_of\_ocaml. They were originally based on `rescript-react`, but over time grew apart, with `jsoo-react` having more emphasis on supporting OCaml syntax.
 
 ## Methodology
 
