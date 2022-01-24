@@ -52,7 +52,7 @@ The results below were created on these commits:
 - Js\_of\_ocaml: [0138bfe](https://github.com/jchavarri/jsoo-react-realworld-example-app/commit/0138bfedddc1e57237ffe9a9a53a07aea9f73bf6)
 - ReScript: [2c319d9](https://github.com/jchavarri/jsoo-react-realworld-example-app/commit/2c319d933a5025e11a0a12e6abb804130659cc7a)
 
-For each case, all components in [the main `App` component](https://github.com/jchavarri/jsoo-react-realworld-example-app/blob/0138bfedddc1e57237ffe9a9a53a07aea9f73bf6/src/app.ml#L20-L28) were comment, and then uncomment progressively, while running these commands on each step of the way:
+For each case, all components in [the main `App` component](https://github.com/jchavarri/jsoo-react-realworld-example-app/blob/0138bfedddc1e57237ffe9a9a53a07aea9f73bf6/src/app.ml#L20-L28) were commented, and then uncomment progressively, while running these commands on each step of the way:
 
 - Js\_of\_ocaml: `make build-prod && yarn webpack:analyze`
 - ReScript: `yarn build  && yarn webpack:analyze`
@@ -132,7 +132,7 @@ Instead of [ppx_yojson_conv](https://github.com/janestreet/ppx_yojson_conv) the 
 
 Something that was interesting during this experiment is the realization that all applications of functions with optional labelled arguments get compiled to a bunch of zeroes separated by commas for the arguments that are unused.
 
-This is alright for functions that take a few arguments, but in `jsoo-react` case there was a function to create style blocks that was taking more than 300 arguments 😅. Ultimately, the issue was [reported and solved](https://github.com/ml-in-barcelona/jsoo-react/issues/112), but it is still something that might be interesting to solve at the compiler level (e.g. if Js\_of\_ocaml supported some way of creating JavaScript objects in a way that doesn't impact bundle size).
+This is alright for functions that take a few arguments, but in `jsoo-react` case there was a function to create style blocks that was taking more than 300 arguments 😅. Ultimately, the issue was [solved](https://github.com/ml-in-barcelona/jsoo-react/issues/112), but it is still something that might be interesting to solve at the compiler level (e.g. if Js\_of\_ocaml supported some way of creating JavaScript objects in a way that doesn't impact bundle size).
 
 #### PPXs
 
