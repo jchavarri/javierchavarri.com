@@ -161,4 +161,4 @@ We might revisit this study in the future to incorporate improvements, in which 
 
 ---
 
-I hope you enjoyed the study, if you want to share any other caveats that are missed, or there is anything inaccurate or that can be improve, feel free to reach out [on Twitter](https://twitter.com/javierwchavarri/).
+I hope you enjoyed the study, if you want to share any other caveats that are missed, or there is anything inaccurate or that can be improved, feel free to reach out [on Twitter](https://twitter.com/javierwchavarri/).
