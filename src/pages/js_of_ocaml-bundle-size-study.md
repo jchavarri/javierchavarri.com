@@ -145,10 +145,6 @@ One realization that might be surprising is that all applications of functions w
 
 This is fine for functions that take a few arguments, but in `jsoo-react` case there was a function to create style blocks that was taking more than 300 optional labelled arguments 😅. Ultimately, the issue was [solved](https://github.com/ml-in-barcelona/jsoo-react/issues/112) by changing the API to use a list, but it is still something that might be interesting to solve at the compiler level (e.g. if Js\_of\_ocaml supported some way of creating JavaScript objects inline, in a way that doesn't impact bundle size).
 
-#### PPXs
-
-One really nice thing is that the whole OCaml [PPX](https://tarides.com/blog/2019-05-09-an-introduction-to-ocaml-ppx-ecosystem) ecosystem is available as first class citizen in Js\_of\_ocaml applications, without any impact on resulting JavaScript output size. This leads to a much better developer experience.
-
 ## Conclusion
 
 The measurements show that Js\_of\_ocaml version of the application has a larger initial cost, due to the runtime being larger than that of ReScript.
