@@ -128,7 +128,7 @@ One way to keep bundle size limited was to use the browser APIs when they are av
 
 For example, instead of [lwt](https://github.com/ocsigen/lwt/), the project is using [promise-jsoo](https://github.com/mnxn/promise_jsoo).
 
-Instead of [ppx_yojson_conv](https://github.com/janestreet/ppx_yojson_conv) the project uses the aforementioned [ppx\_jsobject\_conv](https://github.com/little-arhat/ppx_jsobject_conv). The advantages of the latter is that it allows to parse from string to JSON using browser APIs like [JSON.parse](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse) or [Response.json](https://developer.mozilla.org/en-US/docs/Web/API/Response/json), which both removes the need of bundling additional code, and most probably leads to faster applications, as browser implementors have optimized these functions very heavily.
+Instead of [ppx\_yojson\_conv](https://github.com/janestreet/ppx_yojson_conv) the project uses the aforementioned [ppx\_jsobject\_conv](https://github.com/little-arhat/ppx_jsobject_conv). The advantages of the latter is that it allows to parse from string to JSON using browser APIs like [JSON.parse](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse) or [Response.json](https://developer.mozilla.org/en-US/docs/Web/API/Response/json), which both removes the need of bundling additional code, and most probably leads to faster applications, as browser implementors have optimized these functions very heavily.
 
 #### Functions with lots of optional values
 
