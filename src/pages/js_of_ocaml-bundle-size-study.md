@@ -62,6 +62,8 @@ For each case, all components in [the main `App` component](https://github.com/j
 The results are published together with the Webpack bundle analyzer reports in
 https://jchavarri.github.io/jsoo-react-realworld-example-app/bundle-study/.
 
+Note the `Stat` column does not provide very valuable information. The reason why it is so large in ReScript case is that Js\_of\_ocaml generated JavaScript has already been minified by the Js\_of\_ocaml compiler (because of the `profile=prod` flag) while ReScript produces human readable JavaScript and has no minified. In any case, in the end Webpack minifier runs in both cases, so the `Parsed` and `Gzipped` columns are more useful.
+
 #### Js\_of\_ocaml
 
 | Component   | Stat        | Parsed      | Gzipped     |
@@ -102,15 +104,17 @@ https://jchavarri.github.io/jsoo-react-realworld-example-app/bundle-study/.
 
 Unlike the original ReScript application, in Js\_of\_ocaml I decided to use some tool to generate encoders and decoders to work with JSON to interact with the API.
 
-After some research I decided to use [ppx_jsobject_conv](https://github.com/little-arhat/ppx_jsobject_conv). This tool turned out to be a great choice as it leverages all the infrastructure from ppxlib so it is very robust and friendly to use.
+After some research I decided to use [ppx\_jsobject\_conv](https://github.com/little-arhat/ppx_jsobject_conv). This tool turned out to be a great choice as it leverages all the infrastructure from ppxlib so it is very robust and friendly to use.
 
-However, one small thing was that it used `Printf` module. `Printf` has a complex implementation, and it increases the bundle quite significantly. Fortunately, the usages in `ppx_jsobject_conv` were quite limited and [could be removed](https://github.com/little-arhat/ppx_jsobject_conv/pull/8).
+However, one small thing was that it used `Printf` module. `Printf` has a complex implementation, and it increases the bundle quite significantly. Fortunately, the usages in `ppx\_jsobject\_conv` were quite limited and [could be removed](https://github.com/little-arhat/ppx_jsobject_conv/pull/8).
 
 In general, it is better avoid using `Printf` functions if the bundle size budget or a Js\_of\_ocaml is limited.
 
 #### Functors
 
-There is a noticeable increase when adding `Article` component to the bundle. This bump is due to [a couple of modules](https://github.com/jchavarri/jsoo-react-realworld-example-app/blob/0138bfedddc1e57237ffe9a9a53a07aea9f73bf6/src/hook.ml#L2-L3) that are created using OCaml [Set.Make](https://ocaml.org/api/Set.Make.html) functor.
+There is a noticeable increase when adding `Article` component to the bundle. While ReScript app only increases by ~13KB (from 40.79 to 53.96), the Js\_of\_ocaml app increased by ~21KB (from 83.05 to 104.55).
+
+This bump is due to [a couple of modules](https://github.com/jchavarri/jsoo-react-realworld-example-app/blob/0138bfedddc1e57237ffe9a9a53a07aea9f73bf6/src/hook.ml#L2-L3) that are created using OCaml [Set.Make](https://ocaml.org/api/Set.Make.html) functor.
 
 Apparently, functors can not be dead code eliminated by the compiler, so all the functions that are part of the `Set` module will appear in the resulting bundle, regardless if they are not used. The good news is that the functions only appear once, so as an application grows more (and more functions from `Set` are used, and more times the functor is called), the cost would remain the same.
 
@@ -122,7 +126,7 @@ One way to keep bundle size limited was to use the browser APIs when they are av
 
 For example, instead of [lwt](https://github.com/ocsigen/lwt/), the project is using [promise-jsoo](https://github.com/mnxn/promise_jsoo).
 
-Instead of [ppx_yojson_conv](https://github.com/janestreet/ppx_yojson_conv) the project uses the aforementioned [ppx_jsobject_conv](https://github.com/little-arhat/ppx_jsobject_conv). The advantages of the latter is that it allows to parse from string to JSON using browser APIs like [JSON.parse](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse) or [Response.json](https://developer.mozilla.org/en-US/docs/Web/API/Response/json), which both removes the need of bundling additional code, and most probably leads to faster applications, as browser implementors have optimized these functions very heavily.
+Instead of [ppx_yojson_conv](https://github.com/janestreet/ppx_yojson_conv) the project uses the aforementioned [ppx\_jsobject\_conv](https://github.com/little-arhat/ppx_jsobject_conv). The advantages of the latter is that it allows to parse from string to JSON using browser APIs like [JSON.parse](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse) or [Response.json](https://developer.mozilla.org/en-US/docs/Web/API/Response/json), which both removes the need of bundling additional code, and most probably leads to faster applications, as browser implementors have optimized these functions very heavily.
 
 #### Functions with lots of optional values
 
