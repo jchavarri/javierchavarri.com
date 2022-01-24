@@ -96,6 +96,8 @@ Note the `Stat` column does not provide very valuable information. The reason wh
 
 #### Chart
 
+[See interactive version](https://jchavarri.github.io/jsoo-react-realworld-example-app/bundle-study/).
+
 ![js_of_ocaml-bundle-size-study-02.png](/media/js_of_ocaml-bundle-size-study-02.png)
 
 ## Caveats and learning 
