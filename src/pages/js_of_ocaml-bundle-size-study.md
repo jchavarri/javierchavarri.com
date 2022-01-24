@@ -14,7 +14,7 @@ Historically, I have noticed a recurring theme in OCaml forums and Discord, wher
 
 However, my experience was generally the opposite. When using Js\_of\_ocaml  [production builds](https://dune.readthedocs.io/en/stable/jsoo.html?highlight=mode%20release#separate-compilation) (using `--profile=prod` flag), the resulting JavaScript artifacts were quite small, as the compiler applies very aggressive [dead code elimination](https://en.wikipedia.org/wiki/Dead_code_elimination).
 
-It is true though that Js\_of\_ocaml allows to use many OCaml libraries that were written with native use cases in mind, where binary size is not generally an issue. Js\_of\_ocaml also requires some conversions between OCaml native types and JavaScript types, and the fact that it generates JavaScript from bytecode makes the whole process more opaque.
+It is however true that Js\_of\_ocaml allows to use many OCaml libraries that were written with native use cases in mind, where binary size is not generally an issue. Js\_of\_ocaml also requires some conversions between OCaml native types and JavaScript types, and the fact that it generates JavaScript from bytecode makes the whole process more opaque.
 
 So, are Js\_of\_ocaml generated files really that large, as the rumors suggest? I ran a small experiment to find some answers.
 
@@ -25,7 +25,7 @@ So, are Js\_of\_ocaml generated files really that large, as the rumors suggest? 
 
 ## Hypothesis
 
-The main theory that I wanted to prove is that Js\_of\_ocaml produces reasonably sized JavaScript files. I also was interested about tracking the evolution in size of these output files over time, as the application keeps being developed and grows. If the output file is small for small apps, but grows too quickly over time, it would mean Js\_of\_ocaml would not be suitable for web applications that have limited bundle size budgets, or products that should grow sustainably in the long term.
+The main theory that I wanted to prove is that Js\_of\_ocaml produces reasonably sized JavaScript files. I also was interested about tracking the evolution in size of these output files over time, as the application keeps being developed and grows. If the output file is small for small apps, but grows too quickly over time, it would mean Js\_of\_ocaml would not be suitable for web applications that have limited bundle size budgets, or products that need to grow sustainably in the long term.
 
 In order to answer the above question, I thought it would be nice to use one of the most efficient compilers to JavaScript that exist out there: [ReScript](https://rescript-lang.org/). Which happens to be very close to OCaml as well. In a [previous article](https://www.javierchavarri.com/js_of_ocaml-and-bucklescript/) I compared both compilers and the trade-offs between them.
 
@@ -39,9 +39,9 @@ To run the experiment, I looked for an existing ReScript application that had so
 
 I found a good candidate in [jihchi/rescript-react-realworld-example-app](https://github.com/jihchi/rescript-react-realworld-example-app). This application uses ReScript and [rescript-react](https://rescript-lang.org/docs/react/latest/introduction) —the ReScript bindings to [React.js](https://reactjs.org/)— to build another example of the ["mother of all demo apps"](https://github.com/gothinkster/realworld). This demo app is a social blogging site (i.e. a Medium.com clone) that uses a custom API for all requests, including authentication.
 
-To compare apples to apples, the plan would be to migrate this application fully to Js\_of\_ocaml. Then, as the application consists on a dozen of screens or so, there would be an easy way produce JavaScript files and take measurements of the output files progressively, as new screen components get added to the application.
+To compare apples to apples, the plan was to migrate this application fully to Js\_of\_ocaml. Then, as the application consists on a dozen of screens or so, there would be an easy way produce JavaScript files and take measurements of the output files progressively, as new screen components get added to the application.
 
-To do the experiment we would leverage [jsoo-react](https://github.com/reason-in-barcelona/jsoo-react) to replicate the behavior found in the original ReScript app. `jsoo-react` are the bindings to React.js for Js\_of\_ocaml. They were originally based on `rescript-react`, but over time grew apart, with `jsoo-react` having more emphasis on supporting OCaml syntax.
+To do the experiment we would leverage [jsoo-react](https://github.com/ml-in-barcelona/jsoo-react) to replicate the behavior found in the original ReScript app. `jsoo-react` are the bindings to React.js for Js\_of\_ocaml. They were originally based on `rescript-react`, but over time grew apart, with `jsoo-react` having more emphasis on supporting OCaml syntax.
 
 ## Methodology
 
@@ -145,7 +145,7 @@ Instead of [ppx\_yojson\_conv](https://github.com/janestreet/ppx_yojson_conv) th
 
 #### Functions with lots of optional values
 
-One realization that might be surprising is that all applications of functions with optional labelled arguments get compiled to a bunch of zeroes separated by commas when the arguments that are unused.
+One realization that might be surprising is that all applications of functions with optional labelled arguments get compiled to a bunch of comma-separated zeroes when the arguments are not passed.
 
 This is fine for functions that take a few arguments, but in `jsoo-react` case there was a function to create style blocks that was taking more than 300 optional labelled arguments 😅. Ultimately, the issue was [solved](https://github.com/ml-in-barcelona/jsoo-react/issues/112) by changing the API to use a list, but it is still something that might be interesting to solve at the compiler level (e.g. if Js\_of\_ocaml supported some way of creating JavaScript objects inline, in a way that doesn't impact bundle size).
 
