@@ -10,9 +10,9 @@ tags:
   - "Melange"
 ---
 
-For the past six years, I have been working with with OCaml, most of this time
-has been spent writing code at [Ahrefs](https://ahrefs.com/) to process [a lot
-of data](https://ahrefs.com/big-data) and show it to users in a way that makes
+For the past six years, I have been working with OCaml, most of this time has
+been spent writing code at [Ahrefs](https://ahrefs.com/) to process [a lot of
+data](https://ahrefs.com/big-data) and show it to users in a way that makes
 sense.
 
 OCaml is a language designed with types in mind. It took me some time to learn
