@@ -105,8 +105,15 @@ header {
     margin-bottom: var(--space-2xl);
 }
 
-header h1 {
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: var(--space-sm);
+}
+
+header h1 {
+    margin-bottom: 0;
 }
 
 header h1 a {
@@ -118,10 +125,25 @@ header h1 a:hover {
     color: var(--accent);
 }
 
-header p {
+/* Navigation */
+nav {
+    margin: 0;
+}
+
+nav a {
     color: var(--text-secondary);
-    font-size: 1.125rem;
-    margin-bottom: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+nav a:hover {
+    color: var(--accent);
+    background-color: var(--bg-secondary);
+    text-decoration: none;
 }
 
 /* Article header */
@@ -378,6 +400,21 @@ section article h3 a:hover {
 @media (max-width: 768px) {
     .container {
         padding: var(--space-lg) var(--space-md);
+    }
+    
+    .header-top {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    nav a {
+        font-size: 0.85rem;
+        padding: var(--space-xs);
     }
     
     article header h1 {

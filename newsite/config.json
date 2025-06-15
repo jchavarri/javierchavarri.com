@@ -1,7 +1,7 @@
 {
   "site": {
     "title": "Javier Chávarri",
-    "description": "Writing about software products, UI engineering, type systems and programming languages.",
+    "description": "<p>Hi there! 👋</p><p>Welcome to my site, where I write about the challenges of creating software products, type systems and programming languages, especially JavaScript and OCaml.</p>",
     "author": "Javier Chávarri",
     "url": "https://javierchavarri.com"
   },
