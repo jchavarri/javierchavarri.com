@@ -164,7 +164,6 @@ func LoadPost(path string) (*config.Post, error) {
 			parser.WithAutoHeadingID(),
 		),
 		goldmark.WithRendererOptions(
-			goldmarkhtml.WithHardWraps(),
 			goldmarkhtml.WithXHTML(),
 		),
 	)
