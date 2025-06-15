@@ -7,7 +7,8 @@
     "BuckleScript",
     "ReasonML"
   ],
-  "summary": "A technical post about performance of records in bucklescript, covering JavaScript, BuckleScript, ReasonML"
+  "summary": "A technical post about performance of records in bucklescript, covering JavaScript, BuckleScript, ReasonML",
+  "image": "/images/performance-of-records-in-bucklescript-01.jpeg"
 }
 ---
 

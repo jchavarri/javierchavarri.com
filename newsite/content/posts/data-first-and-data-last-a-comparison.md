@@ -7,7 +7,8 @@
     "ReasonML",
     "BuckleScript"
   ],
-  "summary": "A technical post about data-first and data-last: a comparison, covering OCaml, ReasonML, BuckleScript"
+  "summary": "A technical post about data-first and data-last: a comparison, covering OCaml, ReasonML, BuckleScript",
+  "image": "/images/data-first-and-data-last-a-comparison-01.jpg"
 }
 ---
 

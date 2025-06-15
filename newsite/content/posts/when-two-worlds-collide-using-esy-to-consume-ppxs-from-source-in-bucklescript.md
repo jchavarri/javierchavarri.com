@@ -8,7 +8,8 @@
     "BuckleScript",
     "ReasonML"
   ],
-  "summary": "A technical post about when two worlds collide: using esy to consume bucklescript ppxs from source, covering esy, ppx, BuckleScript, ReasonML"
+  "summary": "A technical post about when two worlds collide: using esy to consume bucklescript ppxs from source, covering esy, ppx, BuckleScript, ReasonML",
+  "image": "/images/when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-01.jpg"
 }
 ---
 

@@ -8,7 +8,8 @@
     "ReScript",
     "OCaml"
   ],
-  "summary": "A technical post about js_of_ocaml: a bundle size study, covering JavaScript, Js_of_ocaml, ReScript, OCaml"
+  "summary": "A technical post about js_of_ocaml: a bundle size study, covering JavaScript, Js_of_ocaml, ReScript, OCaml",
+  "image": "/images/js_of_ocaml-bundle-size-study-01.jpg"
 }
 ---
 

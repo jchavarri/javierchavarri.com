@@ -7,7 +7,8 @@
     "ReasonML",
     "OCaml"
   ],
-  "summary": "A technical post about react server-side rendering with ocaml, covering React, ReasonML, OCaml"
+  "summary": "A technical post about react server-side rendering with ocaml, covering React, ReasonML, OCaml",
+  "image": "/images/react-server-side-rendering-with-ocaml-01.jpg"
 }
 ---
 

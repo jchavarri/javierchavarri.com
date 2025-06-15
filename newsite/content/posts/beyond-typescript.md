@@ -8,7 +8,8 @@
     "JavaScript",
     "Melange"
   ],
-  "summary": "A technical post about beyond typescript: differences between typed languages, covering TypeScript, OCaml, JavaScript, Melange"
+  "summary": "A Presentation of OCaml for TypeScript Developers",
+  "image": "/images/beyond-typescript-01.jpg"
 }
 ---
 
@@ -68,7 +69,7 @@ let my_range = range 0 10
 ```
 
 OCaml is built on a mathematical foundation called [lambda
-calculus](http://www.inf.fu-berlin.de/lehre/WS03/alpi/lambda.pdf). In lambda
+c](http://www.inf.fu-berlin.de/lehre/WS03/alpi/lambda.pdf). In lambda
 calculus, function definitions and applications don't use parentheses. So it was
 natural to design OCaml with similar syntax to that of lambda calculus.
 

@@ -9,7 +9,8 @@
     "Flowtype",
     "BuckleScript"
   ],
-  "summary": "A technical post about adopting reason: strategies, dual sources of truth, and why gentype is a big deal, covering JavaScript, ReasonML, TypeScript, Flowtype, BuckleScript"
+  "summary": "A technical post about adopting reason: strategies, dual sources of truth, and why gentype is a big deal, covering JavaScript, ReasonML, TypeScript, Flowtype, BuckleScript",
+  "image": "/images/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-01.jpeg"
 }
 ---
 

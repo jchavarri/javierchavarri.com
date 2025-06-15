@@ -8,7 +8,8 @@
     "TypeScript",
     "Elm"
   ],
-  "summary": "A technical post about language debt, covering JavaScript, ReasonML, TypeScript, Elm"
+  "summary": "A technical post about language debt, covering JavaScript, ReasonML, TypeScript, Elm",
+  "image": "/images/language-debt-01.jpeg"
 }
 ---
 

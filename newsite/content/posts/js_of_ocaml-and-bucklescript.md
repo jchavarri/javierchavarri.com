@@ -8,7 +8,8 @@
     "BuckleScript",
     "OCaml"
   ],
-  "summary": "A technical post about js_of_ocaml and bucklescript, covering JavaScript, ReasonML, BuckleScript, OCaml"
+  "summary": "A technical post about js_of_ocaml and bucklescript, covering JavaScript, ReasonML, BuckleScript, OCaml",
+  "image": "/images/js_of_ocaml-and-bucklescript-01.png"
 }
 ---
 
