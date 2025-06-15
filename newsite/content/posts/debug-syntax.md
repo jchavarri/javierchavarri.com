@@ -45,6 +45,77 @@ let () =
   |> Printf.printf "Sum: %d\n"          (* Print the result *)
 ```
 
+More OCaml examples:
+
+```ocaml
+(* Variant types and pattern matching *)
+type shape = 
+  | Circle of float
+  | Rectangle of float * float
+  | Triangle of float * float * float
+
+let area = function
+  | Circle r -> Float.pi *. r *. r
+  | Rectangle (w, h) -> w *. h
+  | Triangle (a, b, c) ->
+      let s = (a +. b +. c) /. 2.0 in
+      sqrt (s *. (s -. a) *. (s -. b) *. (s -. c))
+
+(* Higher-order functions and modules *)
+module StringSet = Set.Make(String)
+
+let process_words words =
+  words
+  |> List.map String.lowercase_ascii
+  |> List.filter (fun s -> String.length s > 3)
+  |> StringSet.of_list
+  |> StringSet.elements
+
+(* Option type and error handling *)
+let safe_divide x y =
+  if y = 0.0 then None
+  else Some (x /. y)
+
+let calculate_average numbers =
+  match numbers with
+  | [] -> Error "Empty list"
+  | nums ->
+      let sum = List.fold_left (+.) 0.0 nums in
+      let count = List.length nums |> Float.of_int in
+      Ok (sum /. count)
+
+(* Recursive data structures *)
+type 'a tree = 
+  | Leaf 
+  | Node of 'a * 'a tree * 'a tree
+
+let rec tree_map f = function
+  | Leaf -> Leaf
+  | Node (value, left, right) ->
+      Node (f value, tree_map f left, tree_map f right)
+
+(* Functors and advanced module system *)
+module type COMPARABLE = sig
+  type t
+  val compare : t -> t -> int
+end
+
+module MakeSet(Ord: COMPARABLE) = struct
+  type elt = Ord.t
+  type t = elt list
+  
+  let empty = []
+  
+  let rec add x = function
+    | [] -> [x]
+    | h :: t as s ->
+        match Ord.compare x h with
+        | 0 -> s
+        | n when n < 0 -> x :: s
+        | _ -> h :: add x t
+end
+```
+
 And some Reason:
 
 ```reason
@@ -68,6 +139,135 @@ let () = {
   |> List.fold_left((+), 0)             /* Sum the list */
   |> Printf.printf("Sum: %d\n");        /* Print the result */
 };
+```
+
+More ReasonML examples:
+
+```reason
+/* Variant types with modern syntax */
+type httpMethod = 
+  | GET
+  | POST(string)
+  | PUT(string, string)
+  | DELETE(string);
+
+type apiResponse('a) = 
+  | Loading
+  | Success('a)
+  | Error(string);
+
+/* Pattern matching with destructuring */
+let handleResponse = (response) =>
+  switch (response) {
+  | Loading => "Please wait..."
+  | Success(data) => "Got data: " ++ data
+  | Error(msg) => "Error: " ++ msg
+  };
+
+/* JSX-like syntax for ReasonReact */
+let make = (~name, ~age, ~children) => {
+  ...component,
+  render: (_self) =>
+    <div className="person-card">
+      <h2> {ReasonReact.string(name)} </h2>
+      <p> {ReasonReact.string("Age: " ++ string_of_int(age))} </p>
+      <div> children </div>
+    </div>
+};
+
+/* Advanced functional programming */
+module Option = {
+  let map = (f, opt) =>
+    switch (opt) {
+    | None => None
+    | Some(x) => Some(f(x))
+    };
+    
+  let flatMap = (f, opt) =>
+    switch (opt) {
+    | None => None
+    | Some(x) => f(x)
+    };
+    
+  let getWithDefault = (default, opt) =>
+    switch (opt) {
+    | None => default
+    | Some(x) => x
+    };
+};
+
+/* Async/Promise handling */
+let fetchUserData = (userId) => {
+  Js.Promise.(
+    Fetch.fetch("/api/users/" ++ userId)
+    |> then_(Fetch.Response.json)
+    |> then_(json => {
+         let user = Decode.user(json);
+         resolve(Success(user));
+       })
+    |> catch(error => {
+         let message = Js.String.make(error);
+         resolve(Error(message));
+       })
+  );
+};
+
+/* Belt standard library usage */
+let processUsers = (users) => {
+  users
+  |> Belt.Array.keep(user => user.age >= 18)
+  |> Belt.Array.map(user => {...user, name: String.capitalize(user.name)})
+  |> Belt.Array.reduce(Belt.Map.String.empty, (acc, user) =>
+       Belt.Map.String.set(acc, user.id, user)
+     );
+};
+
+/* Recursive data structures with modern syntax */
+type rec binaryTree('a) = 
+  | Empty
+  | Node({
+      value: 'a,
+      left: binaryTree('a),
+      right: binaryTree('a),
+    });
+
+let rec insertIntoTree = (value, tree) =>
+  switch (tree) {
+  | Empty => Node({value, left: Empty, right: Empty})
+  | Node({value: nodeValue, left, right}) =>
+      if (value <= nodeValue) {
+        Node({value: nodeValue, left: insertIntoTree(value, left), right});
+      } else {
+        Node({value: nodeValue, left, right: insertIntoTree(value, right)});
+      }
+  };
+
+/* Interop with JavaScript */
+[@bs.module] external moment: string => Js.Date.t = "moment";
+[@bs.send] external format: (Js.Date.t, string) => string = "format";
+
+let formatDate = (dateString) => {
+  let date = moment(dateString);
+  format(date, "YYYY-MM-DD");
+};
+
+/* Polymorphic variants */
+type color = [
+  | `Red
+  | `Green  
+  | `Blue
+  | `RGB(int, int, int)
+  | `HSL(float, float, float)
+];
+
+let colorToString = (color) =>
+  switch (color) {
+  | `Red => "red"
+  | `Green => "green"
+  | `Blue => "blue"
+  | `RGB(r, g, b) => Printf.sprintf("rgb(%d, %d, %d)", r, g, b)
+  | `HSL(h, s, l) => Printf.sprintf("hsl(%.1f, %.1f%%, %.1f%%)", h, s *. 100.0, l *. 100.0)
+  };
 ```
 
 Run the build and see what the debug output shows:

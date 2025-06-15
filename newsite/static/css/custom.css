@@ -227,7 +227,22 @@ img {
     max-width: 100%;
     height: auto;
     border-radius: 6px;
-    margin: var(--space-lg) 0;
+    margin: var(--space-lg) 0 var(--space-xs) 0;
+    display: block;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Image captions (alt text displayed as caption) */
+img + em,
+img + p em:only-child {
+    display: block;
+    text-align: center;
+    font-style: italic;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-top: var(--space-xs);
+    margin-bottom: var(--space-lg);
+    line-height: 1.4;
 }
 
 /* Tables */
@@ -309,6 +324,13 @@ section article h3 a:hover {
 /* Syntax highlighting adjustments */
 .chroma {
     background-color: var(--bg-code) !important;
+}
+
+/* Dark mode image adjustments */
+@media (prefers-color-scheme: dark) {
+    img {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
 }
 
 /* Focus styles for accessibility */

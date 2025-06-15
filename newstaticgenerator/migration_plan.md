@@ -9,8 +9,8 @@ purposes: learning Go and creating a minimal, performant blog platform.
 
 ## Design Direction
 
-- **Styling**: [Terminal CSS](https://terminalcss.xyz) - minimal,
-  terminal-inspired aesthetic perfect for technical content
+- **Styling**: Custom professional theme with Nord color scheme - clean,
+  readable aesthetic perfect for technical content
 - **Content**: Markdown + frontmatter (same as current setup)
 - **Deployment**: Cloudflare Pages (considering migration from Netlify)
 - **Focus**: OCaml/ReasonML syntax highlighting support
@@ -24,10 +24,9 @@ purposes: learning Go and creating a minimal, performant blog platform.
 │   │   └── posts/             # Markdown blog posts
 │   ├── static/
 │   │   ├── css/
-│   │   │   ├── terminal.css   # Terminal CSS (local copy)
-│   │   │   └── custom.css     # Custom overrides
+│   │   │   └── custom.css     # Custom professional theme
 │   │   └── images/            # Static images
-│   ├── config.yaml            # Site configuration
+│   ├── config.json            # Site configuration
 │   └── public/                # Generated output (git-ignored)
 └── newstaticgenerator/         # Go static site generator
     ├── main.go                # CLI entry point
@@ -36,13 +35,12 @@ purposes: learning Go and creating a minimal, performant blog platform.
     │   ├── config/
     │   │   └── config.go      # Site configuration handling
     │   ├── content/
-    │   │   └── post.go        # Post struct and parsing
+    │   │   └── post.go        # Post struct and parsing + Nord themes
     │   ├── generator/
     │   │   └── generator.go   # Main site generation logic
     │   └── templates/
     │       └── templates.go   # Template handling
     └── templates/
-        ├── base.html          # Base layout with Terminal CSS
         ├── index.html         # Homepage template
         └── post.html          # Individual post template
 ```
@@ -61,6 +59,7 @@ This project covers essential Go concepts:
 7. **Structs and Methods** - Modeling blog posts, pages, site config
 8. **Testing** - Writing tests for generator functions
 9. **Concurrency** (optional) - Parallelizing file processing
+10. **Custom Chroma Styles** - Implementing syntax highlighting themes
 
 ## Implementation Phases
 
@@ -79,14 +78,18 @@ This project covers essential Go concepts:
 - [x] Syntax highlighting with `chroma`
 - [x] Basic site generation working
 
-### Phase 3: Content Migration
-- [ ] Extract content from current Gatsby site
-- [ ] Convert/adapt markdown files and assets
-- [ ] Implement OCaml/ReasonML syntax highlighting
-- [ ] Create responsive design with Terminal CSS
+### Phase 3: Content Migration ✅
+- [x] Extract content from current Gatsby site
+- [x] Convert/adapt markdown files and assets
+- [x] Implement OCaml/ReasonML syntax highlighting
+- [x] Create professional responsive design with custom theme
+- [x] Nord color scheme implementation (light + dark themes)
 
-### Phase 4: Advanced Features
-- [ ] Development server with live reload
+### Phase 4: Advanced Features ✅
+- [x] Development server with live reload
+- [x] Custom Nord-light theme implementation
+- [x] Dual theme support (light/dark mode)
+- [x] Fixed syntax highlighting edge cases
 - [ ] RSS feed generation
 - [ ] Sitemap generation
 - [ ] Build optimization
@@ -123,28 +126,31 @@ This project covers essential Go concepts:
 - Option 1: Transfer domain from Namecheap to Cloudflare (simpler)
 - Option 2: Keep domain at Namecheap, point nameservers to Cloudflare
 
-## Terminal CSS Integration
+## Theme Implementation
 
-**Decision**: Local bundle (vs CDN)
-- ✅ Complete reliability and control
-- ✅ Works offline
-- ✅ Can customize if needed
-- ✅ Only ~3k gzipped
+**Decision**: Custom professional theme with Nord colors
+- ✅ Complete control over design and responsiveness
+- ✅ Professional, readable aesthetic
+- ✅ Nord color scheme for consistency
+- ✅ Dual theme support (light/dark mode)
+- ✅ Excellent syntax highlighting
 
 **Implementation**:
-- Download `terminal.min.css` from [unpkg
-  CDN](https://unpkg.com/terminal.css@0.7.4/dist/terminal.min.css)
-- Place in `newsite/static/css/terminal.css`
-- Include in base template
-- Add custom overrides in `custom.css`
+- Custom CSS in `newsite/static/css/custom.css`
+- Nord-light custom Chroma style for light mode
+- Nord official Chroma style for dark mode
+- CSS media queries for automatic theme switching
+- Optimized for technical content readability
 
 ## Key Features
 
-- **Markdown ❤️ Terminal CSS**: Perfect match for technical blog
-- **Syntax Highlighting**: Built-in support for OCaml/ReasonML
+- **Markdown ❤️ Professional Design**: Perfect match for technical blog
+- **Nord Color Scheme**: Consistent, professional aesthetic
+- **Dual Theme Support**: Automatic light/dark mode switching
+- **Syntax Highlighting**: Built-in support for OCaml/ReasonML with proper operator highlighting
 - **Minimal Dependencies**: Pure Go, no Node.js build chain
 - **Fast Builds**: Go's performance for quick iteration
-- **Clean Output**: Semantic HTML with Terminal CSS styling
+- **Clean Output**: Semantic HTML with professional styling
 
 ## Benefits
 
@@ -153,6 +159,7 @@ This project covers essential Go concepts:
 3. **Control**: Full ownership of build process and output
 4. **Simplicity**: No complex toolchains or dependencies
 5. **Portability**: Deploy anywhere Go runs
+6. **Professional Design**: Clean, readable theme perfect for technical content
 
 ## Current Status
 
@@ -162,16 +169,20 @@ This project covers essential Go concepts:
 - ✅ Minimal dependencies (only goldmark + chroma)
 - ✅ Basic CLI framework
 - ✅ HTML templates (self-contained)
-- ✅ CSS setup with Terminal CSS + custom overrides
+- ✅ Professional CSS theme with Nord colors
 - ✅ JSON configuration (no YAML dependencies)
 - ✅ Custom frontmatter parser (stdlib only)
 - ✅ **Working site generation!** 🎉
+- ✅ **Content migration completed!** 🎉
+- ✅ **Custom Nord-light theme implemented!** 🎉
+- ✅ **Dual theme support working!** 🎉
+- ✅ **Development server working!** 🎉
 
 **Next Steps:**
-- 🚧 Test generated site in browser
-- 🚧 Extract content from current Gatsby site
-- 🚧 Implement development server
-- 🚧 Add `new post` command
+- 🚧 RSS feed generation
+- 🚧 Sitemap generation
+- 🚧 Deployment to Cloudflare Pages
+- 🚧 Performance optimization
 
 ---
 

@@ -6,8 +6,9 @@ A minimal, fast static site generator built with Go. Solid as granite, powered b
 
 - ✅ **Minimal Dependencies** - Only goldmark + chroma
 - ✅ **JSON Frontmatter** - No YAML dependencies
-- ✅ **Syntax Highlighting** - Built-in support for 100+ languages
-- ✅ **Terminal CSS** - Clean, developer-focused styling
+- ✅ **Syntax Highlighting** - Built-in support for 100+ languages with custom Nord themes
+- ✅ **Professional Design** - Clean, readable theme with Nord color scheme
+- ✅ **Dual Theme Support** - Automatic light/dark mode switching
 - ✅ **Fast Builds** - Go's performance for quick iteration
 
 ## Quick Start
@@ -44,10 +45,7 @@ A minimal, fast static site generator built with Go. Solid as granite, powered b
    # Create directories
    mkdir -p content/posts static/css static/images
    
-   # Download Terminal CSS
-   curl -o static/css/terminal.css https://unpkg.com/terminal.css@0.7.4/dist/terminal.min.css
-   
-   # Create custom CSS
+   # Create custom CSS (or copy from newsite example)
    touch static/css/custom.css
    
    # Create first post
@@ -145,11 +143,21 @@ mysite/
 │   └── posts/            # Markdown posts
 ├── static/
 │   ├── css/
-│   │   ├── terminal.css  # Terminal CSS framework
 │   │   └── custom.css    # Your custom styles
 │   └── images/           # Static images
 └── public/               # Generated site (git-ignore this)
 ```
+
+## Syntax Highlighting
+
+Goranite includes custom Nord-based syntax highlighting themes:
+
+- **Light mode**: Custom `nord-light` theme with excellent contrast
+- **Dark mode**: Official `nord` theme for consistent aesthetics
+- **Complete coverage**: All language tokens properly styled
+- **OCaml/ReasonML**: Special focus on functional programming languages
+
+The themes automatically switch based on user's system preference via CSS media queries.
 
 ## Why Goranite?
 
@@ -157,7 +165,7 @@ mysite/
 - **No Node.js** - Pure Go, no JavaScript build chains
 - **Minimal** - Only essential dependencies
 - **Fast** - Go's performance for quick builds
-- **Terminal Aesthetic** - Perfect for technical blogs
+- **Professional** - Clean, readable design perfect for technical blogs
 
 ## Deployment
 

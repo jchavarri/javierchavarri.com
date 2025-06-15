@@ -9,7 +9,7 @@ newstaticgenerator/
 ├── main.go                 # CLI entry point
 ├── internal/
 │   ├── config/            # Site configuration and data structures
-│   ├── content/           # Post parsing and loading
+│   ├── content/           # Post parsing, loading, and custom Chroma themes
 │   └── generator/         # Site generation logic
 └── templates/
     ├── index.html         # Homepage template
@@ -47,6 +47,29 @@ Templates receive a `TemplateData` struct with:
 <div>{{.Post.Content}}</div>
 ```
 
+## Syntax Highlighting
+
+Goranite includes custom Chroma themes for consistent Nord-based styling:
+
+### Custom Nord-Light Theme
+- Implemented in `content/post.go` as `nordLightEntries`
+- Uses Nord color palette with proper contrast ratios
+- Covers all syntax tokens including operators and keywords
+
+### Theme Registration
+```go
+func init() {
+    nordLightStyle := chroma.MustNewStyle("nord-light", nordLightEntries)
+    styles.Register(nordLightStyle)
+}
+```
+
+### Adding New Themes
+1. Define color entries using `chroma.StyleEntries`
+2. Create style with `chroma.MustNewStyle()`
+3. Register with `styles.Register()` in `init()` function
+4. Update theme constants in `post.go`
+
 ## Development Workflow
 
 1. **Setup:**
@@ -78,6 +101,12 @@ Templates receive a `TemplateData` struct with:
 1. Add field to `PostMatter` struct in `content/post.go`
 2. Add JSON tag: `NewField string \`json:"new_field"\``
 
+### New Syntax Theme
+1. Define `chroma.StyleEntries` with color mappings
+2. Register in `init()` function
+3. Update theme constants
+4. Test with various code samples
+
 ## Dependencies Philosophy
 
 We keep dependencies minimal:
@@ -97,3 +126,5 @@ No YAML libraries, no web frameworks, no complex build tools.
 ## Testing
 
 Currently manual testing. Run `go run main.go -build && go run main.go -serve` to test changes.
+
+For syntax highlighting, test with the debug post at `/debug-syntax` which includes comprehensive examples.
