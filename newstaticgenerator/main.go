@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/javierchavarri/goranite/internal/generator"
 )
@@ -29,7 +31,7 @@ func main() {
 
 	case *serveCmd:
 		fmt.Println("🚀 Starting development server...")
-		if err := serveSite(); err != nil {
+		if err := serveSite(*siteDir); err != nil {
 			log.Fatalf("Server failed: %v", err)
 		}
 
@@ -46,7 +48,7 @@ func main() {
 		fmt.Println()
 		fmt.Println("Usage:")
 		fmt.Println("  -build       Build the static site")
-		fmt.Println("  -serve       Start development server")
+		fmt.Println("  -serve       Start development server with auto-rebuild")
 		fmt.Println("  -new 'Title' Create new post")
 		fmt.Println("  -site path   Path to site directory (default: ../newsite)")
 		flag.PrintDefaults()
@@ -68,21 +70,83 @@ func buildSite(siteDir string) error {
 	return gen.Build(contentDir, staticDir, outputDir)
 }
 
-func serveSite() error {
-	siteDir := "../newsite"
-
-	fmt.Println("🔨 Building site for development...")
+func serveSite(siteDir string) error {
+	// Build initially
+	fmt.Println("🔨 Initial build...")
 	if err := buildSite(siteDir); err != nil {
 		return fmt.Errorf("failed to build site: %w", err)
 	}
 
+	// Start file watcher in background
+	go watchAndRebuild(siteDir)
+
+	// Set up file server
 	publicDir := filepath.Join(siteDir, "public")
 	fmt.Printf("🌐 Serving site at http://localhost:8080\n")
 	fmt.Printf("📁 Serving files from: %s\n", publicDir)
+	fmt.Println("👀 Watching for changes... Edit files and refresh browser!")
 	fmt.Println("Press Ctrl+C to stop")
 
-	http.Handle("/", http.FileServer(http.Dir(publicDir)))
-	return http.ListenAndServe(":8080", nil)
+	// Add cache-busting headers for development
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Disable caching for development
+		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+		w.Header().Set("Pragma", "no-cache")
+		w.Header().Set("Expires", "0")
+
+		http.FileServer(http.Dir(publicDir)).ServeHTTP(w, r)
+	})
+
+	return http.ListenAndServe(":8080", handler)
+}
+
+func watchAndRebuild(siteDir string) {
+	contentDir := filepath.Join(siteDir, "content")
+	configFile := filepath.Join(siteDir, "config.json")
+	templatesDir := "templates"
+
+	// Get initial modification times
+	lastMod := getLastModTime(contentDir, configFile, templatesDir)
+
+	for {
+		time.Sleep(1 * time.Second) // Check every second
+
+		currentMod := getLastModTime(contentDir, configFile, templatesDir)
+
+		if currentMod.After(lastMod) {
+			fmt.Println("📝 Changes detected, rebuilding...")
+			if err := buildSite(siteDir); err != nil {
+				fmt.Printf("❌ Build error: %v\n", err)
+			} else {
+				fmt.Println("✅ Rebuilt successfully! Refresh your browser.")
+			}
+			lastMod = currentMod
+		}
+	}
+}
+
+func getLastModTime(paths ...string) time.Time {
+	var latest time.Time
+
+	for _, path := range paths {
+		filepath.Walk(path, func(filePath string, info os.FileInfo, err error) error {
+			if err != nil {
+				return nil // Skip errors
+			}
+
+			// Only check relevant files
+			if filepath.Ext(filePath) == ".md" ||
+				filepath.Ext(filePath) == ".json" ||
+				filepath.Ext(filePath) == ".html" {
+				if info.ModTime().After(latest) {
+					latest = info.ModTime()
+				}
+			}
+			return nil
+		})
+	}
+
+	return latest
 }
 
 func createNewPost(title string) error {
