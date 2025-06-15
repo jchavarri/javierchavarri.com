@@ -255,7 +255,10 @@ func LoadPost(path string) (*config.Post, error) {
 
 	// Convert markdown to HTML with our custom syntax highlighting
 	md := goldmark.New(
-		goldmark.WithExtensions(extension.GFM),
+		goldmark.WithExtensions(
+			extension.GFM,
+			extension.Footnote,
+		),
 		goldmark.WithParserOptions(
 			parser.WithAutoHeadingID(),
 		),

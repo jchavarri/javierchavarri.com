@@ -213,6 +213,13 @@ pre code {
     font-size: inherit;
 }
 
+/* Horizontal rules */
+hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: var(--space-xl) 0;
+}
+
 /* Blockquotes */
 blockquote {
     border-left: 4px solid var(--border);
@@ -261,6 +268,75 @@ th, td {
 th {
     font-weight: 600;
     background-color: var(--bg-secondary);
+}
+
+/* Footnotes */
+.footnotes {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--border);
+    font-size: 0.875rem;
+    margin-bottom: var(--space-xl);
+}
+
+.footnotes hr {
+    display: none; /* Hide the default hr since we have our own styling */
+}
+
+.footnotes ol {
+    padding-left: var(--space-lg);
+    margin: 0;
+}
+
+.footnotes li {
+    margin-bottom: var(--space-md);
+    line-height: 1.6;
+}
+
+.footnotes li:last-child {
+    margin-bottom: 0;
+}
+
+.footnotes p {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.footnote-ref {
+    font-size: 0.75em;
+    vertical-align: super;
+    text-decoration: none;
+    color: var(--accent);
+    font-weight: 600;
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-muted);
+    margin-left: 0.1em;
+}
+
+.footnote-ref:hover {
+    color: var(--accent-hover);
+    background-color: var(--accent);
+    color: white;
+    text-decoration: none;
+}
+
+.footnote-backref {
+    font-size: 0.875em;
+    text-decoration: none;
+    color: var(--text-muted);
+    margin-left: var(--space-sm);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-muted);
+}
+
+.footnote-backref:hover {
+    color: var(--accent);
+    background-color: var(--bg-secondary);
+    text-decoration: none;
 }
 
 /* Footer */
