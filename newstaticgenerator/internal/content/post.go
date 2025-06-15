@@ -17,6 +17,8 @@ import (
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer/html"
 
+	"html/template"
+
 	"github.com/javierchavarri/goranite/internal/config"
 )
 
@@ -150,7 +152,7 @@ func LoadPost(path string) (*config.Post, error) {
 		Date:        matter.Date,
 		Tags:        matter.Tags,
 		Summary:     matter.Summary,
-		Content:     htmlContent,
+		Content:     template.HTML(htmlContent),
 		URL:         "/" + slug + "/",
 		ReadingTime: readingTime,
 		Slug:        slug,
@@ -170,7 +172,7 @@ func addSyntaxHighlighting(html string) string {
 		language := submatch[1]
 		code := submatch[2]
 
-		// Use chroma for syntax highlighting - fixed API call
+		// Use chroma for syntax highlighting
 		var buf strings.Builder
 		err := quick.Highlight(&buf, code, language, "html", "terminal")
 		if err != nil {

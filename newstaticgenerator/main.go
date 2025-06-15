@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net/http"
 	"path/filepath"
 
 	"github.com/javierchavarri/goranite/internal/generator"
@@ -68,9 +69,20 @@ func buildSite(siteDir string) error {
 }
 
 func serveSite() error {
-	// TODO: Implement development server
-	fmt.Println("Starting server... (not implemented yet)")
-	return nil
+	siteDir := "../newsite"
+
+	fmt.Println("🔨 Building site for development...")
+	if err := buildSite(siteDir); err != nil {
+		return fmt.Errorf("failed to build site: %w", err)
+	}
+
+	publicDir := filepath.Join(siteDir, "public")
+	fmt.Printf("🌐 Serving site at http://localhost:8080\n")
+	fmt.Printf("📁 Serving files from: %s\n", publicDir)
+	fmt.Println("Press Ctrl+C to stop")
+
+	http.Handle("/", http.FileServer(http.Dir(publicDir)))
+	return http.ListenAndServe(":8080", nil)
 }
 
 func createNewPost(title string) error {

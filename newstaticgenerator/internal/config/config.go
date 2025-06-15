@@ -2,6 +2,7 @@ package config
 
 import (
 	"encoding/json"
+	"html/template"
 	"os"
 	"time"
 )
@@ -67,7 +68,7 @@ type Post struct {
 	Date        time.Time
 	Tags        []string
 	Summary     string
-	Content     string
+	Content     template.HTML `json:"content"`
 	URL         string
 	ReadingTime int
 	Slug        string
