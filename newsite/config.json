@@ -1,0 +1,16 @@
+{
+  "site": {
+    "title": "Javier Chávarri",
+    "description": "Writing about software products, UI engineering, type systems and programming languages",
+    "author": "Javier Chávarri",
+    "url": "https://javierchavarri.com"
+  },
+  "build": {
+    "output_dir": "public",
+    "posts_per_page": 10
+  },
+  "social": {
+    "twitter": "@javierchavarri",
+    "github": "javierchavarri"
+  }
+} 

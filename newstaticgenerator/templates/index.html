@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.SiteTitle}}</title>
+    <meta name="description" content="{{.SiteDescription}}">
+    <link rel="stylesheet" href="/css/terminal.css">
+    <link rel="stylesheet" href="/css/custom.css">
+</head>
+<body class="terminal">
+    <div class="container">
+        <header>
+            <h1><a href="/">{{.SiteTitle}}</a></h1>
+            <p>{{.SiteDescription}}</p>
+        </header>
+        
+        <main>
+            <section>
+                <h2>Recent Posts</h2>
+                {{range .Posts}}
+                <article>
+                    <h3><a href="{{.URL}}">{{.Title}}</a></h3>
+                    <p class="meta">{{.Date.Format "January 02, 2006"}} • {{.ReadingTime}} min read</p>
+                    <p>{{.Summary}}</p>
+                </article>
+                {{end}}
+            </section>
+        </main>
+        
+        <footer>
+            <p>© {{.Year}} {{.Author}}. Built with <a href="https://github.com/javierchavarri/goranite">Goranite</a>.</p>
+        </footer>
+    </div>
+</body>
+</html> 

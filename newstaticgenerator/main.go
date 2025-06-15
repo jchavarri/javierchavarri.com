@@ -4,6 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"path/filepath"
+
+	"github.com/javierchavarri/goranite/internal/generator"
 )
 
 func main() {
@@ -11,13 +14,14 @@ func main() {
 		buildCmd = flag.Bool("build", false, "Build the static site")
 		serveCmd = flag.Bool("serve", false, "Start development server")
 		newCmd   = flag.String("new", "", "Create new post with given title")
+		siteDir  = flag.String("site", "../newsite", "Path to site directory")
 	)
 	flag.Parse()
 
 	switch {
 	case *buildCmd:
 		fmt.Println("🔨 Building static site...")
-		if err := buildSite(); err != nil {
+		if err := buildSite(*siteDir); err != nil {
 			log.Fatalf("Build failed: %v", err)
 		}
 		fmt.Println("✅ Site built successfully!")
@@ -43,14 +47,24 @@ func main() {
 		fmt.Println("  -build       Build the static site")
 		fmt.Println("  -serve       Start development server")
 		fmt.Println("  -new 'Title' Create new post")
+		fmt.Println("  -site path   Path to site directory (default: ../newsite)")
 		flag.PrintDefaults()
 	}
 }
 
-func buildSite() error {
-	// TODO: Implement site building
-	fmt.Println("Building site... (not implemented yet)")
-	return nil
+func buildSite(siteDir string) error {
+	configPath := filepath.Join(siteDir, "config.json")
+	contentDir := filepath.Join(siteDir, "content")
+	staticDir := filepath.Join(siteDir, "static")
+	outputDir := filepath.Join(siteDir, "public")
+	templatesDir := "templates"
+
+	gen, err := generator.New(configPath, templatesDir)
+	if err != nil {
+		return err
+	}
+
+	return gen.Build(contentDir, staticDir, outputDir)
 }
 
 func serveSite() error {

@@ -65,15 +65,19 @@ This project covers essential Go concepts:
 ## Implementation Phases
 
 ### Phase 1: Foundation ✅
-- [x] Basic Go project setup with modules
+- [x] Basic Go project setup with modules (Go 1.24.3)
 - [x] CLI structure with commands: `build`, `serve`, `new`
-- [ ] Download and integrate Terminal CSS locally
+- [x] Dependencies: goldmark, chroma (minimal set)
+- [x] Template structure created
+- [x] Site configuration setup (JSON format)
 
-### Phase 2: Core Functionality
-- [ ] Markdown processing with frontmatter support
-- [ ] Template system using Go's `html/template`
-- [ ] Static file handling (CSS, images)
-- [ ] Syntax highlighting with `chroma` (Go port of Pygments)
+### Phase 2: Core Functionality ✅
+- [x] Custom frontmatter parsing (JSON format, no external deps)
+- [x] Markdown processing with goldmark
+- [x] Template system using Go's `html/template`
+- [x] Static file handling (CSS, images)
+- [x] Syntax highlighting with `chroma`
+- [x] Basic site generation working
 
 ### Phase 3: Content Migration
 - [ ] Extract content from current Gatsby site
@@ -150,14 +154,24 @@ This project covers essential Go concepts:
 4. **Simplicity**: No complex toolchains or dependencies
 5. **Portability**: Deploy anywhere Go runs
 
-## Next Steps
+## Current Status
 
-1. Complete CLI foundation
-2. Set up Terminal CSS and basic templates
-3. Implement markdown processing
-4. Add syntax highlighting
-5. Migrate first blog post as test
-6. Set up Cloudflare Pages deployment
+**Completed:**
+- ✅ Project structure setup
+- ✅ Go module initialization with latest Go (1.24.3)
+- ✅ Minimal dependencies (only goldmark + chroma)
+- ✅ Basic CLI framework
+- ✅ HTML templates (self-contained)
+- ✅ CSS setup with Terminal CSS + custom overrides
+- ✅ JSON configuration (no YAML dependencies)
+- ✅ Custom frontmatter parser (stdlib only)
+- ✅ **Working site generation!** 🎉
+
+**Next Steps:**
+- 🚧 Test generated site in browser
+- 🚧 Extract content from current Gatsby site
+- 🚧 Implement development server
+- 🚧 Add `new post` command
 
 ---
 

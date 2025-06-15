@@ -1,0 +1,50 @@
+/* Custom overrides for Terminal CSS */
+:root {
+  --primary-color: #0066cc;
+  --secondary-color: #666;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.meta {
+  color: var(--secondary-color);
+  font-size: 0.9em;
+  margin-bottom: 1rem;
+}
+
+.tags {
+  margin: 1rem 0;
+}
+
+.tag {
+  background: var(--code-bg-color);
+  padding: 0.2rem 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8em;
+}
+
+article {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+article:last-child {
+  border-bottom: none;
+}
+
+/* Syntax highlighting adjustments */
+pre {
+  overflow-x: auto;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+code {
+  font-family: var(--mono-font-stack);
+} 
