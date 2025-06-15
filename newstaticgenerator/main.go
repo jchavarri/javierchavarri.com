@@ -62,6 +62,12 @@ func buildSite(siteDir string) error {
 	outputDir := filepath.Join(siteDir, "public")
 	templatesDir := "templates"
 
+	// Clean output directory first
+	fmt.Println("🧹 Cleaning output directory...")
+	if err := os.RemoveAll(outputDir); err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("failed to clean output directory: %w", err)
+	}
+
 	gen, err := generator.New(configPath, templatesDir)
 	if err != nil {
 		return err
