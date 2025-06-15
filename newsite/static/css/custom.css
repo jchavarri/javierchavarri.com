@@ -1,4 +1,4 @@
-/* Custom overrides for Terminal CSS */
+/* Minimal custom overrides for Terminal CSS */
 :root {
   --primary-color: #0066cc;
   --secondary-color: #666;
@@ -37,14 +37,3 @@ article {
 article:last-child {
   border-bottom: none;
 }
-
-/* Syntax highlighting adjustments */
-pre {
-  overflow-x: auto;
-  padding: 1rem;
-  margin: 1rem 0;
-}
-
-code {
-  font-family: var(--mono-font-stack);
-} 

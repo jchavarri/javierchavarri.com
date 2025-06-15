@@ -7,4 +7,4 @@ require (
 	github.com/yuin/goldmark v1.6.0
 )
 
-require github.com/dlclark/regexp2 v1.4.0 // indirect
+require github.com/dlclark/regexp2 v1.7.0 // indirect

@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/javierchavarri/goranite/internal/content"
 	"github.com/javierchavarri/goranite/internal/generator"
 )
 
@@ -73,7 +74,17 @@ func buildSite(siteDir string) error {
 		return err
 	}
 
-	return gen.Build(contentDir, staticDir, outputDir)
+	// Build the site first
+	if err := gen.Build(contentDir, staticDir, outputDir); err != nil {
+		return err
+	}
+
+	// Generate chroma CSS after the build
+	if err := content.GenerateChromaCSS(outputDir); err != nil {
+		return fmt.Errorf("failed to generate chroma CSS: %w", err)
+	}
+
+	return nil
 }
 
 func serveSite(siteDir string) error {
