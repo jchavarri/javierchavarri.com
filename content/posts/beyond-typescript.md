@@ -1,14 +1,18 @@
 ---
-title: "Beyond TypeScript: Differences Between Typed Languages"
-subtitle: "A Presentation of OCaml for TypeScript Developers"
-date: "2023-09-08"
-imghero: "https://www.javierchavarri.com/media/beyond-typescript-01.png"
-tags:
-  - "TypeScript"
-  - "OCaml"
-  - "JavaScript"
-  - "Melange"
+{
+  "title": "Beyond TypeScript: Differences Between Typed Languages",
+  "date": "2023-09-08T00:00:00Z",
+  "tags": [
+    "TypeScript",
+    "OCaml",
+    "JavaScript",
+    "Melange"
+  ],
+  "summary": "A Presentation of OCaml for TypeScript Developers",
+  "image": "/images/beyond-typescript-01.jpg"
+}
 ---
+
 
 For the past six years, I have been working with OCaml, most of this time has
 been spent writing code at [Ahrefs](https://ahrefs.com/) to process [a lot of
@@ -41,7 +45,7 @@ that emits JavaScript.
 
 Without further ado, let's go!
 
-![beyond-typescript-01.jpg](/media/beyond-typescript-01.jpg)
+![beyond-typescript-01.jpg](/images/beyond-typescript-01.jpg)
 
 *Photo by [Bernice Tong](https://unsplash.com/@bernicehtong) on
 [Unsplash](https://unsplash.com/photos/VPTSmbGba7Q?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)*
@@ -65,7 +69,7 @@ let my_range = range 0 10
 ```
 
 OCaml is built on a mathematical foundation called [lambda
-calculus](http://www.inf.fu-berlin.de/lehre/WS03/alpi/lambda.pdf). In lambda
+c](http://www.inf.fu-berlin.de/lehre/WS03/alpi/lambda.pdf). In lambda
 calculus, function definitions and applications don't use parentheses. So it was
 natural to design OCaml with similar syntax to that of lambda calculus.
 

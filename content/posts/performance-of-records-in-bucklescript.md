@@ -1,12 +1,17 @@
 ---
-title: "Performance Of Records In BuckleScript"
-date: "2018-04-12"
-imghero: "https://www.javierchavarri.com/media/performance-of-records-in-bucklescript-01.jpeg"
-tags:
-  - "JavaScript"
-  - "BuckleScript"
-  - "ReasonML"
+{
+  "title": "Performance Of Records In BuckleScript",
+  "date": "2018-04-12T00:00:00Z",
+  "tags": [
+    "JavaScript",
+    "BuckleScript",
+    "ReasonML"
+  ],
+  "summary": "A technical post about performance of records in bucklescript, covering JavaScript, BuckleScript, ReasonML",
+  "image": "/images/performance-of-records-in-bucklescript-01.jpeg"
+}
 ---
+
 
 [BuckleScript](http://bucklescript.github.io/) is a compiler backend, created by [Hongbo Zhang](https://twitter.com/bobzhang1988/), that allows to build apps using Reason or OCaml code, and produces clean, performant JavaScript code. Performance is one of the core values behind the project, and looking at the implementation one can see many different techniques that are used to pursue that goal.
 
@@ -14,7 +19,7 @@ I was recently surprised by the way it compiles [immutable records](https://reas
 
 We will be using [Reason](https://reasonml.github.io/) for the code examples, which BuckleScript accepts as input syntax (as well as OCaml).
 
-![performance-of-records-in-bucklescript-01.jpeg](/media/performance-of-records-in-bucklescript-01.jpeg)
+![performance-of-records-in-bucklescript-01.jpeg](/images/performance-of-records-in-bucklescript-01.jpeg)
 
 ## Using the platform
 
@@ -93,7 +98,7 @@ To evaluate the performance of this BuckleScript approach to record updates, we 
 
 The results from this setup are available in [this online test](https://jsperf.com/assign-slice-and-bucklescript/1), and here is a visualization for those in a rush, for an Intel(R) Core(TM) i7–4870HQ CPU @ 2.50GHz running Chrome 65.0.3325.181:
 
-![performance-of-records-in-bucklescript-02.png](/media/performance-of-records-in-bucklescript-02.png)
+![performance-of-records-in-bucklescript-02.png](/images/performance-of-records-in-bucklescript-02.png)
 
 *Should have been called RocketScript*
 

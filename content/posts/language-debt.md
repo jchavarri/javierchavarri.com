@@ -1,14 +1,18 @@
 ---
-title: "Language Debt"
-subtitle: "And The Evolution Of JavaScript"
-date: "2018-11-26"
-imghero: "https://www.javierchavarri.com/media/language-debt-01.jpeg"
-tags:
-  - "JavaScript"
-  - "ReasonML"
-  - "TypeScript"
-  - "Elm"
+{
+  "title": "Language Debt",
+  "date": "2018-11-26T00:00:00Z",
+  "tags": [
+    "JavaScript",
+    "ReasonML",
+    "TypeScript",
+    "Elm"
+  ],
+  "summary": "A technical post about language debt, covering JavaScript, ReasonML, TypeScript, Elm",
+  "image": "/images/language-debt-01.jpeg"
+}
 ---
+
 
 A few days ago, there was a [great conversation](https://twitter.com/jamiebuilds/status/1064692760324657152) on Twitter between James Kyle and Jordan Walke about Reason and JavaScript, and what approach has lead the industry further ([sic](https://twitter.com/jamiebuilds/status/1064975648907714561)).
 
@@ -18,7 +22,7 @@ At some point, the conversation evolved to discuss whether it would be better to
 
 This conversation, and in particular the mention to local maxima, led me to think about how JavaScript has evolved over time, where we currently stand today in the progress line of that evolution, and how programming languages –and their limitations– can affect product teams in profound ways.
 
-![language-debt-01.jpeg](/media/language-debt-01.jpeg)
+![language-debt-01.jpeg](/images/language-debt-01.jpeg)
 
 ## 📈 Evolution Of JavaScript
 
@@ -32,7 +36,7 @@ However, there are two core language features that for different reasons have be
 
 In 2013, Facebook open-sourced [React](https://en.wikipedia.org/wiki/React_%28JavaScript_library%29), created by Jordan Walke. It was received [with some skepticism](https://news.ycombinator.com/item?id=5789055), but it is hard to argue its success today:
 
-![language-debt-02.png](/media/language-debt-02.png)
+![language-debt-02.png](/images/language-debt-02.png)
 
 _A view of React growth (from [Stack Overflow Trends](https://insights.stackoverflow.com/trends?tags=jquery%2Cangularjs%2Cangular%2Creactjs))_
 
@@ -124,7 +128,7 @@ Examples of activities connected with language debt might be:
 - Remove circular dependencies
 - languaRefine the type definitions of a third party library
 
-![language-debt-03.png](/media/language-debt-03.png)
+![language-debt-03.png](/images/language-debt-03.png)
 
 _Evolution of product and language debt over time_
 

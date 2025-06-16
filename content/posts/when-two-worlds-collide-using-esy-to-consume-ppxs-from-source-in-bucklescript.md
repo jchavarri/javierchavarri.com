@@ -1,23 +1,28 @@
 ---
-title: "When two worlds collide: using esy to consume BuckleScript ppxs from source"
-date: "2020-01-09"
-imghero: "https://www.javierchavarri.com/media/when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-01.jpg"
-tags:
-  - "esy"
-  - "ppx"
-  - "BuckleScript"
-  - "ReasonML"
+{
+  "title": "When two worlds collide: using esy to consume BuckleScript ppxs from source",
+  "date": "2020-01-09T00:00:00Z",
+  "tags": [
+    "esy",
+    "ppx",
+    "BuckleScript",
+    "ReasonML"
+  ],
+  "summary": "A technical post about when two worlds collide: using esy to consume bucklescript ppxs from source, covering esy, ppx, BuckleScript, ReasonML",
+  "image": "/images/when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-01.jpg"
+}
 ---
+
 
 In this article, we will take a look at the existing landscape of ppx rewriters for BuckleScript. We will also see the work involved in preparing and publishing a ppx rewriter for their authors. Finally, we will present a different approach to publish and consume ppx rewriters in [BuckleScript](https://bucklescript.github.io/) that relies on the cross-platform package manager [esy](https://esy.sh/).
 
-![when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-01.jpg](/media/when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-01.jpg)
+![when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-01.jpg](/images/when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-01.jpg)
 
 ## 🤓 What is a ppx
 
 In Reason and OCaml there is a system called "pre-processor extensions", which are also known as ppx rewriters, or just "ppxs". As their name states, these programs pre-process the code: they run just after the compilation parsing stage has successfully ended, and before the type checking and other deeper parts of the compilation process start.
 
-![performance-of-records-in-bucklescript-02.png](/media/when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-02.png)
+![performance-of-records-in-bucklescript-02.png](/images/when-two-worlds-collide-using-esy-to-consume-ppxs-from-source-in-bucklescript-02.png)
 
 *High-level diagram showing where the ppx processing happens in the compilation process*
 

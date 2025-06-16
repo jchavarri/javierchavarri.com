@@ -1,14 +1,18 @@
 ---
-title: "Js_of_ocaml: a bundle size study"
-subtitle: "An analysis about JavaScript bundle size in Js_of_ocaml with a real world app"
-date: "2022-01-23"
-imghero: "https://www.javierchavarri.com/media/js_of_ocaml-bundle-size-study-01.jpg"
-tags:
-  - "JavaScript"
-  - "Js_of_ocaml"
-  - "ReScript"
-  - "OCaml"
+{
+  "title": "Js_of_ocaml: a bundle size study",
+  "date": "2022-01-23T00:00:00Z",
+  "tags": [
+    "JavaScript",
+    "Js_of_ocaml",
+    "ReScript",
+    "OCaml"
+  ],
+  "summary": "A technical post about js_of_ocaml: a bundle size study, covering JavaScript, Js_of_ocaml, ReScript, OCaml",
+  "image": "/images/js_of_ocaml-bundle-size-study-01.jpg"
+}
 ---
+
 
 Historically, I have noticed a recurring theme in OCaml forums and Discord, where from time to time someone mentions that [Js\_of\_ocaml](http://ocsigen.org/js_of_ocaml/) —a compiler that converts from OCaml bytecode to JavaScript— generates large output files.
 
@@ -18,7 +22,7 @@ It is however true that Js\_of\_ocaml allows to use many OCaml libraries that we
 
 So, are Js\_of\_ocaml generated files really that large, as the rumors suggest? I ran a small experiment to find some answers.
 
-![js_of_ocaml-bundle-size-study-01.jpg](/media/js_of_ocaml-bundle-size-study-01.jpg)
+![js_of_ocaml-bundle-size-study-01.jpg](/images/js_of_ocaml-bundle-size-study-01.jpg)
   
 *Photo by [Kai Dahms](https://unsplash.com/@dilucidus) on [Unsplash](https://unsplash.com/s/photos/measure)*
 
@@ -101,7 +105,7 @@ In any case, in the end Webpack minifier runs in both cases, so the `Parsed` and
 
 [See interactive version](https://jchavarri.github.io/jsoo-react-realworld-example-app/bundle-study/).
 
-![js_of_ocaml-bundle-size-study-02.png](/media/js_of_ocaml-bundle-size-study-02.png)
+![js_of_ocaml-bundle-size-study-02.png](/images/js_of_ocaml-bundle-size-study-02.png)
 
 ## Caveats and learning
 

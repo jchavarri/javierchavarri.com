@@ -1,13 +1,17 @@
 ---
-title: "React server-side rendering with OCaml"
-subtitle: "An experiment with TyXML and ReasonReact"
-date: "2020-08-25"
-imghero: "https://www.javierchavarri.com/media/react-server-side-rendering-with-ocaml-01.jpg"
-tags:
-  - "React"
-  - "ReasonML"
-  - "OCaml"
+{
+  "title": "React server-side rendering with OCaml",
+  "date": "2020-08-25T00:00:00Z",
+  "tags": [
+    "React",
+    "ReasonML",
+    "OCaml"
+  ],
+  "summary": "A technical post about react server-side rendering with ocaml, covering React, ReasonML, OCaml",
+  "image": "/images/react-server-side-rendering-with-ocaml-01.jpg"
+}
 ---
+
 
 A while back, [Dan Abramov mentioned](https://twitter.com/dan_abramov/status/942859338472882176) —to my surprise— that it would be relatively easy to have React server side renderer implemented in a different language:
 
@@ -23,7 +27,7 @@ The experiment code is open source, and available in https://github.com/jchavarr
 
 This blog post will go through the details on how the experiment went, what troubles were found along the way, and some of the solutions around them.
 
-![/media/react-server-side-rendering-with-ocaml-01.jpg](/media/react-server-side-rendering-with-ocaml-01.jpg)
+![/images/react-server-side-rendering-with-ocaml-01.jpg](/images/react-server-side-rendering-with-ocaml-01.jpg)
 
 *Photo by [Linus Nylund](https://unsplash.com/@doto?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText) on [Unsplash](https://unsplash.com/wallpapers/nature/water?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText)*
 
@@ -51,7 +55,7 @@ Now that we got these performance concerns out of the way, let's go back to the 
 
 React server side rendering (SSR) and hydration is typically implemented using Node, and for good reasons.
 
-There are limitations that are inherent to the "platform gap" between Node and the browser: components rendered in Node can't call methods or APIs available only on the browser (note the same happens in this experiment, between the OCaml native APIs and BuckleScript ones). This gap is not really obvious, and sometimes users of SSR frameworks like Gatsby [get confused by errors like `window is undefined`](https://github.com/gatsbyjs/gatsby/issues/12849). The solution involves doing runtime checks to see [if a given global is defined](https://www.gatsbyjs.com/docs/debugging-html-builds/#how-to-check-if-window-is-defined), and from there one can infer that is in one or another environment.
+There are limitations that are inherent to the "platform gap" between Node and the browser: components rendered in Node can't call methods or APIs available only on the browser (note the same happens in this experiment, between the OCaml native APIs and BuckleScript[^1] ones). This gap is not really obvious, and sometimes users of SSR frameworks like Gatsby [get confused by errors like `window is undefined`](https://github.com/gatsbyjs/gatsby/issues/12849). The solution involves doing runtime checks to see [if a given global is defined](https://www.gatsbyjs.com/docs/debugging-html-builds/#how-to-check-if-window-is-defined), and from there one can infer that is in one or another environment.
 
 However! React is written in JavaScript, so Node applications that render React components can leverage a lot of previously existing libraries and tools from the extensive React and JavaScript ecosystems.
 

@@ -1,12 +1,17 @@
 ---
-title: "Data-first and data-last: a comparison"
-date: "2019-05-10"
-imghero: "https://www.javierchavarri.com/media/data-first-and-data-last-a-comparison-01.jpg"
-tags:
-  - "OCaml"
-  - "ReasonML"
-  - "BuckleScript"
+{
+  "title": "Data-first and data-last: a comparison",
+  "date": "2019-05-10T00:00:00Z",
+  "tags": [
+    "OCaml",
+    "ReasonML",
+    "BuckleScript"
+  ],
+  "summary": "A technical post about data-first and data-last: a comparison, covering OCaml, ReasonML, BuckleScript",
+  "image": "/images/data-first-and-data-last-a-comparison-01.jpg"
+}
 ---
+
 
 [BuckleScript](https://bucklescript.github.io/) is a quite uncommon project. It takes the compiler from one language, OCaml, and modifies it in a way that it becomes more ergonomic for users of another language: JavaScript.
 
@@ -24,7 +29,7 @@ So, in this article, we will:
 
 All this with plenty of examples, references, and links to interactive editors, to play with actual code. Let's go!
 
-![data-first-and-data-last-a-comparison-01.jpg](/media/data-first-and-data-last-a-comparison-01.jpg)
+![data-first-and-data-last-a-comparison-01.jpg](/images/data-first-and-data-last-a-comparison-01.jpg)
 
 *Photo by [JJ Ying](https://unsplash.com/photos/4XvAZN8_WHo?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/search/photos/pipeline?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)*
 

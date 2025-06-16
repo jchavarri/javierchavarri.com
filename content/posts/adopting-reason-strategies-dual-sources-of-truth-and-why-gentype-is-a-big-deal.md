@@ -1,20 +1,25 @@
 ---
-title: "Adopting Reason: strategies, dual sources of truth, and why genType is a big deal"
-date: "2018-10-03"
-imghero: "https://www.javierchavarri.com/media/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-01.jpeg"
-tags:
-  - "JavaScript"
-  - "ReasonML"
-  - "TypeScript"
-  - "Flowtype"
-  - "BuckleScript"
+{
+  "title": "Adopting Reason: strategies, dual sources of truth, and why genType is a big deal",
+  "date": "2018-10-03T00:00:00Z",
+  "tags": [
+    "JavaScript",
+    "ReasonML",
+    "TypeScript",
+    "Flowtype",
+    "BuckleScript"
+  ],
+  "summary": "A technical post about adopting reason: strategies, dual sources of truth, and why gentype is a big deal, covering JavaScript, ReasonML, TypeScript, Flowtype, BuckleScript",
+  "image": "/images/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-01.jpeg"
+}
 ---
+
 
 _Disclaimer: migrating an existing product to a new language, even if partially, is one of the most impactful decisions that a team or tech company might make, for better or worse. It is rarely justified, and in most cases the costs will outweigh the benefits. In any case, it is a decision that should be made after deep consideration and never without a large consensus or a detailed plan. Or in other words: do your own research._ 😉
 
 ---
 
-![adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-01.jpeg](/media/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-01.jpeg)
+![adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-01.jpeg](/images/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-01.jpeg)
 
 _"Alice knew which was which in a moment, because one of them had ‘DUM’ embroidered on his collar, and the other ‘DEE’”._
 
@@ -43,7 +48,7 @@ Their approach: start with the state management system (or business logic, [depe
 
 This makes a lot of sense: considering how statically typed languages make runtime errors much harder to happen, migrating the parts of the code that deal with data seems like a great way to start getting a lot of value out of the initial investment. For NoRedInk, it was Flux stores and Elm. But the idea behind it can easily be ported to other state management system like Redux, or any other statically typed language, like Reason.
 
-![adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-02.png](/media/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-02.png)
+![adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-02.png](/images/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-02.png)
 
 *Migrating your app, one reducer at a time*
 
@@ -61,7 +66,7 @@ For Facebook Messenger, the team decided to go with a different approach: start 
 
 The strategy has the great benefit of being much less intrusive than the data-first strategy described earlier. For larger teams –like the ones at Facebook– state management systems are generally quite ubiquitous, and can even be shared across apps. So being able to start adopting the language in isolation might be the only way forward initially, as it requires a much smaller amount of people to reach consensus: the team that is working with that part of the UI / app is enough.
 
-![adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-03.png](/media/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-03.png)
+![adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-03.png](/images/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-03.png)
 
 *It’s a long way to the top if you wanna rock’n’roll*
 
@@ -89,7 +94,7 @@ But bindings are subject to break, as they introduce a secondary source of truth
 
 Bindings for a public JavaScript library have less chances of breaking because they are public, and _in theory_ should be updated with more care. But in an internal app, contracts are more easily broken. And if a change in some JavaScript function is breaking the Reason code, it makes the investment in the migration harder to justify: we are introducing a statically typed language to make our app safer, but any boundary between the new and the existing language is unsafe.
 
-![adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-04.png](/media/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-04.png)
+![adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-04.png](/images/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal-04.png)
 
 *Ce binding n’est pas what you think it is*
 

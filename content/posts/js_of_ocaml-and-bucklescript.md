@@ -1,20 +1,24 @@
 ---
-title: "Js_of_ocaml and BuckleScript"
-subtitle: "A Comparison"
-date: "2019-03-17"
-imghero: "https://www.javierchavarri.com/media/js_of_ocaml-and-bucklescript-01.png"
-tags:
-  - "JavaScript"
-  - "ReasonML"
-  - "BuckleScript"
-  - "OCaml"
+{
+  "title": "Js_of_ocaml and BuckleScript",
+  "date": "2019-03-17T00:00:00Z",
+  "tags": [
+    "JavaScript",
+    "ReasonML",
+    "BuckleScript",
+    "OCaml"
+  ],
+  "summary": "A technical post about js_of_ocaml and bucklescript, covering JavaScript, ReasonML, BuckleScript, OCaml",
+  "image": "/images/js_of_ocaml-and-bucklescript-01.png"
+}
 ---
+
 
 When compiling Reason / OCaml applications to JavaScript, there are two main options: [BuckleScript](http://bucklescript.github.io/) and [Js\_of\_ocaml](http://ocsigen.org/js_of_ocaml/).
 
 In this article, we will explain briefly the origins of each one of them, show the upsides and strong points of each solution, and lastly conclude with some guidelines on what use cases fit each one better.
 
-![js_of_ocaml-and-bucklescript-01.png](/media/js_of_ocaml-and-bucklescript-01.png)
+![js_of_ocaml-and-bucklescript-01.png](/images/js_of_ocaml-and-bucklescript-01.png)
 
 ## History
 
@@ -22,7 +26,7 @@ In this article, we will explain briefly the origins of each one of them, show t
 
 Back in 2013, Jérôme Vouillon and Vincent Balat published the paper [“From Bytecode to JavaScript: the Js\_of\_ocaml compiler”](https://www.irif.fr/~balat/publications/vouillon_balat-js_of_ocaml.pdf). The main idea was to use OCaml bytecode –an output that the OCaml compiler could produce already through the use of `ocamlc`– to produce JavaScript code. The main motivation was that OCaml bytecode is a very stable format, so building on top of it would decrease the maintenance costs of Js\_of\_ocaml. Another upside of using bytecode was that it would make possible to leverage all the existing ecosystem of libraries and applications and make them run in the most ubiquitous platform that ever existed: the browser.
 
-![js_of_ocaml-and-bucklescript-02.png](/media/js_of_ocaml-and-bucklescript-02.png)
+![js_of_ocaml-and-bucklescript-02.png](/images/js_of_ocaml-and-bucklescript-02.png)
 
 *High-level view of the OCaml compilation process, highlighting the part that is handled by Js\_of\_ocaml*
 
@@ -30,7 +34,7 @@ Back in 2013, Jérôme Vouillon and Vincent Balat published the paper [“From B
 
 A couple of years later, Hongbo Zhang proposed [in the Js\_of\_ocaml repository](https://github.com/ocsigen/js_of_ocaml/issues/338) the idea of taking OCaml _rawlambda_ output to produce JavaScript code. This was a very different approach from the one taken by Js\_of\_ocaml, as _rawlambda_ is a data structure much more central in the compilation process. The motivation behind this approach was that JavaScript and OCaml share a lot of the language semantics, so by reaching into _rawlambda_, the compiler backend that would become BuckleScript could make the JavaScript output smaller, and keep it closer to the original OCaml code. This was impossible by design for Js\_of\_ocaml, which starts the conversion to JavaScript at the very end of the compilation process, because at that time a lot of information that would be valuable semantically has been erased already –like function names *(Edit: as noticed by [Louis Roché](https://medium.com/@TestCross), Js\_of\_ocaml maintains functions names just fine, as can be seen by the source maps feature)*.
 
-![js_of_ocaml-and-bucklescript-03.png](/media/js_of_ocaml-and-bucklescript-03.png)
+![js_of_ocaml-and-bucklescript-03.png](/images/js_of_ocaml-and-bucklescript-03.png)
 
 *High-level view of the OCaml compilation process, highlighting the part that is handled by BuckleScript, in comparison to Js\_of\_ocaml*
 
