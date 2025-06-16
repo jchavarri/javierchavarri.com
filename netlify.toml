@@ -1,0 +1,6 @@
+[build]
+  command = "go install github.com/jchavarri/goranite@latest && goranite -build -site ."
+  publish = "public"
+
+[build.environment]
+  GO_VERSION = "1.21" 
