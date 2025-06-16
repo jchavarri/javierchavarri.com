@@ -2,20 +2,19 @@
 {
   "title": "About",
   "template": "about.html",
-  "description": "Software engineer building products with ReasonML and OCaml. Author of open source projects and contributor to Dune, Melange, and genType. Passionate about programming languages and their impact on team cooperation and software quality."
+  "description": "Software engineer building products with OCaml. Author of open source projects and contributor to Dune, Melange, and genType. Passionate about programming languages and their impact on team cooperation and software quality."
 }
 ---
 
 👻
 
-I'm a software engineer building products with
-[ReasonML](http://reasonml.github.io/), currently at
-[Ahrefs](http://ahrefs.com/). Before that, I worked on frontend infrastructure
-at [Webflow](http://webflow.com/).
+I'm a software engineer building products with [OCaml](https://ocaml.org/),
+currently at [Ahrefs](http://ahrefs.com/). Before that, I worked on frontend
+infrastructure at [Webflow](http://webflow.com/).
 
 I am the author of some [open source projects](https://github.com/jchavarri)
-(mostly in OCaml) and I am also a contributor to UI or tooling projects like
-[Dune](https://github.com/ocaml/dune/),
+(mostly in OCaml) and I am also a contributor to frontend or tooling projects
+like [Dune](https://github.com/ocaml/dune/),
 [Melange](https://github.com/melange-re/melange) or
 [genType](https://github.com/cristianoc/genType).
 
