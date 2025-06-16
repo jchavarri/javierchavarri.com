@@ -45,7 +45,7 @@ Hydration is a very nuanced topic and has several performance implications. For 
 - either do less work server side by rendering just enough HTML, and then have React components client-side do more rendering work
 - or the other way around, do most of the work server side and spread small scripts in the client to add dynamic behavior.
 
-However, hydration unlocks a great developer experience, so it is a very hyped topic at the moment. Companies like [Gatsby](gatsbyjs.org/) and [Vercel](https://vercel.com/) are innovating on it very quickly to work around these performance issues while keeping the same great development experience. 
+However, hydration unlocks a great developer experience, so it is a very hyped topic at the moment. Companies like [Gatsby](https://www.gatsbyjs.com/) and [Vercel](https://vercel.com/) are innovating on it very quickly to work around these performance issues while keeping the same great development experience. 
 
 If you're curious to know more, I recommend [the official documentation](https://reactjs.org/docs/react-dom.html#hydrate) and also the post ["Rendering on the Web"](https://developers.google.com/web/updates/2019/02/rendering-on-the-web) in the Google dev blog.
 
