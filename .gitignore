@@ -54,8 +54,7 @@ typings/
 # dotenv environment variables file
 .env*
 
-# gatsby files
-.cache/
+# goranite files
 public
 
 # Mac files
