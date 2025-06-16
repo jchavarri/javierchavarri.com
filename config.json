@@ -3,7 +3,7 @@
     "title": "Javier Chávarri",
     "description": "<p>Hi there! 👋</p><p>Welcome to my site, where I write about the challenges of creating software products, type systems and programming languages, especially JavaScript and OCaml.</p>",
     "author": "Javier Chávarri",
-    "url": "https://javierchavarri.com"
+    "url": "https://www.javierchavarri.com"
   },
   "build": {
     "output_dir": "public",

@@ -125,6 +125,22 @@ header h1 a:hover {
     color: var(--accent);
 }
 
+/* Site title styling (for non-homepage headers) */
+.site-title {
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.site-title a {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.site-title a:hover {
+    color: var(--accent);
+}
+
 /* Navigation */
 nav {
     margin: 0;

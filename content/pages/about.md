@@ -1,7 +1,8 @@
 ---
 {
   "title": "About",
-  "template": "about.html"
+  "template": "about.html",
+  "description": "Software engineer building products with ReasonML and OCaml. Author of open source projects and contributor to Dune, Melange, and genType. Passionate about programming languages and their impact on team cooperation and software quality."
 }
 ---
 
