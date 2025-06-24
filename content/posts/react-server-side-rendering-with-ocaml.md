@@ -21,7 +21,7 @@ I kept thinking about this regularly, and at some point started wondering how co
 
 But due to ~~laziness~~ lack of time, instead of rewriting it from scratch, I took an existing library that allows to build statically correct HTML ([TyXML](https://github.com/ocsigen/tyxml)), and used it to render HTML server side, that can later on be picked up and hydrated by [ReasonReact](https://reasonml.github.io/reason-react/).
 
-The results from the experiment seem promising. The [Reason](reasonml.github.io/) syntax and the JSX extension for TyXML allow the same components to be shared across both server and client environments.
+The results from the experiment seem promising. The [Reason](https://reasonml.github.io/) syntax and the JSX extension for TyXML allow the same components to be shared across both server and client environments.
 
 The experiment code is open source, and available in https://github.com/jchavarri/ocaml_webapp. The demo app can be accessed in https://ocaml-webapp.herokuapp.com/. All the pages in this demo app can be rendered by either the server or the client.
 
